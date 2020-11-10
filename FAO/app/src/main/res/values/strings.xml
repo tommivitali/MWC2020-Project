@@ -2,20 +2,21 @@
     <string name="app_name">FAO</string>
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
-    <string name="nav_header_title">Android Studio</string>
-    <string name="nav_header_subtitle">android.studio@android.com</string>
+    <string name="nav_header_title">FAO</string>
+    <string name="nav_header_subtitle">The app that makes you eat healthy</string>
     <string name="nav_header_desc">Navigation header</string>
     <string name="action_settings">Settings</string>
 
-    <string name="menu_home">Homepage</string>
-    <string name="menu_chart">Charts</string>
+    <string name="menu_homepage">Homepage</string>
+    <string name="menu_charts">Charts</string>
     <string name="menu_pantry">Pantry</string>
     <string name="menu_settings">Settings</string>
-    <string name="_0">0</string> <!-- value of steps/cal -->
-    <string name="steps">steps done today</string>
-    <string name="add_ingredients">ADD INGREDIENTS</string>
-    <string name="scan">SCAN BARCODE</string>
-    <string name="request">WANNA EAT?</string>
-    <string name="start">START STEPCOUNTER</string>
-    <string name="stop">STOP STEPCOUNTER</string>
+
+    <string name="home_0">0</string>
+    <string name="home_steps_description">steps done today</string>
+    <string name="home_add_ingredients">Add ingredient</string>
+    <string name="home_scan_barcode">Scan barcode</string>
+    <string name="home_wanna_eat">Wanna Eat?</string>
+    <string name="home_start_stop_stepcounter">Start stepcounter</string>
+    <string name="charts_text_daterange">Range of dates</string>
 </resources>
