@@ -66,23 +66,24 @@ public class MainActivity extends AppCompatActivity {
 
         height = (EditText) findViewById(R.id.editHeight);
         weight = (EditText) findViewById(R.id.editWeight);
-
         /*userH = Integer.parseInt(height.getText().toString()); //crash here
-        userW = Integer.parseInt(weight.getText().toString());
-        //testing
-        settingsButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                userH = Integer.parseInt(height.getText().toString());
-                userW = Integer.parseInt(weight.getText().toString());
-                results.setText(userH + userW);
-            }
-        });*/
+        userW = Integer.parseInt(weight.getText().toString());*/
+
         AutoCompleteTextView language = (AutoCompleteTextView)findViewById(R.id.Languages);
         ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.languages_items, languages);
         //crashes here
         //language.setText(arrayAdapter.getItem(0).toString(), false); //default value
         //language.setAdapter(arrayAdapter);
+
+        //testing
+        /*settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userH = Integer.parseInt(height.getText().toString());
+                userW = Integer.parseInt(weight.getText().toString());
+                results.setText(userH + " " + userW + " " + language.getText().toString(););
+            }
+        });*/
     }
 
     @Override
