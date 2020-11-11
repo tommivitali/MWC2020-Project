@@ -19,4 +19,14 @@
     <string name="home_wanna_eat">Wanna Eat?</string>
     <string name="home_start_stop_stepcounter">Start stepcounter</string>
     <string name="charts_text_daterange">Range of dates</string>
+    <string name="height">Height</string>
+    <string name="weight">Weight</string>
+    <string name="language">Language</string>
+    <string name="home_progress">Home progress</string>
+    <string name="unit_measure">cm</string>
+    <string name="settingsButton">Button</string>
+    <string name="unit_measure2">Kg</string>
+    <string name="notifications">Notifications</string>
+    <string name="label_1">Calories (kcal)</string>
+    <string name="label_2">Steps</string>
 </resources>

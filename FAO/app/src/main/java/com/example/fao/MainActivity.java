@@ -3,10 +3,16 @@ package com.example.fao;
 import android.os.Bundle;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.navigation.NavigationView;
+import com.google.android.material.textfield.TextInputLayout;
 
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -19,6 +25,11 @@ import androidx.appcompat.widget.Toolbar;
 public class MainActivity extends AppCompatActivity {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private EditText weight, height, test;
+    private Button settingsButton;
+    private TextView results;
+    public int userH = 0, userW = 0; //user's weight and height
+    private String[] languages = new String[] {"Italian", "English", "German"};
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -48,6 +59,30 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
+
+        //options section
+        settingsButton = (Button) findViewById(R.id.settingsButton); //save settings TODO decide how to save settings
+        results = (TextView) findViewById(R.id.results); //for testing
+
+        height = (EditText) findViewById(R.id.editHeight);
+        weight = (EditText) findViewById(R.id.editWeight);
+
+        /*userH = Integer.parseInt(height.getText().toString()); //crash here
+        userW = Integer.parseInt(weight.getText().toString());
+        //testing
+        settingsButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                userH = Integer.parseInt(height.getText().toString());
+                userW = Integer.parseInt(weight.getText().toString());
+                results.setText(userH + userW);
+            }
+        });*/
+        AutoCompleteTextView language = (AutoCompleteTextView)findViewById(R.id.Languages);
+        ArrayAdapter arrayAdapter = new ArrayAdapter(this, R.layout.languages_items, languages);
+        //crashes here
+        //language.setText(arrayAdapter.getItem(0).toString(), false); //default value
+        //language.setAdapter(arrayAdapter);
     }
 
     @Override
