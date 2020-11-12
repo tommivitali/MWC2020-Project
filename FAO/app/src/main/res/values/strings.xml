@@ -18,6 +18,7 @@
     <string name="home_scan_barcode">Scan barcode</string>
     <string name="home_wanna_eat">Wanna Eat?</string>
     <string name="home_start_stop_stepcounter">Start stepcounter</string>
+    <string name="home_stop_stepcounter">Stop stepcounter</string>
     <string name="charts_text_daterange">Range of dates</string>
     <string name="height">Height</string>
     <string name="weight">Weight</string>
@@ -29,4 +30,7 @@
     <string name="notifications">Notifications</string>
     <string name="label_1">Calories (kcal)</string>
     <string name="label_2">Steps</string>
+    <string name="acc_not_available">accelerometer not available</string>
+    <string name="step_not_available">stepcounter not available</string>
+    <string name="step_permission_denied">step permission denied</string>
 </resources>
