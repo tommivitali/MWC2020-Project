@@ -27,6 +27,8 @@
     <string name="unit_measure">cm</string>
     <string name="settingsButton">Button</string>
     <string name="unit_measure2">Kg</string>
+    <string name="unit_measure3">Steps</string>
+    <string name="unit_measure4">Cal</string>
     <string name="notifications">Notifications</string>
     <string name="label_1">Calories (kcal)</string>
     <string name="label_2">Steps</string>

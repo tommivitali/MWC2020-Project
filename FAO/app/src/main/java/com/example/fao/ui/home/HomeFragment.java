@@ -24,6 +24,7 @@ import androidx.lifecycle.Observer;
 import androidx.lifecycle.ViewModelProviders;
 
 import com.example.fao.R;
+import com.example.fao.StepAppOpenHelper;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
@@ -31,6 +32,7 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
 
@@ -39,6 +41,7 @@ public class HomeFragment extends Fragment {
 
     // Text view variables
     public TextView stepsCountTextView;
+    public TextView kindOfCountTextView;
 
     // ACC sensors.
     private Sensor mSensorACC;
@@ -52,6 +55,8 @@ public class HomeFragment extends Fragment {
     static int stepsCompleted = 0;
 
     private HomeViewModel homeViewModel;
+    //TODO change this to get 0 = steps, 1 = CAL; based on settings --> bind value with settings
+    public int type = 0;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,14 +67,20 @@ public class HomeFragment extends Fragment {
         String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
         stepsCountTextView = (TextView) root.findViewById(R.id.stepsCount);
+        kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
 
         // Set the Views with the number of stored steps
         stepsCountTextView.setText(String.valueOf(stepsCompleted));
-/*        stepsCompleted = StepAppOpenHelper.loadSingleRecord(getContext(), fDate);
+        if(type == 0)
+            kindOfCountTextView.setText(getResources().getString(R.string.unit_measure3) + " done today"); //if steps
+        else //1
+            kindOfCountTextView.setText(getResources().getString(R.string.unit_measure4) + " burned today"); //if Cal
+
+        stepsCompleted = StepAppOpenHelper.loadSingleRecord(getContext(), fDate);
 
         //Get the writable database
         StepAppOpenHelper databaseOpenHelper =   new StepAppOpenHelper(this.getContext());;
-        SQLiteDatabase database = databaseOpenHelper.getWritableDatabase();*/
+        SQLiteDatabase database = databaseOpenHelper.getWritableDatabase();
 
         //  Get an instance of the sensor manager.
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -81,7 +92,7 @@ public class HomeFragment extends Fragment {
         // Instantiate the StepCounterListener
         /*StepAppOpenHelper databaseOpenHelper =   new StepAppOpenHelper(this.getContext());;
         SQLiteDatabase database = databaseOpenHelper.getWritableDatabase();*/
-        listener = new StepCounterListener(stepsCountTextView);
+        listener = new StepCounterListener(database, stepsCountTextView);
 
         // Toggle button
         StartStop = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
@@ -142,7 +153,7 @@ public class HomeFragment extends Fragment {
         mSensorManager.unregisterListener(listener);
     }
 
-    class StepCounterListener implements SensorEventListener {
+    class StepCounterListener<stepsCompleted> implements SensorEventListener {
 
         private long lastUpdate = 0;
 
@@ -166,9 +177,10 @@ public class HomeFragment extends Fragment {
         public String day;
         public String hour;
 
-        // Constructor, get the database, TextView and ProgressBar as args
-        public StepCounterListener(TextView tv){
+        // Constructor, get the database, TextView as args
+        public StepCounterListener(SQLiteDatabase db, TextView tv){
             stepsCountTextView = tv;
+            database = db;
         }
 
         @Override
@@ -189,20 +201,8 @@ public class HomeFragment extends Fragment {
 
                     // Convert the timestamp to date
                     SimpleDateFormat jdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss:SSS");
-                    //jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
+                    jdf.setTimeZone(TimeZone.getTimeZone("GMT+2"));
                     String date = jdf.format(timeInMillis);
-
-
-                // print a value every 1000 ms
-                long curTime = System.currentTimeMillis();
-                if ((curTime - lastUpdate) > 1000) {
-                    lastUpdate = curTime;
-
-                    Log.d("ACC", "X: " + String.valueOf(x) + " Y: " + String.valueOf(y) + " Z: "
-                            + String.valueOf(z) + " t: " + String.valueOf(date));
-
-                }
-
 
                     // Get the date, the day and the hour
                     timestamp = date;
@@ -279,21 +279,31 @@ public class HomeFragment extends Fragment {
                         mACCStepCounter += 1;
                         Log.d("ACC STEPS: ", String.valueOf(mACCStepCounter));
 
-                        // Update the TextView and the ProgressBar
-                        stepsCountTextView.setText(String.valueOf(mACCStepCounter));
-
+                        // Update the TextView
+                        if(type == 0) {
+                            stepsCountTextView.setText(String.valueOf(mACCStepCounter));
+                            kindOfCountTextView.setText(getResources().getString(R.string.unit_measure3) + " done today"); //if steps
+                        }else { //1
+                            stepsCountTextView.setText(String.valueOf(convertCal(mACCStepCounter)));
+                            kindOfCountTextView.setText(getResources().getString(R.string.unit_measure4) + " burned today"); //if Cal
+                        }
                         // Insert the data in the database
                         //DONE 4: insert the day and the hour in the database
                         ContentValues values = new ContentValues();
-                        /*values.put(StepAppOpenHelper.KEY_TIMESTAMP, timePointList.get(i));
+                        values.put(StepAppOpenHelper.KEY_TIMESTAMP, timePointList.get(i));
                         values.put(StepAppOpenHelper.KEY_DAY, day);
                         values.put(StepAppOpenHelper.KEY_HOUR, hour);
 
-                        database.insert(StepAppOpenHelper.TABLE_NAME, null, values);*/
+                        database.insert(StepAppOpenHelper.TABLE_NAME, null, values);
                     }
 
                 }
             }
+        }
+
+        private double convertCal(int steps) {
+            //TODO get correct equation
+            return steps*0.5;
         }
 
 
