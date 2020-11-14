@@ -6,11 +6,14 @@ import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
+
+import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Map;
+import java.util.TreeMap;
 
-//TODO 1: Let the StepAppOpenHelper inherit from SQLiteOpenHelper
-public class StepAppOpenHelper extends SQLiteOpenHelper{
+public class StepAppOpenHelper extends SQLiteOpenHelper {
 
 
     private static final int DATABASE_VERSION = 1;
@@ -19,22 +22,39 @@ public class StepAppOpenHelper extends SQLiteOpenHelper{
     public static final String TABLE_NAME = "num_steps";
     public static final String KEY_ID = "id";
     public static final String KEY_TIMESTAMP = "timestamp";
-    public static final String KEY_DAY = "day";
     public static final String KEY_HOUR = "hour";
+    public static final String KEY_DAY = "day";
 
 
-    // DONE 3: Default SQL for creating a table in a database
-    public static final String CREATE_TABLE_SQL = "CREATE TABLE  " + TABLE_NAME + " (" + KEY_ID + " INTEGER PRIMARY KEY, " +
-            "" +KEY_DAY + " TEXT, " + KEY_HOUR + "  TEXT, " + KEY_TIMESTAMP + "  TEXT);";
+    // Default SQL for creating a table in a database
+    public static final String CREATE_TABLE_SQL = "CREATE TABLE " + TABLE_NAME + " (" +
+            KEY_ID + " INTEGER PRIMARY KEY, " + KEY_DAY + " TEXT, " + KEY_HOUR + " TEXT, "
+            + KEY_TIMESTAMP + " TEXT);";
 
 
-    // DONE 2: Add the constructor
-    public StepAppOpenHelper(Context context){
+    // The constructor
+    public StepAppOpenHelper(Context context) {
         super(context, DATABASE_NAME, null, DATABASE_VERSION);
     }
 
 
-    // Load all records in the database
+    // onCreate
+    @Override
+    public void onCreate(SQLiteDatabase db) {
+        db.execSQL(CREATE_TABLE_SQL);
+
+    }
+
+    @Override
+    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    // nothing to do here
+    }
+
+    /**
+     * Utility function to load all records in the database
+     *
+     * @param context: application context
+     */
     public static void loadRecords(Context context){
         List<String> dates = new LinkedList<String>();
         StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
@@ -55,17 +75,31 @@ public class StepAppOpenHelper extends SQLiteOpenHelper{
         Log.d("STORED TIMESTAMPS: ", String.valueOf(dates));
     }
 
-    //Delete all records from the database
+    /**
+     * Utility function to delete all records from the data base
+     *
+     * @param context: application context
+     */
     public static void deleteRecords(Context context){
-        StepAppOpenHelper databaseHelper= new StepAppOpenHelper(context);
+        StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
         SQLiteDatabase database = databaseHelper.getWritableDatabase();
-        int numberDeleteRecords = database.delete(StepAppOpenHelper.TABLE_NAME, null, null);
+        int numberDeletedRecords =0;
+
+        numberDeletedRecords = database.delete(StepAppOpenHelper.TABLE_NAME, null, null);
         database.close();
 
-        Toast.makeText(context, "DELETED " + String.valueOf(numberDeleteRecords) + "STEPS", Toast.LENGTH_SHORT).show();
+        // display the number of deleted records with a Toast message
+        Toast.makeText(context,"Deleted " + String.valueOf(numberDeletedRecords) + " steps",Toast.LENGTH_LONG).show();
     }
 
-    // load records from a single day
+    /**
+     * Utility function to load records from a single day
+     *
+     * @param context: application context
+     * @param date: today's date
+     * @return numSteps: an integer value with the number of records in the database
+     */
+    //
     public static Integer loadSingleRecord(Context context, String date){
         List<String> steps = new LinkedList<String>();
         // Get the readable database
@@ -91,14 +125,91 @@ public class StepAppOpenHelper extends SQLiteOpenHelper{
         return numSteps;
     }
 
+    /**
+     * Utility function to get the number of steps by hour for current date
+     *
+     * @param context: application context
+     * @param date: today's date
+     * @return map: map with key-value pairs hour->number of steps
+     */
+    //
+    public static Map<Integer, Integer> loadStepsByHour(Context context, String date){
+        // 1. Define a map to store the hour and number of steps as key-value pairs
+        Map<Integer, Integer>  map = new HashMap<> ();
 
-    @Override
-    public void onCreate(SQLiteDatabase db) {
-        db.execSQL(CREATE_TABLE_SQL);
+        // 2. Get the readable database
+        StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        // 3. Define the query to get the data
+        Cursor cursor = database.rawQuery("SELECT hour, COUNT(*)  FROM num_steps " +
+                "WHERE day = ? GROUP BY hour ORDER BY  hour ASC ", new String [] {date});
+
+        // 4. Iterate over returned elements on the cursor
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            Integer tmpKey = Integer.parseInt(cursor.getString(0));
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            //2. Put the data from the database into the map
+            map.put(tmpKey, tmpValue);
+
+
+            cursor.moveToNext();
+        }
+
+        // 5. Close the cursor and database
+        cursor.close();
+        database.close();
+
+        // 6. Return the map with hours and number of steps
+        return map;
     }
 
-    @Override
-    public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
+    /**
+     * Utility function to get the number of steps by day
+     *
+     * @param context: application context
+     * @return map: map with key-value pairs hour->number of steps
+     */
+    //
+    public static Map<String, Integer> loadStepsByDay(Context context){
+        // 1. Define a map to store the hour and number of steps as key-value pairs
+        Map<String, Integer>  map = new TreeMap<>();
 
+        // 2. Get the readable database
+        StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        // 3. Define the query to get the data
+        Cursor cursor = database.rawQuery("SELECT day, COUNT(*)  FROM num_steps " +
+                "GROUP BY day ORDER BY day ASC ", new String [] {});
+
+        // 4. Iterate over returned elements on the cursor
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+
+            // Put the data from the database into the map
+            map.put(tmpKey, tmpValue);
+            cursor.moveToNext();
+        }
+
+        // 5. Close the cursor and database
+        cursor.close();
+        database.close();
+
+        // 6. Return the map with hours and number of steps
+        return map;
     }
 }
+
+
+
+
+
+
+
+
+

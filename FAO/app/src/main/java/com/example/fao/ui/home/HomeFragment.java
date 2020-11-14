@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
         stepsCompleted = StepAppOpenHelper.loadSingleRecord(getContext(), fDate);
 
         //Get the writable database
-        StepAppOpenHelper databaseOpenHelper =   new StepAppOpenHelper(this.getContext());;
+        StepAppOpenHelper databaseOpenHelper = new StepAppOpenHelper(this.getContext());
         SQLiteDatabase database = databaseOpenHelper.getWritableDatabase();
 
         //  Get an instance of the sensor manager.
@@ -89,9 +89,6 @@ public class HomeFragment extends Fragment {
         // Step detector instance
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
-        // Instantiate the StepCounterListener
-        /*StepAppOpenHelper databaseOpenHelper =   new StepAppOpenHelper(this.getContext());;
-        SQLiteDatabase database = databaseOpenHelper.getWritableDatabase();*/
         listener = new StepCounterListener(database, stepsCountTextView);
 
         // Toggle button
@@ -158,6 +155,7 @@ public class HomeFragment extends Fragment {
         private long lastUpdate = 0;
 
         public int mACCStepCounter = HomeFragment.stepsCompleted;
+        public double ACC_CalCounted = convertCal(mACCStepCounter);
 
         ArrayList<Integer> mACCSeries = new ArrayList<Integer>();
         ArrayList<String> mTimeSeries = new ArrayList<String>();
@@ -284,11 +282,10 @@ public class HomeFragment extends Fragment {
                             stepsCountTextView.setText(String.valueOf(mACCStepCounter));
                             kindOfCountTextView.setText(getResources().getString(R.string.unit_measure3) + " done today"); //if steps
                         }else { //1
-                            stepsCountTextView.setText(String.valueOf(convertCal(mACCStepCounter)));
+                            stepsCountTextView.setText(String.valueOf(ACC_CalCounted));
                             kindOfCountTextView.setText(getResources().getString(R.string.unit_measure4) + " burned today"); //if Cal
                         }
                         // Insert the data in the database
-                        //DONE 4: insert the day and the hour in the database
                         ContentValues values = new ContentValues();
                         values.put(StepAppOpenHelper.KEY_TIMESTAMP, timePointList.get(i));
                         values.put(StepAppOpenHelper.KEY_DAY, day);

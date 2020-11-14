@@ -35,4 +35,5 @@
     <string name="acc_not_available">accelerometer not available</string>
     <string name="step_not_available">stepcounter not available</string>
     <string name="step_permission_denied">step permission denied</string>
+    <string name="image_title">TITLE TODO</string>
 </resources>
