@@ -36,4 +36,8 @@
     <string name="step_not_available">stepcounter not available</string>
     <string name="step_permission_denied">step permission denied</string>
     <string name="image_title">TITLE TODO</string>
+    <string name="toggle_cal_view">Calories</string>
+    <string name="toggle_steps_view">Steps</string>
+    <string name="ending_date">ending date</string>
+    <string name="starting_date">starting date</string>
 </resources>

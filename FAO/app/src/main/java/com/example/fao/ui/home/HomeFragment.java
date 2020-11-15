@@ -62,7 +62,7 @@ public class HomeFragment extends Fragment {
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_home, container, false);
 
-        // TODO: Get the number of steps stored in the current date
+        //Get the number of steps stored in the current date
         Date cDate = new Date();
         String fDate = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
 
@@ -297,7 +297,7 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-
+//TODO delete this and replace everything from database
         private double convertCal(int steps) {
             //TODO get correct equation
             return steps*0.5;

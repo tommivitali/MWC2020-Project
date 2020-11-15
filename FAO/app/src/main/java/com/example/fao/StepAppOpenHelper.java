@@ -7,6 +7,8 @@ import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.example.fao.ui.home.HomeFragment;
+
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -202,6 +204,47 @@ public class StepAppOpenHelper extends SQLiteOpenHelper {
 
         // 6. Return the map with hours and number of steps
         return map;
+    }
+    /**
+     * Utility function to get the number of steps by day converted in calories
+     *
+     * @param context: application context
+     * @return map: map with key-value pairs hour->number of steps
+     */
+    public static Map<String, Double> loadCalByDay(Context context){
+        // 1. Define a map to store the hour and number of steps as key-value pairs
+        Map<String, Double>  map = new TreeMap<>();
+
+        // 2. Get the readable database
+        StepAppOpenHelper databaseHelper = new StepAppOpenHelper(context);
+        SQLiteDatabase database = databaseHelper.getReadableDatabase();
+
+        // 3. Define the query to get the data
+        Cursor cursor = database.rawQuery("SELECT day, COUNT(*)  FROM num_steps " +
+                "GROUP BY day ORDER BY day ASC ", new String [] {});
+
+        // 4. Iterate over returned elements on the cursor
+        cursor.moveToFirst();
+        for (int index=0; index < cursor.getCount(); index++){
+            String tmpKey = cursor.getString(0);
+            Integer tmpValue = Integer.parseInt(cursor.getString(1));
+            double value = convertCal(tmpValue.intValue()); //my funct
+            // Put the data from the database into the map
+            map.put(tmpKey, value);
+            cursor.moveToNext();
+        }
+
+        // 5. Close the cursor and database
+        cursor.close();
+        database.close();
+
+        // 6. Return the map with hours and number of steps
+        return map;
+    }
+
+    private static double convertCal(int intValue) {
+            //TODO get correct equation
+            return intValue*0.5;
     }
 }
 
