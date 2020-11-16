@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "466250490362",
+    "firebase_url": "https://appfao-86e82.firebaseio.com",
+    "project_id": "appfao-86e82",
+    "storage_bucket": "appfao-86e82.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:466250490362:android:dcd3b9179b8801a9284443",
+        "android_client_info": {
+          "package_name": "com.toedro.fao"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "466250490362-9bqio8mggbiplg8pgdv4hrdubrv9e8pq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDwm6vzOksRf4OBbcIXYMCuBU3apI5I2ic"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "466250490362-9bqio8mggbiplg8pgdv4hrdubrv9e8pq.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

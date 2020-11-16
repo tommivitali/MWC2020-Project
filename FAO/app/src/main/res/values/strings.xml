@@ -29,4 +29,11 @@
     <string name="notifications">Notifications</string>
     <string name="label_1">Calories (kcal)</string>
     <string name="label_2">Steps</string>
+    <string name="hint_text_languages">Language</string>
+    <string name="menu_recipes">Recipes</string>
+    <string name="content_description_media">image for the recipe</string>
+    <string name="title">Title</string>
+    <string name="secondary_text">Secondary text</string>
+    <string name="action_1">Go</string>
+    <string name="error_splash">There was an error downloading the data</string>
 </resources>

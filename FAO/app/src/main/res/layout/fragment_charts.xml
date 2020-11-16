@@ -7,20 +7,6 @@
     android:layout_height="match_parent"
     tools:context=".ui.charts.ChartsFragment">
 
-    <com.google.android.material.textfield.TextInputLayout
-        android:id="@+id/chartsTextFieldDateRange"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:hint="@string/charts_text_daterange"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
 
-        <com.google.android.material.textfield.TextInputEditText
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            />
-
-    </com.google.android.material.textfield.TextInputLayout>
 
 </androidx.constraintlayout.widget.ConstraintLayout>

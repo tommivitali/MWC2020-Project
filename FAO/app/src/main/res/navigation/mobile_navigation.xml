@@ -1,31 +1,47 @@
 <?xml version="1.0" encoding="utf-8"?>
-<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+<navigation
+    xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/mobile_navigation"
-    app:startDestination="@+id/nav_homepage">
+    app:startDestination="@id/splashFragment">
 
     <fragment
         android:id="@+id/nav_homepage"
-        android:name="com.example.fao.ui.home.HomeFragment"
+        android:name="com.toedro.fao.ui.home.HomeFragment"
         android:label="@string/menu_homepage"
         tools:layout="@layout/fragment_home" />
 
     <fragment
         android:id="@+id/nav_charts"
-        android:name="com.example.fao.ui.charts.ChartsFragment"
+        android:name="com.toedro.fao.ui.charts.ChartsFragment"
         android:label="@string/menu_charts"
         tools:layout="@layout/fragment_charts" />
 
     <fragment
         android:id="@+id/nav_pantry"
-        android:name="com.example.fao.ui.pantry.PantryFragment"
+        android:name="com.toedro.fao.ui.pantry.PantryFragment"
         android:label="@string/menu_pantry"
         tools:layout="@layout/fragment_pantry" />
 
     <fragment
         android:id="@+id/nav_settings"
-        android:name="com.example.fao.ui.settings.SettingsFragment"
+        android:name="com.toedro.fao.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
         tools:layout="@layout/fragment_settings" />
+
+    <fragment
+        android:id="@+id/nav_recipes"
+        android:name="com.toedro.fao.ui.recipes.RecipesFragment"
+        android:label="@string/menu_recipes"
+        tools:layout="@layout/fragment_recipes" />
+    <fragment
+        android:id="@+id/splashFragment"
+        android:name="com.toedro.fao.ui.splash.SplashFragment"
+        android:label="fragment_splash"
+        tools:layout="@layout/fragment_splash" >
+        <action
+            android:id="@+id/action_splashFragment_to_nav_homepage"
+            app:destination="@id/nav_homepage" />
+    </fragment>
 </navigation>

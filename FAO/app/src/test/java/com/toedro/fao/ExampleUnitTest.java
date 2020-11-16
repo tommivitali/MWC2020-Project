@@ -1,4 +1,4 @@
-package com.example.fao;
+package com.toedro.fao;
 
 import org.junit.Test;
 
