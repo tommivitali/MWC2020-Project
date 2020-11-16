@@ -8,6 +8,8 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -45,6 +47,7 @@ import com.example.fao.StepAppOpenHelper;
 import java.io.ByteArrayOutputStream;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -63,7 +66,7 @@ public class ChartsFragment extends Fragment {
     String current_time = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
     //check unit measure to show
     MaterialButtonToggleGroup materialButtonToggleGroup;
-    private boolean steps;
+    private boolean steps = true; //default steps? TODO
     Cartesian cartesian;
 
     public Map<Integer, Integer> stepsByHour = null;
@@ -78,17 +81,36 @@ public class ChartsFragment extends Fragment {
         anyChartView = root.findViewById(R.id.BarChart);
         anyChartView.setProgressBar(root.findViewById(R.id.loadingBar));
 
-        cartesian = createColumnChart();
+        //cartesian = createColumnChart();
         anyChartView.setBackgroundColor("#00000000");
-        anyChartView.setChart(cartesian);
+        //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
         //TODO make it some kind of datepicker
-        com.google.android.material.textfield.TextInputLayout  ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
-        com.google.android.material.textfield.TextInputLayout  de = root.findViewById(R.id.chartsTextFieldDateStart); //To
-
+        Date From, To;
+        final com.google.android.material.textfield.TextInputLayout  ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
+        final com.google.android.material.textfield.TextInputLayout  de = root.findViewById(R.id.chartsTextFieldDateStart); //To
 
         String date_n = new SimpleDateFormat("dd.mm.yyyy", Locale.getDefault()).format(new Date());
-        ds.setPlaceholderText(date_n);
-        de.setPlaceholderText(date_n);
+        ds.getEditText().setText(date_n);
+        //changes
+        ds.getEditText().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+
+            }
+
+            @Override
+            public void afterTextChanged(Editable editable) {
+
+            }
+        });
+        //http://yii2ideas.blogspot.com/2020/05/android-edit-text-to-show-dd-mm-yyyy.html
+
+        de.getEditText().setText(date_n);
 
         ds.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -114,17 +136,18 @@ public class ChartsFragment extends Fragment {
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
                     //Place code related to step button
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
                     cartesian = createColumnChart();
+                    anyChartView.setChart(cartesian);
                 } else if (group.getCheckedButtonId() == R.id.toggleCal) {
-                    //Place code related to Stop button
+                    //Place code related to Cal button
                     steps = false;
                     Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
-                    cartesian = createColumnChart();
+                    cartesian = createColumnChart(); //redo graph
+                    anyChartView.setChart(cartesian); //show new graph
                 }
             }
         });
@@ -139,34 +162,30 @@ public class ChartsFragment extends Fragment {
      */
     public Cartesian createColumnChart(){
     //***** Read data from SQLiteDatabase *********/
-    // Get the map with hours and number of steps for today from the database and initialize it to variable stepsByHour
-        stepsByHour = StepAppOpenHelper.loadStepsByHour(getContext(), current_time);
+    // Get the map from the database
         stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
         caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
-    /* Creating a new map that contains hours of the day from 0 to 24 and number of steps during each hour set to 0 /
-    Map<Integer, Integer> graph_map = new TreeMap<>();
-        for (int i = 0; i < 25; i++) {
-        graph_map.put(i, 0);
-    }
 
     // Replace the number of steps for each hour in graph_map with the number of steps read from the database
-    graph_map.putAll(stepsByHour);*/
         List<DataEntry> data1 = new ArrayList<>();
         List<DataEntry> data2 = new ArrayList<>();
 
     //***** Create column chart using AnyChart library *********/
     // 1. Create and get the cartesian coordinate system for column chart
         Cartesian cartesian = AnyChart.column();
-
+        cartesian.autoRedraw(true);
+        Column column;
     // 2. Create data entries for x and y axis of the graph
     //    for (Map.Entry<Integer,Integer> entry : graph_map.entrySet())
     //        data.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-        for (Map.Entry<String, Integer> entry : stepsByDay.entrySet())
+    //TODO cut only requested date form here or directly in SQL query? for dates
+        //if(entry.getKey().compareTo(String.valueOf(date2)) < 0) // not working
+        for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
+            //change format date?
             data1.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-
-        for (Map.Entry<String, Double> entry : caloriesByDay.entrySet())
+        }for (Map.Entry<String, Double> entry : caloriesByDay.entrySet()) {
             data2.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-        Column column;
+        }
     // 3. Add the data to column chart and get the columns
         if(steps) {
             column = cartesian.column(data1);
@@ -178,7 +197,7 @@ public class ChartsFragment extends Fragment {
                     .offsetX(0d)
                     .offsetY(5)
                     .format("{%Value}{groupsSeparator: } Steps");
-        }else {
+        }else {//if(!steps)
             column = cartesian.column(data2);
             // Add tooltip to the bar charts and modify its properties
             column.tooltip()

@@ -241,6 +241,12 @@ public class StepAppOpenHelper extends SQLiteOpenHelper {
         // 6. Return the map with hours and number of steps
         return map;
     }
+    //TODO
+    public static Map<String, Double> loadCalFromLastMeal(Context context){
+        Map<String, Double>  map = new TreeMap<>();
+        //Code here
+        return map;
+    }
 
     private static double convertCal(int intValue) {
             //TODO get correct equation
