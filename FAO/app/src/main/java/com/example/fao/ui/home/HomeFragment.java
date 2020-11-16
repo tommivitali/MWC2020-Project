@@ -101,7 +101,7 @@ public class HomeFragment extends Fragment {
                 if (button.getId() == R.id.buttonStartStopStepcounter && !isChecked) {
 
                     //Place code related to Start button
-                    Toast.makeText(getContext(), "START", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "START", Toast.LENGTH_SHORT).show();
 
                     // Check if the Accelerometer sensor exists
                     if (mSensorACC != null) {
@@ -128,7 +128,7 @@ public class HomeFragment extends Fragment {
 
                 } else if (button.getId() == R.id.buttonStartStopStepcounter && isChecked) {
                     //Place code related to Stop button
-                    Toast.makeText(getContext(), "STOP", Toast.LENGTH_SHORT).show();
+                   // Toast.makeText(getContext(), "STOP", Toast.LENGTH_SHORT).show();
 
                     // Unregister the listener
                     mSensorManager.unregisterListener(listener);

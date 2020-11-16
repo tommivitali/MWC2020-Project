@@ -88,7 +88,7 @@
         app:layout_constraintTop_toBottomOf="@id/chartsTextFieldDateEnd"
         app:layout_constraintStart_toStartOf="parent"
         app:singleSelection="true"
-        app:checkedButton="@+id/toggleSteps">
+        >
 
         <com.google.android.material.button.MaterialButton
             android:id="@+id/toggleSteps"

@@ -19,6 +19,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.example.fao.R;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.datepicker.MaterialDatePicker;
 import android.os.Bundle;
@@ -75,7 +76,7 @@ public class ChartsFragment extends Fragment {
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_charts, container, false);
+        final View root = inflater.inflate(R.layout.fragment_charts, container, false);
 
         // Create column chart
         anyChartView = root.findViewById(R.id.BarChart);
@@ -84,7 +85,11 @@ public class ChartsFragment extends Fragment {
         //cartesian = createColumnChart();
         anyChartView.setBackgroundColor("#00000000");
         //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
-        //TODO make it some kind of datepicker
+        
+        //in fragment_charts com.google.android.material.button.MaterialButtonToggleGroup
+        // app:checkedButton="@+id/toggleSteps"
+
+        //TODO make it some kind of datepicker//////////////////////////////////////////////////////
         Date From, To;
         final com.google.android.material.textfield.TextInputLayout  ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
         final com.google.android.material.textfield.TextInputLayout  de = root.findViewById(R.id.chartsTextFieldDateStart); //To
@@ -130,25 +135,34 @@ public class ChartsFragment extends Fragment {
                 MaterialDatePicker picker = builder.build();
                 picker.show(getActivity().getSupportFragmentManager(), picker.toString());
             }
-        });//END TODO
+        });
+//END TODO//////////////////////////////////////////////////////////////////////////////////////////
 
         materialButtonToggleGroup = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
+        materialButtonToggleGroup.setSelectionRequired(true);
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                //anyChartView.invalidate(); //does nothing
+                //anyChartView.clear(); //make view unusable
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
                     //Place code related to step button
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
                     cartesian = createColumnChart();
                     anyChartView.setChart(cartesian);
-                } else if (group.getCheckedButtonId() == R.id.toggleCal) {
+                } else  if (group.getCheckedButtonId() == R.id.toggleCal){//
                     //Place code related to Cal button
                     steps = false;
                     Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
+                    //cartesian.data(new ArrayList<DataEntry>()); //crashes
                     cartesian = createColumnChart(); //redo graph
-                    anyChartView.setChart(cartesian); //show new graph
-                }
+                    anyChartView.setChart(cartesian);
+                } /*else{ //none selected //MAYBE DO IT LATER
+                    MaterialButton def = group.findViewById(R.id.toggleCal);
+                    Toast.makeText(getContext(), "Can't Uncheck", Toast.LENGTH_SHORT).show(); //debug
+                    def.setChecked(true);
+                }*/
             }
         });
 
@@ -161,58 +175,33 @@ public class ChartsFragment extends Fragment {
      * @return Cartesian: cartesian with column chart and data
      */
     public Cartesian createColumnChart(){
-    //***** Read data from SQLiteDatabase *********/
-    // Get the map from the database
-        stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
-        caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
-
     // Replace the number of steps for each hour in graph_map with the number of steps read from the database
-        List<DataEntry> data1 = new ArrayList<>();
-        List<DataEntry> data2 = new ArrayList<>();
+        List<DataEntry> data = loadData();
 
     //***** Create column chart using AnyChart library *********/
     // 1. Create and get the cartesian coordinate system for column chart
         Cartesian cartesian = AnyChart.column();
         cartesian.autoRedraw(true);
         Column column;
-    // 2. Create data entries for x and y axis of the graph
-    //    for (Map.Entry<Integer,Integer> entry : graph_map.entrySet())
-    //        data.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-    //TODO cut only requested date form here or directly in SQL query? for dates
-        //if(entry.getKey().compareTo(String.valueOf(date2)) < 0) // not working
-        for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
-            //change format date?
-            data1.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-        }for (Map.Entry<String, Double> entry : caloriesByDay.entrySet()) {
-            data2.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
-        }
+
     // 3. Add the data to column chart and get the columns
+        column = cartesian.column(data);
+        // Add tooltip to the bar charts and modify its properties
+        column.tooltip()
+                .titleFormat("Day: {%X}")
+                .position(Position.RIGHT_TOP)
+                .anchor(Anchor.RIGHT_TOP)
+                .offsetX(0d)
+                .offsetY(5);
         if(steps) {
-            column = cartesian.column(data1);
-            // Add tooltip to the bar charts and modify its properties
-            column.tooltip()
-                    .titleFormat("Day: {%X}")
-                    .position(Position.RIGHT_TOP)
-                    .anchor(Anchor.RIGHT_TOP)
-                    .offsetX(0d)
-                    .offsetY(5)
-                    .format("{%Value}{groupsSeparator: } Steps");
+            column.tooltip().format("{%Value}{groupsSeparator: } Steps");
         }else {//if(!steps)
-            column = cartesian.column(data2);
-            // Add tooltip to the bar charts and modify its properties
-            column.tooltip()
-                    .titleFormat("Day: {%X}")
-                    .position(Position.RIGHT_TOP)
-                    .anchor(Anchor.RIGHT_TOP)
-                    .offsetX(0d)
-                    .offsetY(5)
-                    .format("{%Value}{groupsSeparator: } Calories");
+            column.tooltip().format("{%Value}{groupsSeparator: } Calories");
         }
     //***** Modify the UI of the chart *********/
         // Change the color of column chart and its border
         column.fill("#1EB980");
         column.stroke("#1EB980");
-
 
         // Modify the UI of the Cartesian
         cartesian.tooltip().positionMode(TooltipPositionMode.POINT);
@@ -228,7 +217,22 @@ public class ChartsFragment extends Fragment {
 
         return cartesian;
 }
+    List<DataEntry> loadData(){
+        //***** Read data from SQLiteDatabase *********/
+        // Get the map from the database
+        stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
+        caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
 
+        List<DataEntry> data = new ArrayList<>();
+        if(steps){
+        for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
+            data.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
+        }}else{
+        for (Map.Entry<String, Double> entry : caloriesByDay.entrySet()) {
+            data.add(new ValueDataEntry(entry.getKey(), entry.getValue()));
+        }}
+        return data;
+    }
     /**
      * Utility generate a bitmap from the chart
      * @param view: AnyChartView
