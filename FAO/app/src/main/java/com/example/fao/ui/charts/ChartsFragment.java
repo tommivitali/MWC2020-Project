@@ -18,6 +18,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.anychart.APIlib;
 import com.example.fao.R;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
@@ -26,6 +27,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -61,14 +63,17 @@ public class ChartsFragment extends Fragment {
 
     public int todaySteps = 0;
     TextView numStepsTextView;
-    AnyChartView anyChartView;
+    AnyChartView anyChartViewCal, anyChartViewStep;
 
     Date cDate = new Date();
     String current_time = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
     //check unit measure to show
+    LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST TODO look here
+    //https://stackoverflow.com/questions/32510498/how-to-switch-between-2-textviews-places-on-the-layout
+    //https://stackoverflow.com/questions/12302172/setvisibilitygone-view-becomes-invisible-but-still-occupies-space
     MaterialButtonToggleGroup materialButtonToggleGroup;
     private boolean steps = true; //default steps? TODO
-    Cartesian cartesian;
+    //Cartesian cartesian;
 
     public Map<Integer, Integer> stepsByHour = null;
     public Map<String, Integer> stepsByDay = null;
@@ -77,13 +82,23 @@ public class ChartsFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_charts, container, false);
-
+        ChartsGraphsLayoutSteps = root.findViewById(R.id.StepsGraphsLayout);
+        ChartsGraphsLayoutCalories = root.findViewById(R.id.CalGraphsLayout);
         // Create column chart
-        anyChartView = root.findViewById(R.id.BarChart);
-        anyChartView.setProgressBar(root.findViewById(R.id.loadingBar));
+        //////TODO create second chart views and switch them
+        anyChartViewCal = root.findViewById(R.id.BarCalChart);
+        anyChartViewCal.setProgressBar(root.findViewById(R.id.loadingBar));
+        anyChartViewStep = root.findViewById(R.id.BarStepChart);
+        anyChartViewStep.setProgressBar(root.findViewById(R.id.loadingBar));
+
+        //for let something be seen
+        //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
+        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+        ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
 
         //cartesian = createColumnChart();
-        anyChartView.setBackgroundColor("#00000000");
+        anyChartViewCal.setBackgroundColor("#00000000");
+        anyChartViewStep.setBackgroundColor("#00000000");
         //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
         
         //in fragment_charts com.google.android.material.button.MaterialButtonToggleGroup
@@ -146,23 +161,36 @@ public class ChartsFragment extends Fragment {
                 //anyChartView.invalidate(); //does nothing
                 //anyChartView.clear(); //make view unusable
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
+                    ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+                    //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
+                    ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
+                    //ChartsGraphsLayoutSteps.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),300));
                     //Place code related to step button
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
-                    cartesian = createColumnChart();
-                    anyChartView.setChart(cartesian);
+                    Cartesian cartesian = createColumnChart();
+                    anyChartViewStep.setChart(cartesian);
                 } else  if (group.getCheckedButtonId() == R.id.toggleCal){//
+                    ChartsGraphsLayoutSteps.setVisibility(View.GONE);
+                    //ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
+                    //ChartsGraphsLayoutSteps.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
+                    ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
+                    //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),300));
+                    //ChartsGraphsLayout.removeView(anyChartViewStep); //deletes
+                    //ChartsGraphsLayout.removeAllViewsInLayout();//deletes everything
+                    //APIlib.getInstance().setActiveAnyChartView(anyChartViewStep);
                     //Place code related to Cal button
                     steps = false;
                     Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
                     //cartesian.data(new ArrayList<DataEntry>()); //crashes
-                    cartesian = createColumnChart(); //redo graph
-                    anyChartView.setChart(cartesian);
-                } /*else{ //none selected //MAYBE DO IT LATER
+                    Cartesian cartesian = createColumnChart(); //redo graph
+                    anyChartViewCal.setChart(cartesian);
+                    //ChartsGraphsLayout.addView(anyChartViewStep);//puts bottom
+                } else{ //none selected //MAYBE DO IT LATER
                     MaterialButton def = group.findViewById(R.id.toggleCal);
                     Toast.makeText(getContext(), "Can't Uncheck", Toast.LENGTH_SHORT).show(); //debug
                     def.setChecked(true);
-                }*/
+                }/**/
             }
         });
 
