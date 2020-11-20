@@ -1,6 +1,8 @@
 package com.example.fao.ui.charts;
 
+import android.app.DatePickerDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -14,19 +16,8 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
-import com.anychart.APIlib;
-import com.example.fao.R;
-import com.google.android.material.button.MaterialButton;
-import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.datepicker.MaterialDatePicker;
-import android.os.Bundle;
-import android.view.LayoutInflater;
-import android.view.View;
-import android.view.ViewGroup;
+import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -46,31 +37,36 @@ import com.anychart.enums.Position;
 import com.anychart.enums.TooltipPositionMode;
 import com.example.fao.R;
 import com.example.fao.StepAppOpenHelper;
+import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.data.BarData;
+import com.github.mikephil.charting.data.BarDataSet;
+import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.data.LineData;
+import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.io.ByteArrayOutputStream;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
-import java.util.TreeMap;
-
 
 public class ChartsFragment extends Fragment {
 
     public int todaySteps = 0;
     TextView numStepsTextView;
-    AnyChartView anyChartViewCal, anyChartViewStep;
+    AnyChartView anyChartViewCal;
+    BarChart barChartViewStep;
 
     Date cDate = new Date();
     String current_time = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
     //check unit measure to show
-    LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST TODO look here
-    //https://stackoverflow.com/questions/32510498/how-to-switch-between-2-textviews-places-on-the-layout
-    //https://stackoverflow.com/questions/12302172/setvisibilitygone-view-becomes-invisible-but-still-occupies-space
+    LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST
     MaterialButtonToggleGroup materialButtonToggleGroup;
     private boolean steps = true; //default steps? TODO
     //Cartesian cartesian;
@@ -78,6 +74,9 @@ public class ChartsFragment extends Fragment {
     public Map<Integer, Integer> stepsByHour = null;
     public Map<String, Integer> stepsByDay = null;
     public Map<String, Double> caloriesByDay = null;
+
+    com.google.android.material.textfield.TextInputLayout  ds, de; //From, To
+    Date From, To;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -88,8 +87,7 @@ public class ChartsFragment extends Fragment {
         //////TODO create second chart views and switch them
         anyChartViewCal = root.findViewById(R.id.BarCalChart);
         anyChartViewCal.setProgressBar(root.findViewById(R.id.loadingBar));
-        anyChartViewStep = root.findViewById(R.id.BarStepChart);
-        anyChartViewStep.setProgressBar(root.findViewById(R.id.loadingBar));
+        barChartViewStep = (BarChart) root.findViewById(R.id.BarStepChart);
 
         //for let something be seen
         //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
@@ -98,99 +96,116 @@ public class ChartsFragment extends Fragment {
 
         //cartesian = createColumnChart();
         anyChartViewCal.setBackgroundColor("#00000000");
-        anyChartViewStep.setBackgroundColor("#00000000");
         //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
         
-        //in fragment_charts com.google.android.material.button.MaterialButtonToggleGroup
-        // app:checkedButton="@+id/toggleSteps"
+        //DATEPICKERS  /////////////////////////////////////////////////////////////////////////////
+        ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
+        de = root.findViewById(R.id.chartsTextFieldDateEnd); //To
+        final EditText textFrom = (EditText) ds.getEditText();
+        final EditText textTo = (EditText) de.getEditText();
 
-        //TODO make it some kind of datepicker//////////////////////////////////////////////////////
-        Date From, To;
-        final com.google.android.material.textfield.TextInputLayout  ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
-        final com.google.android.material.textfield.TextInputLayout  de = root.findViewById(R.id.chartsTextFieldDateStart); //To
-
-        String date_n = new SimpleDateFormat("dd.mm.yyyy", Locale.getDefault()).format(new Date());
-        ds.getEditText().setText(date_n);
-        //changes
-        ds.getEditText().addTextChangedListener(new TextWatcher() {
+        final Calendar CalendarFrom = Calendar.getInstance(), CalendarTo = Calendar.getInstance();
+        final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                CalendarFrom.set(Calendar.YEAR, year);
+                CalendarFrom.set(Calendar.MONTH, monthOfYear);
+                CalendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
             }
 
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-
+            private void updateLabel() {
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                textFrom.setText(sdf.format(CalendarFrom.getTime()));
+                //parse date
+                try {
+                    From = new SimpleDateFormat("dd/MM/yyyy").parse(textTo.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(), From.toString(), Toast.LENGTH_SHORT).show(); //debug
             }
 
+        };
+        final DatePickerDialog.OnDateSetListener dateTo = new DatePickerDialog.OnDateSetListener() {
             @Override
-            public void afterTextChanged(Editable editable) {
-
+            public void onDateSet(DatePicker view, int year, int monthOfYear,
+                                  int dayOfMonth) {
+                // TODO Auto-generated method stub
+                CalendarTo.set(Calendar.YEAR, year);
+                CalendarTo.set(Calendar.MONTH, monthOfYear);
+                CalendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
+                updateLabel();
             }
-        });
-        //http://yii2ideas.blogspot.com/2020/05/android-edit-text-to-show-dd-mm-yyyy.html
 
-        de.getEditText().setText(date_n);
+            private void updateLabel() {
+                String myFormat = "dd/MM/yyyy"; //In which you need put here
+                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                textTo.setText(sdf.format(CalendarTo.getTime()));
+                //parse date
+                try {
+                    To = new SimpleDateFormat("dd/MM/yyyy").parse(textTo.getText().toString());
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                Toast.makeText(getContext(), To.toString(), Toast.LENGTH_SHORT).show(); //debug
+            }
 
-        ds.setOnClickListener(new View.OnClickListener() {
+        };
+        textTo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
-                MaterialDatePicker picker = builder.build();
-                picker.show(getActivity().getSupportFragmentManager(), picker.toString());
-
+                new DatePickerDialog(getContext(), dateTo, CalendarTo
+                        .get(Calendar.YEAR), CalendarTo.get(Calendar.MONTH),
+                        CalendarTo.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        de.setOnClickListener(new View.OnClickListener() {
+        textFrom.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-                MaterialDatePicker.Builder builder = MaterialDatePicker.Builder.dateRangePicker();
-                MaterialDatePicker picker = builder.build();
-                picker.show(getActivity().getSupportFragmentManager(), picker.toString());
+                new DatePickerDialog(getContext(), dateFrom, CalendarFrom
+                        .get(Calendar.YEAR), CalendarFrom.get(Calendar.MONTH),
+                        CalendarFrom.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-//END TODO//////////////////////////////////////////////////////////////////////////////////////////
+
+//END DATEPICKERS//////////////////////////////////////////////////////////////////////////////////
 
         materialButtonToggleGroup = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
         materialButtonToggleGroup.setSelectionRequired(true);
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                //anyChartView.invalidate(); //does nothing
-                //anyChartView.clear(); //make view unusable
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
-                    ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-                    //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
-                    ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-                    //ChartsGraphsLayoutSteps.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),300));
-                    //Place code related to step button
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
-                    Cartesian cartesian = createColumnChart();
-                    anyChartViewStep.setChart(cartesian);
-                } else  if (group.getCheckedButtonId() == R.id.toggleCal){//
-                    ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-                    //ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
-                    //ChartsGraphsLayoutSteps.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
-                    ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
-                    //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),300));
-                    //ChartsGraphsLayout.removeView(anyChartViewStep); //deletes
-                    //ChartsGraphsLayout.removeAllViewsInLayout();//deletes everything
-                    //APIlib.getInstance().setActiveAnyChartView(anyChartViewStep);
+                    ///TODO
+                    BarData data = loadBarData();
+
+                    barChartViewStep.setFitBars(true);
+                    barChartViewStep.setData(data);
+                    barChartViewStep.getDescription().setText("");
+                    barChartViewStep.getLegend().setEnabled(false);
+
+                    ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+                    ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
+                    barChartViewStep.invalidate();
+                } else  {//if (group.getCheckedButtonId() == R.id.toggleCal){
                     //Place code related to Cal button
                     steps = false;
                     Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
-                    //cartesian.data(new ArrayList<DataEntry>()); //crashes
                     Cartesian cartesian = createColumnChart(); //redo graph
                     anyChartViewCal.setChart(cartesian);
-                    //ChartsGraphsLayout.addView(anyChartViewStep);//puts bottom
-                } else{ //none selected //MAYBE DO IT LATER
+                    ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
+                    ChartsGraphsLayoutSteps.setVisibility(View.GONE);
+                } /*else{ //none selected //MAYBE DO IT LATER
                     MaterialButton def = group.findViewById(R.id.toggleCal);
                     Toast.makeText(getContext(), "Can't Uncheck", Toast.LENGTH_SHORT).show(); //debug
                     def.setChecked(true);
-                }/**/
+                }*/
             }
         });
 
@@ -261,6 +276,32 @@ public class ChartsFragment extends Fragment {
         }}
         return data;
     }
+    public BarData loadBarData(){
+        //https://stackoverflow.com/questions/34742180/how-to-convert-string-to-bar-entry-for-mpcharts-in-android
+        ArrayList<String> xVals = new ArrayList<String>();//Arrays.asList(bar_graph_names)
+        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
+        if(steps) {
+            stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
+            int i = 0;
+            for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
+                BarEntry val = new BarEntry(Float.valueOf(entry.getValue()), i);
+                xVals.add(entry.getKey());
+                yVals.add(val);
+            }
+
+        }//else{
+        //    caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
+        //}
+
+        String label = "steps";
+        BarDataSet dataset = new BarDataSet(yVals, label);
+        dataset.setColors(ColorTemplate.MATERIAL_COLORS);
+        dataset.setValueTextColor(Color.BLACK);
+        dataset.setValueTextSize(16f);
+
+        return new BarData(dataset);//new BarData(xVals, dataset);
+    }
+
     /**
      * Utility generate a bitmap from the chart
      * @param view: AnyChartView

@@ -24,13 +24,13 @@
             android:orientation="vertical"
             android:paddingLeft="0dp"
             android:paddingRight="0dp">
-            <com.anychart.AnyChartView
+            <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/BarStepChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
             />
@@ -50,7 +50,6 @@
                 android:layout_height="match_parent"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_bias="0.0"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent"
                 />
@@ -72,7 +71,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="40dp"
-            android:hint="@string/charts_text_daterange"
+            android:hint="From Date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -83,7 +82,9 @@
                 android:id="@+id/chartFrom"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:clickable="true"
+                android:editable="false"
+                android:focusable="false"
                 android:inputType="date"
                 />
         </com.google.android.material.textfield.TextInputLayout>
@@ -93,7 +94,7 @@
             android:layout_height="wrap_content"
             android:layout_margin="8dp"
             android:layout_marginTop="8dp"
-            android:hint="@string/charts_text_daterange"
+            android:hint="To Date"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
@@ -103,7 +104,9 @@
                 android:id="@+id/chartTo"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:ems="10"
+                android:clickable="true"
+                android:focusable="false"
+                android:editable="false"
                 android:inputType="date"
                 />
         </com.google.android.material.textfield.TextInputLayout>
