@@ -2,7 +2,6 @@ package com.example.fao.ui.charts;
 
 import android.app.DatePickerDialog;
 import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
 import android.graphics.Color;
@@ -10,8 +9,6 @@ import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -38,13 +35,12 @@ import com.anychart.enums.TooltipPositionMode;
 import com.example.fao.R;
 import com.example.fao.StepAppOpenHelper;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
-import com.github.mikephil.charting.data.LineData;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButtonToggleGroup;
-import com.google.android.material.datepicker.MaterialDatePicker;
 
 import java.io.ByteArrayOutputStream;
 import java.text.ParseException;
@@ -60,7 +56,7 @@ public class ChartsFragment extends Fragment {
 
     public int todaySteps = 0;
     TextView numStepsTextView;
-    AnyChartView anyChartViewCal;
+    AnyChartView anyChartViewCal, anyChartViewStep;
     BarChart barChartViewStep;
 
     Date cDate = new Date();
@@ -77,7 +73,7 @@ public class ChartsFragment extends Fragment {
 
     com.google.android.material.textfield.TextInputLayout  ds, de; //From, To
     Date From, To;
-
+/**/
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         final View root = inflater.inflate(R.layout.fragment_charts, container, false);
@@ -87,6 +83,8 @@ public class ChartsFragment extends Fragment {
         //////TODO create second chart views and switch them
         anyChartViewCal = root.findViewById(R.id.BarCalChart);
         anyChartViewCal.setProgressBar(root.findViewById(R.id.loadingBar));
+        //anyChartViewStep = root.findViewById(R.id.BarStepChart);
+        //anyChartViewStep.setProgressBar(root.findViewById(R.id.loadingBar));
         barChartViewStep = (BarChart) root.findViewById(R.id.BarStepChart);
 
         //for let something be seen
@@ -96,9 +94,12 @@ public class ChartsFragment extends Fragment {
 
         //cartesian = createColumnChart();
         anyChartViewCal.setBackgroundColor("#00000000");
+        //anyChartViewStep.setBackgroundColor("#00000000");
         //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
         
         //DATEPICKERS  /////////////////////////////////////////////////////////////////////////////
+        //TODO: default TO = data di oggi , constrain: sempre <= oggi
+        //TODO: default From = data di 7 giorni fa, constrain: sempre <= TO
         ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
         de = root.findViewById(R.id.chartsTextFieldDateEnd); //To
         final EditText textFrom = (EditText) ds.getEditText();
@@ -122,7 +123,7 @@ public class ChartsFragment extends Fragment {
                 textFrom.setText(sdf.format(CalendarFrom.getTime()));
                 //parse date
                 try {
-                    From = new SimpleDateFormat("dd/MM/yyyy").parse(textTo.getText().toString());
+                    From = new SimpleDateFormat("dd/MM/yyyy").parse(textFrom.getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -182,17 +183,17 @@ public class ChartsFragment extends Fragment {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
-                    ///TODO
-                    BarData data = loadBarData();
+                    /*TODO*/
+                    //BarData data = loadBarData();
 
                     barChartViewStep.setFitBars(true);
-                    barChartViewStep.setData(data);
+                    loadBarData(barChartViewStep);//
                     barChartViewStep.getDescription().setText("");
                     barChartViewStep.getLegend().setEnabled(false);
-
+                    //Cartesian cartesian = createColumnChart(); //redo graph
+                    //anyChartViewStep.setChart(cartesian);
                     ChartsGraphsLayoutCalories.setVisibility(View.GONE);
                     ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-                    barChartViewStep.invalidate();
                 } else  {//if (group.getCheckedButtonId() == R.id.toggleCal){
                     //Place code related to Cal button
                     steps = false;
@@ -276,18 +277,19 @@ public class ChartsFragment extends Fragment {
         }}
         return data;
     }
-    public BarData loadBarData(){
+    public void loadBarData(BarChart chart){
         //https://stackoverflow.com/questions/34742180/how-to-convert-string-to-bar-entry-for-mpcharts-in-android
-        ArrayList<String> xVals = new ArrayList<String>();//Arrays.asList(bar_graph_names)
+        ArrayList<Integer> xVals = new ArrayList<>();//Arrays.asList(bar_graph_names)
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
         if(steps) {
             stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
             int i = 0;
             for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
-                BarEntry val = new BarEntry(Float.valueOf(entry.getValue()), i);
-                xVals.add(entry.getKey());
+                Log.d("Map", entry.getKey() + " " + entry.getValue().toString());
+                BarEntry val = new BarEntry(Float.valueOf(entry.getValue()), i++);
+                xVals.add(i);
                 yVals.add(val);
-            }
+        }
 
         }//else{
         //    caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
@@ -298,8 +300,9 @@ public class ChartsFragment extends Fragment {
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
         dataset.setValueTextColor(Color.BLACK);
         dataset.setValueTextSize(16f);
-
-        return new BarData(dataset);//new BarData(xVals, dataset);
+        XAxis xAxis = chart.getXAxis();
+        //return new BarData(dataset);//new BarData(xVals, dataset);
+        barChartViewStep.setData(new BarData(dataset));
     }
 
     /**
