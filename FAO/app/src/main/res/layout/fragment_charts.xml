@@ -44,10 +44,11 @@
             android:orientation="vertical"
             android:paddingLeft="0dp"
             android:paddingRight="0dp">
-            <com.anychart.AnyChartView
+            <com.github.mikephil.charting.charts.BarChart
                 android:id="@+id/BarCalChart"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_margin="10dp"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

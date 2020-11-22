@@ -16,10 +16,12 @@ import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.ContentLoadingProgressBar;
 import androidx.fragment.app.Fragment;
 
 import com.anychart.AnyChart;
@@ -35,10 +37,16 @@ import com.anychart.enums.TooltipPositionMode;
 import com.example.fao.R;
 import com.example.fao.StepAppOpenHelper;
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.AxisBase;
 import com.github.mikephil.charting.components.XAxis;
+import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
+import com.github.mikephil.charting.formatter.IAxisValueFormatter;
+import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
+import com.github.mikephil.charting.formatter.ValueFormatter;
+import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 
@@ -56,8 +64,8 @@ public class ChartsFragment extends Fragment {
 
     public int todaySteps = 0;
     TextView numStepsTextView;
-    AnyChartView anyChartViewCal, anyChartViewStep;
-    BarChart barChartViewStep;
+    BarChart barChartViewStep, barChartViewCal;
+    ProgressBar progressBar;
 
     Date cDate = new Date();
     String current_time = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
@@ -80,22 +88,13 @@ public class ChartsFragment extends Fragment {
         ChartsGraphsLayoutSteps = root.findViewById(R.id.StepsGraphsLayout);
         ChartsGraphsLayoutCalories = root.findViewById(R.id.CalGraphsLayout);
         // Create column chart
-        //////TODO create second chart views and switch them
-        anyChartViewCal = root.findViewById(R.id.BarCalChart);
-        anyChartViewCal.setProgressBar(root.findViewById(R.id.loadingBar));
-        //anyChartViewStep = root.findViewById(R.id.BarStepChart);
-        //anyChartViewStep.setProgressBar(root.findViewById(R.id.loadingBar));
+        barChartViewCal = root.findViewById(R.id.BarCalChart);
         barChartViewStep = (BarChart) root.findViewById(R.id.BarStepChart);
+        progressBar = (ProgressBar)root.findViewById(R.id.loadingBar);
 
         //for let something be seen
-        //ChartsGraphsLayoutCalories.setLayoutParams(new LinearLayout.LayoutParams(anyChartViewCal.getWidth(),0));
         ChartsGraphsLayoutCalories.setVisibility(View.GONE);
         ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
-
-        //cartesian = createColumnChart();
-        anyChartViewCal.setBackgroundColor("#00000000");
-        //anyChartViewStep.setBackgroundColor("#00000000");
-        //anyChartView.setChart(cartesian); //removing this waits for clicker to show chart
         
         //DATEPICKERS  /////////////////////////////////////////////////////////////////////////////
         //TODO: default TO = data di oggi , constrain: sempre <= oggi
@@ -181,11 +180,9 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
+                    progressBar.setVisibility(View.GONE);
                     steps = true;
                     Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
-                    /*TODO*/
-                    //BarData data = loadBarData();
-
                     barChartViewStep.setFitBars(true);
                     loadBarData(barChartViewStep);//
                     barChartViewStep.getDescription().setText("");
@@ -195,11 +192,14 @@ public class ChartsFragment extends Fragment {
                     ChartsGraphsLayoutCalories.setVisibility(View.GONE);
                     ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
                 } else  {//if (group.getCheckedButtonId() == R.id.toggleCal){
+                    progressBar.setVisibility(View.GONE);
                     //Place code related to Cal button
                     steps = false;
                     Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
-                    Cartesian cartesian = createColumnChart(); //redo graph
-                    anyChartViewCal.setChart(cartesian);
+                    barChartViewCal.setFitBars(true);
+                    loadBarData(barChartViewCal);//
+                    barChartViewCal.getDescription().setText("");
+                    barChartViewCal.getLegend().setEnabled(false);
                     ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
                     ChartsGraphsLayoutSteps.setVisibility(View.GONE);
                 } /*else{ //none selected //MAYBE DO IT LATER
@@ -218,6 +218,7 @@ public class ChartsFragment extends Fragment {
      *
      * @return Cartesian: cartesian with column chart and data
      */
+    //TODO REMOVE from here////////////
     public Cartesian createColumnChart(){
     // Replace the number of steps for each hour in graph_map with the number of steps read from the database
         List<DataEntry> data = loadData();
@@ -277,32 +278,56 @@ public class ChartsFragment extends Fragment {
         }}
         return data;
     }
+    //TO HERE???????????/////////////////////////////////
     public void loadBarData(BarChart chart){
-        //https://stackoverflow.com/questions/34742180/how-to-convert-string-to-bar-entry-for-mpcharts-in-android
-        ArrayList<Integer> xVals = new ArrayList<>();//Arrays.asList(bar_graph_names)
+
+        XAxis xAxis = chart.getXAxis();
+        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
+        xAxis.setDrawGridLines(false);
+        xAxis.setGranularity(1f); // only intervals of 1 day
+
+        YAxis leftAxis = chart.getAxisLeft();
+        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        leftAxis.setSpaceTop(15f);
+        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
+
+        final ArrayList<String> xVals = new ArrayList<>();//Arrays.asList(bar_graph_names)
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
         if(steps) {
             stepsByDay = StepAppOpenHelper.loadStepsByDay(getContext());
             int i = 0;
             for (Map.Entry<String, Integer> entry : stepsByDay.entrySet()) {
+                //if(entry.getKey() > FROM && < to)
                 Log.d("Map", entry.getKey() + " " + entry.getValue().toString());
-                BarEntry val = new BarEntry(Float.valueOf(entry.getValue()), i++);
-                xVals.add(i);
+                BarEntry val = new BarEntry(i++, Float.valueOf(entry.getValue()));
+                xVals.add(entry.getKey());
                 yVals.add(val);
         }
-
-        }//else{
-        //    caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
-        //}
-
+        }else{
+            caloriesByDay = StepAppOpenHelper.loadCalByDay(getContext());
+            int i = 0;
+            for (Map.Entry<String, Double> entry : caloriesByDay.entrySet()) {
+                Log.d("Map", entry.getKey() + " " + entry.getValue().toString());
+                BarEntry val = new BarEntry(i++, Float.valueOf(String.valueOf(entry.getValue())));
+                xVals.add(entry.getKey());
+                yVals.add(val);
+            }
+        }
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xVals));
         String label = "steps";
         BarDataSet dataset = new BarDataSet(yVals, label);
         dataset.setColors(ColorTemplate.MATERIAL_COLORS);
         dataset.setValueTextColor(Color.BLACK);
         dataset.setValueTextSize(16f);
-        XAxis xAxis = chart.getXAxis();
         //return new BarData(dataset);//new BarData(xVals, dataset);
-        barChartViewStep.setData(new BarData(dataset));
+        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
+        dataSets.add(dataset);
+
+        BarData data = new BarData(dataSets);
+        data.setValueTextSize(10f);
+        data.setBarWidth(0.9f);
+
+        chart.setData(data);
     }
 
     /**
