@@ -1,0 +1,5 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <integer name="saved_height_default_key">175</integer>
+    <integer name="saved_weight_default_key">80</integer>
+</resources>
