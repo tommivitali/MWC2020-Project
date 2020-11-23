@@ -11,25 +11,19 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
 import com.google.android.material.snackbar.Snackbar;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
 import com.google.firebase.firestore.QuerySnapshot;
-import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Recipe;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -56,7 +50,7 @@ public class SplashFragment extends Fragment {
                                         @Nullable FirebaseFirestoreException e) {
                         if (e != null) {
                             Log.w(TAG, "Listen failed.", e);
-                            Snackbar.make(view, R.string.error_splash, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
                         } else if(value != null) {
                             List<Recipe> recipes = new ArrayList<Recipe>();
                             for (DocumentSnapshot document : value.getDocuments()) {
@@ -68,7 +62,7 @@ public class SplashFragment extends Fragment {
                             }
                             App.getDBInstance().recipeDAO().addRecipes(recipes);
                         } else {
-                            Snackbar.make(view, R.string.error_splash, Snackbar.LENGTH_LONG).show();
+                            Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
                         }
                         Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_nav_homepage);
                     }

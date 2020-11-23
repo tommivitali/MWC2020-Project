@@ -32,7 +32,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/height"
+                android:text="@string/settings_label_height"
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
@@ -42,7 +42,7 @@
                 style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:hint="@string/unit_measure">
+                android:hint="@string/settings_height_unit_measure">
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/editHeight"
                     android:layout_width="match_parent"
@@ -57,7 +57,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/weight"
+                android:text="@string/settings_label_weight"
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
@@ -67,7 +67,7 @@
             style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:hint="@string/unit_measure2">
+            android:hint="@string/settings_weight_unit_measure">
             <com.google.android.material.textfield.TextInputEditText
                 android:id="@+id/editWeight"
                 android:layout_width="match_parent"
@@ -82,7 +82,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/language"
+                android:text="@string/settings_label_language"
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
@@ -93,8 +93,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
-                android:layout_marginEnd="32dp"
-                android:hint="@string/hint_text_languages" >
+                android:layout_marginEnd="32dp" >
 
                 <AutoCompleteTextView
                     android:id="@+id/languages_dropdown"
@@ -110,7 +109,7 @@
                 android:layout_marginStart="8dp"
                 android:layout_marginTop="8dp"
                 android:layout_marginEnd="8dp"
-                android:text="@string/home_progress"
+                android:text="@string/settings_label_home_progress"
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
@@ -124,12 +123,12 @@
                     android:id="@+id/radio_button_1"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/label_1" />
+                    android:text="@string/settings_hp_label_kcal" />
                 <RadioButton
                     android:id="@+id/radio_button_2"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="@string/label_2" />
+                    android:text="@string/settings_hp_label_steps" />
             </RadioGroup>
 
             <com.google.android.material.textview.MaterialTextView

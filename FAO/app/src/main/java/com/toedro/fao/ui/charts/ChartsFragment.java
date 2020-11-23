@@ -1,9 +1,6 @@
 package com.toedro.fao.ui.charts;
 
 import android.app.DatePickerDialog;
-import android.content.Context;
-import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.util.Log;
@@ -30,14 +27,16 @@ import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButtonToggleGroup;
+import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
-import com.google.android.material.datepicker.MaterialDatePicker;
 import com.toedro.fao.db.StepsQueryResult;
 import com.toedro.fao.ui.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
@@ -51,8 +50,7 @@ public class ChartsFragment extends Fragment {
     BarChart barChartViewStep, barChartViewCal;
     ProgressBar progressBar;
 
-    Date cDate = new Date();
-    String current_time = new SimpleDateFormat("yyyy-MM-dd").format(cDate);
+    String current_time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     //check unit measure to show
     LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST
     MaterialButtonToggleGroup materialButtonToggleGroup;
@@ -82,8 +80,11 @@ public class ChartsFragment extends Fragment {
         //TODO: default From = data di 7 giorni fa, constrain: sempre <= TO
         ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
         de = root.findViewById(R.id.chartsTextFieldDateEnd); //To
-        final EditText textFrom = (EditText) ds.getEditText();
-        final EditText textTo = (EditText) de.getEditText();
+        // Set default date values
+        de.getEditText().setText(LocalDate.now().format(DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI))));
+        ds.getEditText().setText(LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI))));
+//        de.getEditText().setText(new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).format(LocalDate.now()));
+//        ds.getEditText().setText(new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).format(LocalDate.now().minusDays(5)));
 
         final Calendar CalendarFrom = Calendar.getInstance(), CalendarTo = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
@@ -98,12 +99,11 @@ public class ChartsFragment extends Fragment {
             }
 
             private void updateLabel() {
-                String myFormat = "dd/MM/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                textFrom.setText(sdf.format(CalendarFrom.getTime()));
+                SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_layout_UI), Locale.US);
+                ds.getEditText().setText(sdf.format(CalendarFrom.getTime()));
                 //parse date
                 try {
-                    From = new SimpleDateFormat("dd/MM/yyyy").parse(textFrom.getText().toString());
+                    From = new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).parse(ds.getEditText().getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -125,10 +125,10 @@ public class ChartsFragment extends Fragment {
             private void updateLabel() {
                 String myFormat = "dd/MM/yyyy"; //In which you need put here
                 SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
-                textTo.setText(sdf.format(CalendarTo.getTime()));
+                de.getEditText().setText(sdf.format(CalendarTo.getTime()));
                 //parse date
                 try {
-                    To = new SimpleDateFormat("dd/MM/yyyy").parse(textTo.getText().toString());
+                    To = new SimpleDateFormat("dd/MM/yyyy").parse(de.getEditText().getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -136,7 +136,7 @@ public class ChartsFragment extends Fragment {
             }
         };
 
-        textTo.setOnClickListener(new View.OnClickListener() {
+        de.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), dateTo, CalendarTo
@@ -144,7 +144,7 @@ public class ChartsFragment extends Fragment {
                         CalendarTo.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        textFrom.setOnClickListener(new View.OnClickListener() {
+        ds.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 new DatePickerDialog(getContext(), dateFrom, CalendarFrom
@@ -195,6 +195,8 @@ public class ChartsFragment extends Fragment {
     }
 
     public void loadBarData(BarChart chart){
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI));
+
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
         xAxis.setDrawGridLines(false);
@@ -207,7 +209,23 @@ public class ChartsFragment extends Fragment {
 
         final ArrayList<String> xVals = new ArrayList<>();//Arrays.asList(bar_graph_names)
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
-        stepsByDay = App.getDBInstance().stepDAO().getSteps(); // se passi i giorni restituisce direttamente solo i dati corretti
+
+        //stepsByDay = App.getDBInstance().stepDAO().getSteps(); // se passi i giorni restituisce direttamente solo i dati corretti
+
+        stepsByDay = App.getDBInstance().stepDAO().getSteps(
+                Utils.generateDateIntervals(
+                        LocalDate.parse(ds.getEditText().getText(), dateFormatter),
+                        LocalDate.parse(de.getEditText().getText(), dateFormatter)
+                ));
+
+        // If the interval is empty
+        if(stepsByDay.size() == 1 && stepsByDay.get(0).getSteps() == 0) {
+            Snackbar.make(getView(), R.string.charts_error, Snackbar.LENGTH_LONG).show();
+            chart.setData(null);
+            //chart.invalidate();
+            return;
+        }
+
         int i = 0;
         for (StepsQueryResult entry : stepsByDay) {
             BarEntry val = new BarEntry(i++, Float.valueOf(

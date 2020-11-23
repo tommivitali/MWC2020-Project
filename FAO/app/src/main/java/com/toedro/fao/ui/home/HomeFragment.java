@@ -1,8 +1,6 @@
 package com.toedro.fao.ui.home;
 
-import android.content.ContentValues;
 import android.content.Context;
-import android.database.sqlite.SQLiteDatabase;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -17,18 +15,13 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.lifecycle.Observer;
-import androidx.lifecycle.ViewModelProviders;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
-import com.toedro.fao.ui.pantry.ScanBarcodeFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -69,10 +62,10 @@ public class HomeFragment extends Fragment {
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
         stepsCountTextView.setText(String.valueOf(stepsCompleted)); // ???
         if(type == 0)
-            kindOfCountTextView.setText(getResources().getString(R.string.label_2) + " done today"); //if steps
+            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_steps) + " done today"); //if steps
         else //1
-            kindOfCountTextView.setText(getResources().getString(R.string.label_1) + " burned today"); //if Cal
-        stepsCompleted = App.getDBInstance().stepDAO().getSteps(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_kcal) + " burned today"); //if Cal
+        stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
 
         //  Get an instance of the sensor manager.
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -107,7 +100,7 @@ public class HomeFragment extends Fragment {
                 } else if (button.getId() == R.id.buttonStartStopStepcounter && isChecked) {
                     // Unregister the listener
                     mSensorManager.unregisterListener(listener);
-                    StartStop.setText(R.string.home_start_stop_stepcounter);
+                    StartStop.setText(R.string.home_start_stepcounter);
                 }
             }
         });
@@ -249,10 +242,10 @@ public class HomeFragment extends Fragment {
                         // Update the TextView
                         if(type == 0) {
                             stepsCountTextView.setText(String.valueOf(mACCStepCounter));
-                            kindOfCountTextView.setText(getResources().getString(R.string.label_2) + " done today"); //if steps
+                            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_steps) + " done today"); //if steps
                         }else { //1
                             stepsCountTextView.setText(String.valueOf(ACC_CalCounted));
-                            kindOfCountTextView.setText(getResources().getString(R.string.label_1) + " burned today"); //if Cal
+                            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_kcal) + " burned today"); //if Cal
                         }
                         // Insert the data in the DB
                         App.getDBInstance().stepDAO().addStep(new Step(day, hour, timePointList.get(i)));

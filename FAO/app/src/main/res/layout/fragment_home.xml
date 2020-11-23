@@ -118,7 +118,7 @@
             android:drawableTint="@android:color/white"
             android:textColor="@android:color/white"
             android:textAlignment="center"
-            android:text="@string/home_start_stop_stepcounter"
+            android:text="@string/home_start_stepcounter"
             app:icon="@drawable/ic_play"
             style="@style/ButtonHome"
             />

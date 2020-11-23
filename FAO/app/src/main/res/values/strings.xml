@@ -12,13 +12,33 @@
     <string name="menu_charts">Charts</string>
     <string name="menu_pantry">Pantry</string>
     <string name="menu_settings">Settings</string>
+    <string name="menu_recipes">Recipes</string>
+    <!-- Splash -->
+    <string name="splash_error">There was an error downloading the data</string>
     <!-- Homepage -->
     <string name="home_0">0</string>
     <string name="home_steps_description">steps done today</string>
     <string name="home_add_ingredients">Add ingredient</string>
     <string name="home_scan_barcode">Scan barcode</string>
     <string name="home_wanna_eat">Wanna Eat?</string>
-    <string name="home_start_stop_stepcounter">Start stepcounter</string>
+    <string name="home_start_stepcounter">Start stepcounter</string>
+    <string name="home_stop_stepcounter">Stop stepcounter</string>
+    <!-- Charts -->
+    <string name="charts_text_daterange">Range of dates</string>
+    <string name="charts_date_to">To Date</string>
+    <string name="charts_date_from">From Date</string>
+    <string name="charts_toggle_cal">Calories</string>
+    <string name="charts_toggle_steps">Steps</string>
+    <string name="charts_error">The interval you selected does not contain any data</string>
+    <!-- Settings -->
+    <string name="settings_label_height">Height</string>
+    <string name="settings_label_weight">Weight</string>
+    <string name="settings_label_language">Language</string>
+    <string name="settings_label_home_progress">Home progress</string>
+    <string name="settings_height_unit_measure">cm</string>
+    <string name="settings_weight_unit_measure">kg</string>
+    <string name="settings_hp_label_kcal">Calories (kcal)</string>
+    <string name="settings_hp_label_steps">Steps</string>
     <!-- Settings SharedPreferences -->
     <string name="saved_language_default_key">English</string>
     <string name="saved_home_progress_type_default_key">KCAL</string>
@@ -26,31 +46,20 @@
     <string name="saved_height_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.height</string>
     <string name="saved_weight_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.weight</string>
     <string name="saved_home_progress_type_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hpt</string>
+    <!-- Date Layout -->
+    <string name="date_layout_DB">yyyy-MM-dd</string>
+    <string name="date_layout_UI">dd/MM/yyyy</string>
 
-    <string name="charts_text_daterange">Range of dates</string>
-    <string name="height">Height</string>
-    <string name="weight">Weight</string>
-    <string name="language">Language</string>
-    <string name="home_progress">Home progress</string>
-    <string name="unit_measure">cm</string>
+
+
+
+    <!-- TODO -->
     <string name="settingsButton">Button</string>
-    <string name="unit_measure2">Kg</string>
     <string name="notifications">Notifications</string>
-    <string name="label_1">Calories (kcal)</string>
-    <string name="label_2">Steps</string>
-    <string name="hint_text_languages">Language</string>
-    <string name="menu_recipes">Recipes</string>
     <string name="content_description_media">image for the recipe</string>
     <string name="title">Title</string>
     <string name="secondary_text">Secondary text</string>
     <string name="action_1">Go</string>
-    <string name="error_splash">There was an error downloading the data</string>
-    <string name="toggle_cal_view">Calories</string>
-    <string name="toggle_steps_view">Steps</string>
-    <string name="ending_date">ending date</string>
-    <string name="starting_date">starting date</string>
     <string name="acc_not_available">accelerometer not available</string>
     <string name="step_not_available">stepcounter not available</string>
-    <string name="home_stop_stepcounter">Stop stepcounter</string>
-
 </resources>

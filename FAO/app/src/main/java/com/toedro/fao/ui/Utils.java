@@ -6,6 +6,14 @@ import android.util.DisplayMetrics;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
+import java.time.LocalDate;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoUnit;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.stream.Collectors;
+import java.util.stream.IntStream;
+
 public class Utils {
     public static int convertDpToPixel(float dp) {
         DisplayMetrics metrics = Resources.getSystem().getDisplayMetrics();
@@ -41,5 +49,16 @@ public class Utils {
                 break;
         }
         return r;
+    }
+
+    public static List<String> generateDateIntervals(LocalDate startDate, LocalDate endDate) {
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+        long numOfDaysBetween = ChronoUnit.DAYS.between(startDate, endDate) + 1;
+        return IntStream.iterate(0, i -> i + 1)
+                .limit(numOfDaysBetween)
+                .mapToObj(i -> startDate
+                        .plusDays(i)
+                        .format(dateFormatter))
+                .collect(Collectors.toList());
     }
 }

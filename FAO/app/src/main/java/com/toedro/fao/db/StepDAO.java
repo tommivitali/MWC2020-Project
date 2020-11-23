@@ -9,10 +9,10 @@ import java.util.List;
 
 @Dao
 public abstract class StepDAO {
-    @Query("SELECT day, COUNT(id) FROM Steps WHERE day BETWEEN :from AND :to GROUP BY day")
-    public abstract List<StepsQueryResult> getSteps(String from, String to);
+    @Query("SELECT day, COUNT(id) FROM Steps WHERE day IN (:dateInterval)")
+    public abstract List<StepsQueryResult> getSteps(List<String> dateInterval);
     @Query("SELECT COUNT(*) FROM Steps WHERE day = :day")
-    public abstract Integer getSteps(String day);
+    public abstract Integer getDaySteps(String day);
     @Query("SELECT day, COUNT(id) FROM Steps GROUP BY day")
     public abstract List<StepsQueryResult> getSteps();
     @Insert(onConflict = OnConflictStrategy.REPLACE)
