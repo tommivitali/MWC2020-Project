@@ -143,29 +143,112 @@
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:layout_width="match_parent"
+            <LinearLayout
+                android:id="@+id/checkboxContainer1"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:checked="true"
-                android:text="@string/label_1" />
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:layout_width="match_parent"
+                android:background="#FFFFFF"
+                android:orientation="horizontal">
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkbox1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text=""
+                    android:checked="true"/>
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/time1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:layout_weight="1"
+                    android:inputType="time"
+                    android:focusable="false"
+                    ></com.google.android.material.textfield.TextInputEditText>
+            </LinearLayout>
+            <LinearLayout
+                android:id="@+id/checkboxContainer2"
+                android:layout_width="fill_parent"
                 android:layout_height="wrap_content"
-                android:text="@string/label_2" />
-
+                android:background="#FFFFFF"
+                android:orientation="horizontal">
+                <com.google.android.material.checkbox.MaterialCheckBox
+                    android:id="@+id/checkbox2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="" />
+                <com.google.android.material.textfield.TextInputEditText
+                    android:id="@+id/time2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="00:00"
+                    android:layout_weight="1"
+                    android:inputType="time"
+                    android:focusable="false"
+                    ></com.google.android.material.textfield.TextInputEditText>
+            </LinearLayout>
+            <LinearLayout
+            android:id="@+id/checkboxContainer3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
             <com.google.android.material.checkbox.MaterialCheckBox
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:layout_width="match_parent"
+                android:id="@+id/checkbox3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_1" />
-
-            <com.google.android.material.checkbox.MaterialCheckBox
-                android:layout_width="match_parent"
+                android:text="" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/time3"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="@string/label_1" />
+                android:text="00:00"
+                android:layout_weight="1"
+                android:inputType="time"
+                android:focusable="false"
+                ></com.google.android.material.textfield.TextInputEditText>
+        </LinearLayout>
+            <LinearLayout
+            android:id="@+id/checkboxContainer4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/time4"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_weight="1"
+                android:inputType="time"
+                android:focusable="false"
+                ></com.google.android.material.textfield.TextInputEditText>
+        </LinearLayout>
+            <LinearLayout
+            android:id="@+id/checkboxContainer5"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:background="#FFFFFF"
+            android:orientation="horizontal">
+            <com.google.android.material.checkbox.MaterialCheckBox
+                android:id="@+id/checkbox5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="" />
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/time5"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="00:00"
+                android:layout_weight="1"
+                android:inputType="time"
+                android:focusable="false"
+                ></com.google.android.material.textfield.TextInputEditText>
+        </LinearLayout>
 
 
 

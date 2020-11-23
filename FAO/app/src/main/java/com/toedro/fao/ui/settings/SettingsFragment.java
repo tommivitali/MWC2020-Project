@@ -1,27 +1,37 @@
 package com.toedro.fao.ui.settings;
 
+import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
 
+import java.sql.Time;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+
 public class SettingsFragment extends Fragment {
+
+    EditText time1, time2, time3, time4, time5;
+    MaterialCheckBox box1, box2, box3, box4, box5;
+    Time mSelectedTime;
     public SharedPreferences sharedPref;
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -39,6 +49,18 @@ public class SettingsFragment extends Fragment {
         editTextFilledExposedDropdown.setAdapter(adapter);
         editTextFilledExposedDropdown.setText(languageShared, false);
         // If someone changes the value of the dropdown then save it to the SharedPreferences
+        //*notifications*//
+        time1 = (EditText) root.findViewById(R.id.time1);
+        time2 = (EditText) root.findViewById(R.id.time2);
+        time3 = (EditText) root.findViewById(R.id.time3);
+        time4 = (EditText) root.findViewById(R.id.time4);
+        time5 = (EditText) root.findViewById(R.id.time5);
+        box1 = (MaterialCheckBox) root.findViewById(R.id.checkbox1);
+        box2 = (MaterialCheckBox) root.findViewById(R.id.checkbox2);
+        box3 = (MaterialCheckBox) root.findViewById(R.id.checkbox3);
+        box4 = (MaterialCheckBox) root.findViewById(R.id.checkbox4);
+        box5 = (MaterialCheckBox) root.findViewById(R.id.checkbox5);
+
         editTextFilledExposedDropdown.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -101,6 +123,135 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
+    ////*notifications*/////////
+        time1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = 00;//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time1.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+        time1.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = 00;//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time1.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+        time2.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = 07;//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time2.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+        time3.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = 12;//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time3.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+        time4.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = 19;//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = 30;//myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time4.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+        time5.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Calendar myCalender = Calendar.getInstance();
+                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = myCalender.get(Calendar.MINUTE);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);
+                            time5.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
+                        }}
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+
+
 
         return root;
     }
