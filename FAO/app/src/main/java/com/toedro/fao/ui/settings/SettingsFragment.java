@@ -1,8 +1,12 @@
 package com.toedro.fao.ui.settings;
 
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Color;
+import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -11,6 +15,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
+import android.widget.CheckBox;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 import android.widget.TimePicker;
@@ -22,17 +28,25 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
+import com.toedro.fao.ui.home.HomeFragment;
 
+import java.sql.Array;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class SettingsFragment extends Fragment {
 
     EditText time1, time2, time3, time4, time5;
     MaterialCheckBox box1, box2, box3, box4, box5;
     Time mSelectedTime;
+
     public SharedPreferences sharedPref;
+    public static int NOTIFICATION_ID = 0;
+    public ArrayList notificationTime;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
@@ -145,27 +159,6 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-        time1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = 00;//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = 00;//myCalender.get(Calendar.MINUTE);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
-                            time1.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-            }
-        });
         time2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -250,7 +243,16 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-
+        notificationTime = new ArrayList();
+        /*box1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked)
+                    notificationTime.add(time1.getText());
+                else
+                    notificationTime.remove()
+            }
+        });*/
 
 
         return root;

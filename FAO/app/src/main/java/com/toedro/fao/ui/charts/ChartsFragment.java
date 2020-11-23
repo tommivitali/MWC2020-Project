@@ -26,6 +26,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
@@ -157,13 +158,27 @@ public class ChartsFragment extends Fragment {
 
         materialButtonToggleGroup = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
         materialButtonToggleGroup.setSelectionRequired(true);
+        //Case unckecked --> cal by default
+        List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
+        if (ids.size() == 0){
+            progressBar.setVisibility(View.GONE);
+            materialButtonToggleGroup.check(R.id.toggleCal);
+            steps = false;
+            Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
+            barChartViewCal.setFitBars(true);
+            loadBarData(barChartViewCal);//
+            barChartViewCal.getDescription().setText("");
+            barChartViewCal.getLegend().setEnabled(false);
+            ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
+            ChartsGraphsLayoutSteps.setVisibility(View.GONE);
+        }
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
                     progressBar.setVisibility(View.GONE);
                     steps = true;
-                    Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
+                    //Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
                     barChartViewStep.setFitBars(true);
                     loadBarData(barChartViewStep);//
                     barChartViewStep.getDescription().setText("");
@@ -172,22 +187,18 @@ public class ChartsFragment extends Fragment {
                     //anyChartViewStep.setChart(cartesian);
                     ChartsGraphsLayoutCalories.setVisibility(View.GONE);
                     ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-                } else  {//if (group.getCheckedButtonId() == R.id.toggleCal){
+                } else {// if (group.getCheckedButtonId() == R.id.toggleCal){
                     progressBar.setVisibility(View.GONE);
                     //Place code related to Cal button
                     steps = false;
-                    Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
+                   // Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
                     barChartViewCal.setFitBars(true);
                     loadBarData(barChartViewCal);//
                     barChartViewCal.getDescription().setText("");
                     barChartViewCal.getLegend().setEnabled(false);
                     ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
                     ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-                } /*else{ //none selected //MAYBE DO IT LATER
-                    MaterialButton def = group.findViewById(R.id.toggleCal);
-                    Toast.makeText(getContext(), "Can't Uncheck", Toast.LENGTH_SHORT).show(); //debug
-                    def.setChecked(true);
-                }*/
+                }
             }
         });
 
