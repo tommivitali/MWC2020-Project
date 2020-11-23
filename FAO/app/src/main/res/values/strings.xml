@@ -36,4 +36,11 @@
     <string name="secondary_text">Secondary text</string>
     <string name="action_1">Go</string>
     <string name="error_splash">There was an error downloading the data</string>
+    <string name="toggle_cal_view">Calories</string>
+    <string name="toggle_steps_view">Steps</string>
+    <string name="ending_date">ending date</string>
+    <string name="starting_date">starting date</string>
+    <string name="acc_not_available">accelerometer not available</string>
+    <string name="step_not_available">stepcounter not available</string>
+    <string name="home_stop_stepcounter">Stop stepcounter</string>
 </resources>
