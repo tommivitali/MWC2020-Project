@@ -1,12 +1,8 @@
 package com.toedro.fao.ui.settings;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.app.TimePickerDialog;
 import android.content.Context;
 import android.content.SharedPreferences;
-import android.graphics.Color;
-import android.os.Build;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -15,7 +11,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.RadioGroup;
@@ -28,18 +23,15 @@ import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
-import com.toedro.fao.ui.home.HomeFragment;
 
-import java.sql.Array;
 import java.sql.Time;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.time.LocalTime;
 import java.time.format.DateTimeFormatter;
 import java.time.temporal.ChronoField;
-import java.util.ArrayList;
 import java.util.Calendar;
-import java.util.HashMap;
-import java.util.List;
+import java.util.Date;
 
 public class SettingsFragment extends Fragment {
 
@@ -58,6 +50,8 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+        //initializing notification time
+        notificationTime = new int[5][2];
 
         // Get the SharedPreferences language value (if exists)
         String defaultLanguageValue = getResources().getString(R.string.saved_language_default_key);
@@ -134,11 +128,11 @@ public class SettingsFragment extends Fragment {
 
 
         //*notifications*//
-        time1 = (EditText) root.findViewById(R.id.time1);
-        time2 = (EditText) root.findViewById(R.id.time2);
-        time3 = (EditText) root.findViewById(R.id.time3);
-        time4 = (EditText) root.findViewById(R.id.time4);
-        time5 = (EditText) root.findViewById(R.id.time5);
+        time1 = (EditText) root.findViewById(R.id.time1); time1.setText("00:00");
+        time2 = (EditText) root.findViewById(R.id.time2); time2.setText("07:00");
+        time3 = (EditText) root.findViewById(R.id.time3); time3.setText("12:00");
+        time4 = (EditText) root.findViewById(R.id.time4); time4.setText("19:30");
+        time5 = (EditText) root.findViewById(R.id.time5); time5.setText("00:00");
         box1 = (MaterialCheckBox) root.findViewById(R.id.checkbox1);
         box2 = (MaterialCheckBox) root.findViewById(R.id.checkbox2);
         box3 = (MaterialCheckBox) root.findViewById(R.id.checkbox3);
@@ -150,14 +144,14 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar myCalender = Calendar.getInstance();
-                int hour = 00;//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                int hour = Integer.parseInt(time1.getText().toString().split(":")[0]);//myCalender.get(Calendar.HOUR_OF_DAY);
+                int minute = Integer.parseInt(time1.getText().toString().split(":")[1]);//myCalender.get(Calendar.MINUTE);
                 TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
                         if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
+                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);//myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
+                            myCalender.set(Calendar.MINUTE, minute);//myCalender.set(Calendar.MINUTE, minute);
                             time1.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
                         }}
                 };
@@ -165,14 +159,19 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.setTitle("Choose hour:");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 timePickerDialog.show();
+                //on change notifications attempt
+                if(box1.isChecked()){
+                    notificationTime[0][0] = Integer.parseInt(time1.getText().toString().split(":")[0]);
+                    notificationTime[0][1] = Integer.parseInt(time1.getText().toString().split(":")[1]);
+                }
             }
         });
         time2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Calendar myCalender = Calendar.getInstance();
-                int hour = 07;//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                int hour = Integer.parseInt(time2.getText().toString().split(":")[0]);
+                int minute = Integer.parseInt(time2.getText().toString().split(":")[1]);
                 TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -192,8 +191,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar myCalender = Calendar.getInstance();
-                int hour = 12;//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = 00;//myCalender.get(Calendar.MINUTE);
+                int hour = Integer.parseInt(time3.getText().toString().split(":")[0]);
+                int minute = Integer.parseInt(time3.getText().toString().split(":")[1]);
                 TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -213,8 +212,8 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Calendar myCalender = Calendar.getInstance();
-                int hour = 19;//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = 30;//myCalender.get(Calendar.MINUTE);
+                int hour = Integer.parseInt(time4.getText().toString().split(":")[0]);
+                int minute = Integer.parseInt(time4.getText().toString().split(":")[1]);
                 TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
                     @Override
                     public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
@@ -252,16 +251,14 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        notificationTime = new int[5][2];
         box1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time1.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
-                    notificationTime[0][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
-                    notificationTime[0][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
-                }
-                else
+                    ///can't access class attribute from here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+                    notificationTime[0][0] = Integer.parseInt(time1.getText().toString().split(":")[0]);
+                    notificationTime[0][1] = Integer.parseInt(time1.getText().toString().split(":")[1]);
+                }else
                     notificationTime[0] = null;
             }
         });
@@ -269,7 +266,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time2.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    LocalTime localTime = LocalTime.parse(time2.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
                     notificationTime[1][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
                     notificationTime[1][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
                 }
@@ -281,7 +278,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time3.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    LocalTime localTime = LocalTime.parse(time3.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
                     notificationTime[2][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
                     notificationTime[2][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
                 }
@@ -293,7 +290,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time4.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    LocalTime localTime = LocalTime.parse(time4.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
                     notificationTime[3][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
                     notificationTime[3][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
                 }
@@ -305,7 +302,7 @@ public class SettingsFragment extends Fragment {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
                 if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time5.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    LocalTime localTime = LocalTime.parse(time5.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
                     notificationTime[4][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
                     notificationTime[4][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
                 }

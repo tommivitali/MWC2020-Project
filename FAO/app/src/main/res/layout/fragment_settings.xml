@@ -248,22 +248,6 @@
                 android:focusable="false"
                 ></com.google.android.material.textfield.TextInputEditText>
         </LinearLayout>
-
-
-
-
-            <Button
-                android:id="@+id/settingsButton"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="20dp"
-                android:text="@string/settingsButton" />
-
-            <TextView
-                android:id="@+id/results"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:text="TextView" />
         </LinearLayout>
 
     </ScrollView>
