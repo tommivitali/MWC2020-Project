@@ -33,8 +33,12 @@ import com.toedro.fao.ui.home.HomeFragment;
 import java.sql.Array;
 import java.sql.Time;
 import java.text.SimpleDateFormat;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.time.temporal.ChronoField;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.HashMap;
 import java.util.List;
 
 public class SettingsFragment extends Fragment {
@@ -45,7 +49,8 @@ public class SettingsFragment extends Fragment {
 
     public SharedPreferences sharedPref;
     public static int NOTIFICATION_ID = 0;
-    public ArrayList notificationTime;
+//TODO put in db
+    private static int[][] notificationTime;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -243,18 +248,74 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.show();
             }
         });
-        notificationTime = new ArrayList();
-        /*box1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+
+        notificationTime = new int[5][2];
+        box1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked)
-                    notificationTime.add(time1.getText());
+                if(isChecked) {
+                    LocalTime localTime = LocalTime.parse(time1.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    notificationTime[0][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
+                    notificationTime[0][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
+                }
                 else
-                    notificationTime.remove()
+                    notificationTime[0] = null;
             }
-        });*/
+        });
+        box2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked) {
+                    LocalTime localTime = LocalTime.parse(time2.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    notificationTime[1][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
+                    notificationTime[1][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
+                }
+                else
+                    notificationTime[1] = null;
+            }
+        });
+        box3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked) {
+                    LocalTime localTime = LocalTime.parse(time3.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    notificationTime[2][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
+                    notificationTime[2][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
+                }
+                else
+                    notificationTime[2] = null;
+            }
+        });
+        box4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked) {
+                    LocalTime localTime = LocalTime.parse(time4.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    notificationTime[3][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
+                    notificationTime[3][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
+                }
+                else
+                    notificationTime[3] = null;
+            }
+        });
+        box5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                if(isChecked) {
+                    LocalTime localTime = LocalTime.parse(time5.getText().toString(), DateTimeFormatter.ofPattern("HH:mm:ss"));
+                    notificationTime[4][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
+                    notificationTime[4][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
+                }
+                else
+                    notificationTime[4] = null;
+            }
+        });
 
 
         return root;
+    }
+
+    public static int[][] getNotificationTime() {
+        return notificationTime;
     }
 }
