@@ -26,8 +26,10 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.toedro.fao.App;
+import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
+import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -66,6 +68,9 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.action_nav_homepage_to_scanBarcodeFragment);
             }
         });
+
+        ProgressTypeHome pth = Preferences.getProgressTypeHome(getActivity(), getContext());
+        type = (pth == ProgressTypeHome.KCAL) ? 1 : 0;
 
         stepsCountTextView = (TextView) root.findViewById(R.id.stepsCount);
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);

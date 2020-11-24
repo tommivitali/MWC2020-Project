@@ -47,10 +47,11 @@ public class SettingsFragment extends Fragment {
     MaterialCheckBox box1, box2, box3, box4, box5;
     Time mSelectedTime;
 
-    public SharedPreferences sharedPref;
     public static int NOTIFICATION_ID = 0;
 //TODO put in db
     private static int[][] notificationTime;
+
+    public SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -68,18 +69,6 @@ public class SettingsFragment extends Fragment {
         editTextFilledExposedDropdown.setAdapter(adapter);
         editTextFilledExposedDropdown.setText(languageShared, false);
         // If someone changes the value of the dropdown then save it to the SharedPreferences
-        //*notifications*//
-        time1 = (EditText) root.findViewById(R.id.time1);
-        time2 = (EditText) root.findViewById(R.id.time2);
-        time3 = (EditText) root.findViewById(R.id.time3);
-        time4 = (EditText) root.findViewById(R.id.time4);
-        time5 = (EditText) root.findViewById(R.id.time5);
-        box1 = (MaterialCheckBox) root.findViewById(R.id.checkbox1);
-        box2 = (MaterialCheckBox) root.findViewById(R.id.checkbox2);
-        box3 = (MaterialCheckBox) root.findViewById(R.id.checkbox3);
-        box4 = (MaterialCheckBox) root.findViewById(R.id.checkbox4);
-        box5 = (MaterialCheckBox) root.findViewById(R.id.checkbox5);
-
         editTextFilledExposedDropdown.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -142,6 +131,20 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
+
+
+        //*notifications*//
+        time1 = (EditText) root.findViewById(R.id.time1);
+        time2 = (EditText) root.findViewById(R.id.time2);
+        time3 = (EditText) root.findViewById(R.id.time3);
+        time4 = (EditText) root.findViewById(R.id.time4);
+        time5 = (EditText) root.findViewById(R.id.time5);
+        box1 = (MaterialCheckBox) root.findViewById(R.id.checkbox1);
+        box2 = (MaterialCheckBox) root.findViewById(R.id.checkbox2);
+        box3 = (MaterialCheckBox) root.findViewById(R.id.checkbox3);
+        box4 = (MaterialCheckBox) root.findViewById(R.id.checkbox4);
+        box5 = (MaterialCheckBox) root.findViewById(R.id.checkbox5);
+
     ////*notifications*/////////
         time1.setOnClickListener(new View.OnClickListener() {
             @Override
