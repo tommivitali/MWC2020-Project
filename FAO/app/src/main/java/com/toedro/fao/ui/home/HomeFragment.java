@@ -29,6 +29,7 @@ import com.toedro.fao.App;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
+import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
@@ -37,14 +38,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
+import okhttp3.internal.Util;
+
 public class HomeFragment extends Fragment {
 
     private TextView stepsCountTextView;
     private TextView kindOfCountTextView;
     private MaterialButton StartStop;
 
-    //TODO change this to get 0 = steps, 1 = CAL; based on settings --> bind value with settings
-    public int type = 0;
     static int stepsCompleted = 0;
 
     // ACC sensors
@@ -57,10 +58,13 @@ public class HomeFragment extends Fragment {
     public String NOTIFICATION_CHANNEL_ID = "notification channel id";
     private NotificationManager mNotifyManager;
 
+    private ProgressTypeHome pth;
+
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
 
+        // Button to go scanning barcode
         MaterialButton buttonScanBarcode = (MaterialButton) root.findViewById(R.id.buttonScanBarcode);
         buttonScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -69,17 +73,25 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ProgressTypeHome pth = Preferences.getProgressTypeHome(getActivity(), getContext());
-        type = (pth == ProgressTypeHome.KCAL) ? 1 : 0;
+        pth = Preferences.getProgressTypeHome(getActivity(), getContext());
 
         stepsCountTextView = (TextView) root.findViewById(R.id.stepsCount);
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
-        stepsCountTextView.setText(String.valueOf(stepsCompleted)); // ???
-        if(type == 0)
-            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_steps) + " done today"); //if steps
-        else //1
-            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_kcal) + " burned today"); //if Cal
-        stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(new SimpleDateFormat("yyyy-MM-dd").format(new Date()));
+
+
+        kindOfCountTextView.setText(
+                pth == ProgressTypeHome.KCAL ?
+                        getResources().getString(R.string.home_calories_description) :
+                        getResources().getString(R.string.home_steps_description)
+        );
+        stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
+                new SimpleDateFormat(getResources().getString(R.string.date_layout_DB))
+                        .format(new Date()));
+        stepsCountTextView.setText(
+                pth == ProgressTypeHome.KCAL ?
+                        String.valueOf(Utils.convertStepsToCal(stepsCompleted)) :
+                        String.valueOf(stepsCompleted)
+        );
 
         //  Get an instance of the sensor manager.
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -137,7 +149,6 @@ public class HomeFragment extends Fragment {
         private long lastUpdate = 0;
 
         public int mACCStepCounter = HomeFragment.stepsCompleted;
-        public double ACC_CalCounted = convertCal(mACCStepCounter);
 
         ArrayList<Integer> mACCSeries = new ArrayList<Integer>();
         ArrayList<String> mTimeSeries = new ArrayList<String>();
@@ -245,9 +256,7 @@ public class HomeFragment extends Fragment {
             }
 
             for (int i = 0; i < dataPointList.size(); i++) {
-                if (i == 0) {
-                }
-                else if (i < dataPointList.size() - 1) {
+                if (i != 0 && i < dataPointList.size() - 1) {
                     forwardSlope = dataPointList.get(i + 1) - dataPointList.get(i);
                     downwardSlope = dataPointList.get(i)- dataPointList.get(i - 1);
 
@@ -258,13 +267,12 @@ public class HomeFragment extends Fragment {
                         Log.d("ACC STEPS: ", String.valueOf(mACCStepCounter));
 
                         // Update the TextView
-                        if(type == 0) {
-                            stepsCountTextView.setText(String.valueOf(mACCStepCounter));
-                            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_steps) + " done today"); //if steps
-                        }else { //1
-                            stepsCountTextView.setText(String.valueOf(ACC_CalCounted));
-                            kindOfCountTextView.setText(getResources().getString(R.string.settings_hp_label_kcal) + " burned today"); //if Cal
-                        }
+                        stepsCountTextView.setText(String.valueOf(
+                                pth == ProgressTypeHome.KCAL ?
+                                        Utils.convertStepsToCal(mACCStepCounter) :
+                                        mACCStepCounter
+                        ));
+
                         // Insert the data in the DB
                         App.getDBInstance().stepDAO().addStep(new Step(day, hour, timePointList.get(i)));
                     }

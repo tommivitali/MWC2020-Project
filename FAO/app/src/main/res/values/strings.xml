@@ -18,6 +18,7 @@
     <!-- Homepage -->
     <string name="home_0">0</string>
     <string name="home_steps_description">steps done today</string>
+    <string name="home_calories_description">calories burnt today</string>
     <string name="home_add_ingredients">Add ingredient</string>
     <string name="home_scan_barcode">Scan barcode</string>
     <string name="home_wanna_eat">Wanna Eat?</string>
