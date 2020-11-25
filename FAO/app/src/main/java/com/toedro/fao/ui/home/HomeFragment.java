@@ -83,21 +83,21 @@ public class HomeFragment extends Fragment {
                         String.valueOf(stepsCompleted)
         );
 
-        //  Get an instance of the sensor manager.
+        //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
+        // Get an instance of Accelerometer
         mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        // Step detector instance
+        // Get an instance of Step Detector
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         listener = new StepCounterListener(stepsCountTextView);
 
         // Toggle button
         buttonStartStop = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
-        buttonStartStop.setChecked(true); //default stop counter
         buttonStartStop.addOnCheckedChangeListener(new MaterialButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MaterialButton button, boolean isChecked) {
-                if (button.getId() == R.id.buttonStartStopStepcounter && !isChecked) {
+                if (isChecked) {
                     if (mSensorACC != null) {
                         // Register the ACC listener
                         mSensorManager.registerListener(listener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
@@ -114,7 +114,7 @@ public class HomeFragment extends Fragment {
                     // Change button text and icon
                     buttonStartStop.setText(R.string.home_stop_stepcounter);
                     buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_stop));
-                } else if (button.getId() == R.id.buttonStartStopStepcounter && isChecked) {
+                } else {
                     // Unregister the listener
                     mSensorManager.unregisterListener(listener);
                     // Change button text and icon
