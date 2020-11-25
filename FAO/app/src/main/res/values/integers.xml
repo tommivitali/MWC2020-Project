@@ -2,4 +2,19 @@
 <resources>
     <integer name="saved_height_default_key">175</integer>
     <integer name="saved_weight_default_key">80</integer>
+    <integer name="saved_hour_1_default_key">00</integer>
+    <integer name="saved_minute_1_default_key">00</integer>
+    <integer name="saved_hour_2_default_key">07</integer>
+    <integer name="saved_hour_3_default_key">12</integer>
+    <integer name="saved_hour_4_default_key">20</integer>
+    <integer name="saved_hour_5_default_key">0</integer>
+    <integer name="saved_minute_2_default_key">0</integer>
+    <integer name="saved_minute_3_default_key">30</integer>
+    <integer name="saved_minute_4_default_key">0</integer>
+    <integer name="saved_minute_5_default_key">0</integer>
+    <integer name="saved_notification_1_default_key">0</integer>
+    <integer name="saved_notification_2_default_key">0</integer>
+    <integer name="saved_notification_3_default_key">0</integer>
+    <integer name="saved_notification_4_default_key">0</integer>
+    <integer name="saved_notification_5_default_key">0</integer>
 </resources>

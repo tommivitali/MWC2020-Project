@@ -35,14 +35,6 @@ import java.util.Date;
 
 public class SettingsFragment extends Fragment {
 
-    EditText time1, time2, time3, time4, time5;
-    MaterialCheckBox box1, box2, box3, box4, box5;
-    Time mSelectedTime;
-
-    public static int NOTIFICATION_ID = 0;
-//TODO put in db
-    private static int[][] notificationTime;
-
     public SharedPreferences sharedPref;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -50,8 +42,6 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
-        //initializing notification time
-        notificationTime = new int[5][2];
 
         // Get the SharedPreferences language value (if exists)
         String defaultLanguageValue = getString(R.string.saved_language_default_key);
@@ -127,195 +117,88 @@ public class SettingsFragment extends Fragment {
         });
 
 
-        //*notifications*//
-        time1 = (EditText) root.findViewById(R.id.time1); time1.setText("00:00");
-        time2 = (EditText) root.findViewById(R.id.time2); time2.setText("07:00");
-        time3 = (EditText) root.findViewById(R.id.time3); time3.setText("12:00");
-        time4 = (EditText) root.findViewById(R.id.time4); time4.setText("19:30");
-        time5 = (EditText) root.findViewById(R.id.time5); time5.setText("00:00");
-        box1 = (MaterialCheckBox) root.findViewById(R.id.checkbox1);
-        box2 = (MaterialCheckBox) root.findViewById(R.id.checkbox2);
-        box3 = (MaterialCheckBox) root.findViewById(R.id.checkbox3);
-        box4 = (MaterialCheckBox) root.findViewById(R.id.checkbox4);
-        box5 = (MaterialCheckBox) root.findViewById(R.id.checkbox5);
-
-    ////*notifications*/////////
-        time1.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = Integer.parseInt(time1.getText().toString().split(":")[0]);//myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = Integer.parseInt(time1.getText().toString().split(":")[1]);//myCalender.get(Calendar.MINUTE);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);//myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);//myCalender.set(Calendar.MINUTE, minute);
-                            time1.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-                //on change notifications attempt
-                if(box1.isChecked()){
-                    notificationTime[0][0] = Integer.parseInt(time1.getText().toString().split(":")[0]);
-                    notificationTime[0][1] = Integer.parseInt(time1.getText().toString().split(":")[1]);
-                }
-            }
-        });
-        time2.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = Integer.parseInt(time2.getText().toString().split(":")[0]);
-                int minute = Integer.parseInt(time2.getText().toString().split(":")[1]);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
-                            time2.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-            }
-        });
-        time3.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = Integer.parseInt(time3.getText().toString().split(":")[0]);
-                int minute = Integer.parseInt(time3.getText().toString().split(":")[1]);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
-                            time3.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-            }
-        });
-        time4.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = Integer.parseInt(time4.getText().toString().split(":")[0]);
-                int minute = Integer.parseInt(time4.getText().toString().split(":")[1]);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
-                            time4.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-            }
-        });
-        time5.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Calendar myCalender = Calendar.getInstance();
-                int hour = myCalender.get(Calendar.HOUR_OF_DAY);
-                int minute = myCalender.get(Calendar.MINUTE);
-                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
-                    @Override
-                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
-                        if (view.isShown()) {
-                            myCalender.set(Calendar.HOUR_OF_DAY, hourOfDay);
-                            myCalender.set(Calendar.MINUTE, minute);
-                            time5.setText(new SimpleDateFormat("HH:mm").format(myCalender.getTime()));
-                        }}
-                };
-                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
-                timePickerDialog.setTitle("Choose hour:");
-                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
-                timePickerDialog.show();
-            }
-        });
-
-        box1.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked) {
-                    ///can't access class attribute from here!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-                    notificationTime[0][0] = Integer.parseInt(time1.getText().toString().split(":")[0]);
-                    notificationTime[0][1] = Integer.parseInt(time1.getText().toString().split(":")[1]);
-                }else
-                    notificationTime[0] = null;
-            }
-        });
-        box2.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time2.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-                    notificationTime[1][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
-                    notificationTime[1][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
-                }
-                else
-                    notificationTime[1] = null;
-            }
-        });
-        box3.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time3.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-                    notificationTime[2][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
-                    notificationTime[2][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
-                }
-                else
-                    notificationTime[2] = null;
-            }
-        });
-        box4.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time4.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-                    notificationTime[3][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
-                    notificationTime[3][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
-                }
-                else
-                    notificationTime[3] = null;
-            }
-        });
-        box5.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
-                if(isChecked) {
-                    LocalTime localTime = LocalTime.parse(time5.getText().toString(), DateTimeFormatter.ofPattern("HH:mm"));
-                    notificationTime[4][0] = localTime.get(ChronoField.CLOCK_HOUR_OF_DAY);
-                    notificationTime[4][1] = localTime.get(ChronoField.MINUTE_OF_HOUR);
-                }
-                else
-                    notificationTime[4] = null;
-            }
-        });
-
+        notificationSetup(R.integer.saved_hour_1_default_key, R.integer.saved_minute_1_default_key,
+                R.string.saved_hour_1_saved_key, R.string.saved_minute_1_saved_key,
+                R.integer.saved_notification_1_default_key, R.string.saved_notification_1_saved_key,
+                root.findViewById(R.id.time1), root.findViewById(R.id.checkbox1), false);
+        notificationSetup(R.integer.saved_hour_2_default_key, R.integer.saved_minute_2_default_key,
+                R.string.saved_hour_2_saved_key, R.string.saved_minute_2_saved_key,
+                R.integer.saved_notification_2_default_key, R.string.saved_notification_2_saved_key,
+                root.findViewById(R.id.time2), root.findViewById(R.id.checkbox2), false);
+        notificationSetup(R.integer.saved_hour_3_default_key, R.integer.saved_minute_3_default_key,
+                R.string.saved_hour_3_saved_key, R.string.saved_minute_3_saved_key,
+                R.integer.saved_notification_3_default_key, R.string.saved_notification_3_saved_key,
+                root.findViewById(R.id.time3), root.findViewById(R.id.checkbox3), false);
+        notificationSetup(R.integer.saved_hour_4_default_key, R.integer.saved_minute_4_default_key,
+                R.string.saved_hour_4_saved_key, R.string.saved_minute_4_saved_key,
+                R.integer.saved_notification_4_default_key, R.string.saved_notification_4_saved_key,
+                root.findViewById(R.id.time4), root.findViewById(R.id.checkbox4), false);
+        notificationSetup(R.integer.saved_hour_5_default_key, R.integer.saved_minute_5_default_key,
+                R.string.saved_hour_5_saved_key, R.string.saved_minute_5_saved_key,
+                R.integer.saved_notification_5_default_key, R.string.saved_notification_5_saved_key,
+                root.findViewById(R.id.time5), root.findViewById(R.id.checkbox5), true);
 
         return root;
     }
 
-    public static int[][] getNotificationTime() {
-        return notificationTime;
+    private String timeIntToString(int h, int m) {
+        Calendar myCalender = Calendar.getInstance();
+        myCalender.set(Calendar.HOUR_OF_DAY, h);
+        myCalender.set(Calendar.MINUTE, m);
+        return (new SimpleDateFormat("HH:mm")).format(myCalender.getTime());
+    }
+
+    private void notificationSetup(int defaultHour, int defaultMinute,
+                                   int savedKeyHour, int savedKeyMinute,
+                                   int defaultNotification, int savedKeyNotification,
+                                   EditText editTextTime, MaterialCheckBox checkBox,
+                                   boolean last) {
+
+        Integer defaultHourValue            = getResources().getInteger(defaultHour);
+        Integer defaultMinuteValue          = getResources().getInteger(defaultMinute);
+        Integer defaultNotificationValue    = getResources().getInteger(defaultNotification);
+        Integer hourShared                  = sharedPref.getInt(getString(savedKeyHour), defaultHourValue);
+        Integer minuteShared                = sharedPref.getInt(getString(savedKeyMinute), defaultMinuteValue);
+        Integer notificationShared          = sharedPref.getInt(getString(savedKeyNotification), defaultNotificationValue);
+
+        editTextTime.setText(timeIntToString(hourShared, minuteShared));
+        editTextTime.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                int hour = last ?
+                        Calendar.getInstance().HOUR_OF_DAY :
+                        Integer.parseInt(editTextTime.getText().toString().split(":")[0]);
+                int minute = last ?
+                        Calendar.getInstance().MINUTE :
+                        Integer.parseInt(editTextTime.getText().toString().split(":")[1]);
+                TimePickerDialog.OnTimeSetListener myTimeListener = new TimePickerDialog.OnTimeSetListener() {
+                    @Override
+                    public void onTimeSet(TimePicker view, int hourOfDay, int minute) {
+                        if (view.isShown()) {
+                            editTextTime.setText(timeIntToString(hourOfDay, minute));
+
+                            SharedPreferences.Editor editor = sharedPref.edit();
+                            editor.putInt(getString(savedKeyHour), hourOfDay);
+                            editor.putInt(getString(savedKeyMinute), minute);
+                            editor.apply();
+                        }
+                    }
+                };
+                TimePickerDialog timePickerDialog = new TimePickerDialog(getActivity(), android.R.style.Theme_Holo_Light_Dialog_NoActionBar, myTimeListener, hour, minute, true);
+                timePickerDialog.setTitle("Choose hour:");
+                timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
+                timePickerDialog.show();
+            }
+        });
+
+        checkBox.setChecked(notificationShared == 1);
+        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView,boolean isChecked) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt(getString(savedKeyNotification), isChecked ? 1 : 0);
+                editor.apply();
+            }
+        });
     }
 }
