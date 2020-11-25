@@ -1,15 +1,10 @@
 package com.toedro.fao.ui.home;
 
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
 import android.content.Context;
-import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.sip.SipSession;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
@@ -20,7 +15,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
-import androidx.core.app.NotificationCompat;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
@@ -38,13 +33,11 @@ import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 
-import okhttp3.internal.Util;
-
 public class HomeFragment extends Fragment {
 
     private TextView stepsCountTextView;
     private TextView kindOfCountTextView;
-    private MaterialButton StartStop;
+    private MaterialButton buttonStartStop;
 
     static int stepsCompleted = 0;
 
@@ -54,9 +47,6 @@ public class HomeFragment extends Fragment {
     private SensorEventListener listener;
     // Step Detector sensor
     private Sensor mSensorStepDetector;
-
-    public String NOTIFICATION_CHANNEL_ID = "notification channel id";
-    private NotificationManager mNotifyManager;
 
     private ProgressTypeHome pth;
 
@@ -102,9 +92,9 @@ public class HomeFragment extends Fragment {
         listener = new StepCounterListener(stepsCountTextView);
 
         // Toggle button
-        StartStop = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
-        StartStop.setChecked(true); //default stop counter
-        StartStop.addOnCheckedChangeListener(new MaterialButton.OnCheckedChangeListener() {
+        buttonStartStop = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
+        buttonStartStop.setChecked(true); //default stop counter
+        buttonStartStop.addOnCheckedChangeListener(new MaterialButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MaterialButton button, boolean isChecked) {
                 if (button.getId() == R.id.buttonStartStopStepcounter && !isChecked) {
@@ -121,27 +111,20 @@ public class HomeFragment extends Fragment {
                     } else {
                         Toast.makeText(getContext(), R.string.step_not_available, Toast.LENGTH_SHORT).show();
                     }
-                    //change text button
-                    StartStop.setText(R.string.home_stop_stepcounter);
+                    // Change button text and icon
+                    buttonStartStop.setText(R.string.home_stop_stepcounter);
+                    buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_stop));
                 } else if (button.getId() == R.id.buttonStartStopStepcounter && isChecked) {
                     // Unregister the listener
                     mSensorManager.unregisterListener(listener);
-                    StartStop.setText(R.string.home_start_stepcounter);
+                    // Change button text and icon
+                    buttonStartStop.setText(R.string.home_start_stepcounter);
+                    buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_play));
                 }
             }
         });
-        createNotificationChannel();
-
-        NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        //listener = new SipSession.Listener()
 
         return root;
-    }
-
-    @Override
-    public void onDestroyView (){
-        super.onDestroyView();
-        mSensorManager.unregisterListener(listener);
     }
 
     class StepCounterListener implements SensorEventListener {
@@ -223,10 +206,7 @@ public class HomeFragment extends Fragment {
         }
 
         @Override
-        public void onAccuracyChanged(Sensor sensor, int accuracy) {
-            //
-        }
-
+        public void onAccuracyChanged(Sensor sensor, int accuracy) { }
 
         public void peakDetection() {
             int windowSize = 20;
@@ -294,24 +274,5 @@ public class HomeFragment extends Fragment {
             mAndroidStepCounter += (int) step;
             Log.d("NUM STEPS ANDROID", "Num.steps: " + String.valueOf(mAndroidStepCounter));
         }
-    }
-    ///notifications
-    public void createNotificationChannel(){
-        mNotifyManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            NotificationChannel notificationChannel = new NotificationChannel(NOTIFICATION_CHANNEL_ID, "recipee notificetions",
-                    NotificationManager.IMPORTANCE_HIGH);
-            notificationChannel.enableLights(true);
-            notificationChannel.setLightColor(Color.YELLOW);
-            notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Your recipee is ready");
-            notificationChannel.setShowBadge(true);
-            mNotifyManager.createNotificationChannel(notificationChannel);
-        }
-    }
-    public NotificationCompat.Builder getNotificationBuilder(){
-        NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getContext(), NOTIFICATION_CHANNEL_ID)
-                .setContentTitle("Time to eat").setSmallIcon(R.drawable.ic_menu_recipes);
-        return notifyBuilder;
     }
 }
