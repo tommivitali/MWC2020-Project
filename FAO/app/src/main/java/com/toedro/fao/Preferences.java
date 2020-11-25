@@ -20,4 +20,18 @@ public class Preferences {
         String homeProgressTypeShared = sharedPref.getString(context.getString(R.string.saved_home_progress_type_saved_key), defaultHomeProgressTypeValue);
         return ProgressTypeHome.valueOf(homeProgressTypeShared);
     }
+
+    public static Integer getHeight(Activity activity, Context context) {
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Integer defaultHeightValue = context.getResources().getInteger(R.integer.saved_height_default_key);
+        Integer heightShared = sharedPref.getInt(context.getString(R.string.saved_height_saved_key), defaultHeightValue);
+        return heightShared;
+    }
+
+    public static Integer getWeight(Activity activity, Context context) {
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Integer defaultWeightValue = context.getResources().getInteger(R.integer.saved_weight_default_key);
+        Integer weightShared = sharedPref.getInt(context.getString(R.string.saved_weight_saved_key), defaultWeightValue);
+        return weightShared;
+    }
 }
