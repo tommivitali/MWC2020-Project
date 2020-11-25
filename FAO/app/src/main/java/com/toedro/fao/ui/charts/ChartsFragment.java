@@ -82,10 +82,8 @@ public class ChartsFragment extends Fragment {
         ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
         de = root.findViewById(R.id.chartsTextFieldDateEnd); //To
         // Set default date values
-        de.getEditText().setText(LocalDate.now().format(DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI))));
-        ds.getEditText().setText(LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI))));
-//        de.getEditText().setText(new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).format(LocalDate.now()));
-//        ds.getEditText().setText(new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).format(LocalDate.now().minusDays(5)));
+        de.getEditText().setText(LocalDate.now().format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
+        ds.getEditText().setText(LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
 
         final Calendar CalendarFrom = Calendar.getInstance(), CalendarTo = Calendar.getInstance();
         final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
@@ -100,11 +98,11 @@ public class ChartsFragment extends Fragment {
             }
 
             private void updateLabel() {
-                SimpleDateFormat sdf = new SimpleDateFormat(getResources().getString(R.string.date_layout_UI), Locale.US);
+                SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 ds.getEditText().setText(sdf.format(CalendarFrom.getTime()));
                 //parse date
                 try {
-                    From = new SimpleDateFormat(getResources().getString(R.string.date_layout_UI)).parse(ds.getEditText().getText().toString());
+                    From = new SimpleDateFormat(getString(R.string.date_layout_UI)).parse(ds.getEditText().getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
@@ -206,7 +204,7 @@ public class ChartsFragment extends Fragment {
     }
 
     public void loadBarData(BarChart chart){
-        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getResources().getString(R.string.date_layout_UI));
+        DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
 
         XAxis xAxis = chart.getXAxis();
         xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);

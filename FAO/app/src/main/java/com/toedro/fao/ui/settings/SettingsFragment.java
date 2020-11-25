@@ -54,7 +54,7 @@ public class SettingsFragment extends Fragment {
         notificationTime = new int[5][2];
 
         // Get the SharedPreferences language value (if exists)
-        String defaultLanguageValue = getResources().getString(R.string.saved_language_default_key);
+        String defaultLanguageValue = getString(R.string.saved_language_default_key);
         String languageShared = sharedPref.getString(getString(R.string.saved_language_saved_key), defaultLanguageValue);
         // Fill the languages dropdown
         String[] languages = new String[] {"Italian", "English"};
@@ -113,7 +113,7 @@ public class SettingsFragment extends Fragment {
         });
 
         // Get the home progress type and, if exists, select it in the RadioGroup
-        String defaultHomeProgressTypeValue = getResources().getString(R.string.saved_home_progress_type_default_key);
+        String defaultHomeProgressTypeValue = getString(R.string.saved_home_progress_type_default_key);
         String homeProgressTypeShared = sharedPref.getString(getString(R.string.saved_home_progress_type_saved_key), defaultHomeProgressTypeValue);
         RadioGroup rGroup = root.findViewById(R.id.progressGroup);
         rGroup.check(Utils.progressTypeHomeToId(ProgressTypeHome.valueOf(homeProgressTypeShared)));

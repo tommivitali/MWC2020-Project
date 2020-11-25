@@ -68,14 +68,13 @@ public class HomeFragment extends Fragment {
         stepsCountTextView = (TextView) root.findViewById(R.id.stepsCount);
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
 
-
         kindOfCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
-                        getResources().getString(R.string.home_calories_description) :
-                        getResources().getString(R.string.home_steps_description)
+                        getString(R.string.home_calories_description) :
+                        getString(R.string.home_steps_description)
         );
         stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
-                new SimpleDateFormat(getResources().getString(R.string.date_layout_DB))
+                new SimpleDateFormat(getString(R.string.date_layout_DB))
                         .format(new Date()));
         stepsCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
@@ -128,9 +127,6 @@ public class HomeFragment extends Fragment {
     }
 
     class StepCounterListener implements SensorEventListener {
-
-        private long lastUpdate = 0;
-
         public int mACCStepCounter = HomeFragment.stepsCompleted;
 
         ArrayList<Integer> mACCSeries = new ArrayList<Integer>();

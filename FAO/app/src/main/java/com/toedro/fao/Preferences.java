@@ -4,19 +4,21 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
 
+import androidx.core.content.ContextCompat;
+
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 public class Preferences {
     public static String getLanguage(Activity activity, Context context) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        String defaultLanguageValue = context.getResources().getString(R.string.saved_language_default_key);
+        String defaultLanguageValue = context.getString(R.string.saved_language_default_key);
         String languageShared = sharedPref.getString(context.getString(R.string.saved_language_saved_key), defaultLanguageValue);
         return languageShared;
     }
 
     public static ProgressTypeHome getProgressTypeHome(Activity activity, Context context) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        String defaultHomeProgressTypeValue = context.getResources().getString(R.string.saved_home_progress_type_default_key);
+        String defaultHomeProgressTypeValue = context.getString(R.string.saved_home_progress_type_default_key);
         String homeProgressTypeShared = sharedPref.getString(context.getString(R.string.saved_home_progress_type_saved_key), defaultHomeProgressTypeValue);
         return ProgressTypeHome.valueOf(homeProgressTypeShared);
     }
