@@ -32,6 +32,7 @@ import com.toedro.fao.ui.Utils;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -96,6 +97,15 @@ public class ChartsFragment extends Fragment {
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 textInputTo.getEditText().setText(sdf.format(calendarTo.getTime()));
+
+                // If the new To date is before the From date
+                DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
+                LocalDate dateFrom  = LocalDate.parse(textInputFrom.getEditText().getText(), dateFormatter);
+                LocalDate dateTo    = LocalDate.parse(textInputTo.getEditText().getText(), dateFormatter);
+
+                if(dateFrom.isAfter(dateTo)) { // Then there is a problem!
+                    textInputFrom.getEditText().setText(dateTo.minusDays(5).format(dateFormatter));
+                }
             }
         };
 
