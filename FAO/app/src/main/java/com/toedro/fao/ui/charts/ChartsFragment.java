@@ -46,16 +46,11 @@ import java.util.Locale;
 
 public class ChartsFragment extends Fragment {
 
-    public int todaySteps = 0;
-    TextView numStepsTextView;
     BarChart barChartViewStep, barChartViewCal;
     ProgressBar progressBar;
 
-    String current_time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
-    //check unit measure to show
     LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST
     MaterialButtonToggleGroup materialButtonToggleGroup;
-    private boolean steps = true; //default steps? TODO
 
     public List<StepsQueryResult> stepsByDay = null;
 
@@ -90,7 +85,6 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 CalendarFrom.set(Calendar.YEAR, year);
                 CalendarFrom.set(Calendar.MONTH, monthOfYear);
                 CalendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -100,13 +94,12 @@ public class ChartsFragment extends Fragment {
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 ds.getEditText().setText(sdf.format(CalendarFrom.getTime()));
-                //parse date
                 try {
-                    From = new SimpleDateFormat(getString(R.string.date_layout_UI)).parse(ds.getEditText().getText().toString());
+                    From = new SimpleDateFormat(getString(R.string.date_layout_UI))
+                            .parse(ds.getEditText().getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getContext(), From.toString(), Toast.LENGTH_SHORT).show(); //debug
             }
 
         };
@@ -115,23 +108,20 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 CalendarTo.set(Calendar.YEAR, year);
                 CalendarTo.set(Calendar.MONTH, monthOfYear);
                 CalendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
             private void updateLabel() {
-                String myFormat = "dd/MM/yyyy"; //In which you need put here
-                SimpleDateFormat sdf = new SimpleDateFormat(myFormat, Locale.US);
+                SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 de.getEditText().setText(sdf.format(CalendarTo.getTime()));
-                //parse date
                 try {
-                    To = new SimpleDateFormat("dd/MM/yyyy").parse(de.getEditText().getText().toString());
+                    To = new SimpleDateFormat(getString(R.string.date_layout_UI))
+                            .parse(de.getEditText().getText().toString());
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                Toast.makeText(getContext(), To.toString(), Toast.LENGTH_SHORT).show(); //debug
             }
         };
 
@@ -158,10 +148,9 @@ public class ChartsFragment extends Fragment {
         materialButtonToggleGroup.setSelectionRequired(true);
         //Case unckecked --> cal by default
         List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
-        if (ids.size() == 0){
+        if (ids.size() == 0) {
             progressBar.setVisibility(View.GONE);
             materialButtonToggleGroup.check(R.id.toggleCal);
-            steps = false;
             Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
             barChartViewCal.setFitBars(true);
             loadBarData(barChartViewCal);//
@@ -175,7 +164,6 @@ public class ChartsFragment extends Fragment {
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
                     progressBar.setVisibility(View.GONE);
-                    steps = true;
                     //Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
                     barChartViewStep.setFitBars(true);
                     loadBarData(barChartViewStep);//
@@ -188,7 +176,6 @@ public class ChartsFragment extends Fragment {
                 } else {// if (group.getCheckedButtonId() == R.id.toggleCal){
                     progressBar.setVisibility(View.GONE);
                     //Place code related to Cal button
-                    steps = false;
                    // Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
                     barChartViewCal.setFitBars(true);
                     loadBarData(barChartViewCal);//
@@ -238,7 +225,7 @@ public class ChartsFragment extends Fragment {
         int i = 0;
         for (StepsQueryResult entry : stepsByDay) {
             BarEntry val = new BarEntry(i++, Float.valueOf(
-                    steps ?
+                    materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps ?
                             entry.getSteps().toString() :
                             String.valueOf(Utils.convertStepsToCal(entry.getSteps()))
             ));
