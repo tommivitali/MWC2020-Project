@@ -1,6 +1,5 @@
 package com.toedro.fao.stepcounter;
 
-import android.content.res.Resources;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -9,14 +8,12 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.toedro.fao.App;
-import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
 import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
 

@@ -41,16 +41,13 @@ public class HomeFragment extends Fragment {
     private TextView kindOfCountTextView;
     private MaterialButton buttonStartStop;
 
-    static int stepsCompleted = 0;
-
     // ACC sensors
     private Sensor mSensorACC;
-    private SensorManager mSensorManager;
-    static StepCounterListener listener;
     // Step Detector sensor
     private Sensor mSensorStepDetector;
-
-    private ProgressTypeHome pth;
+    // Listener and SensorManager
+    private SensorManager mSensorManager;
+    private StepCounterListener listener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,7 +62,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        pth = Preferences.getProgressTypeHome(getActivity(), getContext());
+        ProgressTypeHome pth = Preferences.getProgressTypeHome(getActivity(), getContext());
 
         stepsCountTextView  = (TextView) root.findViewById(R.id.stepsCount);
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
@@ -76,7 +73,7 @@ public class HomeFragment extends Fragment {
                         getString(R.string.home_calories_description) :
                         getString(R.string.home_steps_description)
         );
-        stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
+        int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
                 new SimpleDateFormat(getString(R.string.date_layout_DB))
                         .format(new Date()));
         stepsCountTextView.setText(
