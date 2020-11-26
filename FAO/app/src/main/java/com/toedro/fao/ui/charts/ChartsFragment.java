@@ -148,7 +148,7 @@ public class ChartsFragment extends Fragment {
         List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
         if (ids.size() == 0) {
             materialButtonToggleGroup.check(R.id.toggleCal);
-            loadBarData(barChartViewCal);//
+            loadBarData(barChartViewCal);
             barChartViewCal.setFitBars(true);
             barChartViewCal.getDescription().setText("");
             barChartViewCal.getLegend().setEnabled(false);
