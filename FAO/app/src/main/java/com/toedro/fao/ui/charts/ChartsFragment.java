@@ -135,22 +135,6 @@ public class ChartsFragment extends Fragment {
                         calendarFrom.get(Calendar.DAY_OF_MONTH)).show();
             }
         });
-        
-        materialButtonToggleGroup.setSelectionRequired(true);
-
-        // Show calories by default
-        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-        ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
-        List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
-        if (ids.size() == 0) {
-            materialButtonToggleGroup.check(R.id.toggleCal);
-            loadBarData(barChartViewCal);
-            barChartViewCal.setFitBars(true);
-            barChartViewCal.getDescription().setText("");
-            barChartViewCal.getLegend().setEnabled(false);
-            ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
-            ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-        }
 
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
@@ -172,6 +156,10 @@ public class ChartsFragment extends Fragment {
                 }
             }
         });
+
+        // Show calories by default
+        materialButtonToggleGroup.setSelectionRequired(true);
+        materialButtonToggleGroup.check(R.id.toggleCal);
 
         return root;
     }
