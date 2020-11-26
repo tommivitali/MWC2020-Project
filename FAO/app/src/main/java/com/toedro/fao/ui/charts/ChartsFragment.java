@@ -3,6 +3,7 @@ package com.toedro.fao.ui.charts;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -39,14 +40,14 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static android.content.ContentValues.TAG;
+
 public class ChartsFragment extends Fragment {
 
     BarChart barChartViewStep, barChartViewCal;
     LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories;
     MaterialButtonToggleGroup materialButtonToggleGroup;
     com.google.android.material.textfield.TextInputLayout textInputFrom, textInputTo;
-
-    //Date From, To;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,14 +56,11 @@ public class ChartsFragment extends Fragment {
         // Get objects from layout
         ChartsGraphsLayoutSteps     = (LinearLayout) root.findViewById(R.id.StepsGraphsLayout);
         ChartsGraphsLayoutCalories  = (LinearLayout) root.findViewById(R.id.CalGraphsLayout);
-        barChartViewCal     = (BarChart) root.findViewById(R.id.BarCalChart);
-        barChartViewStep    = (BarChart) root.findViewById(R.id.BarStepChart);
-        textInputFrom       = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateStart);
-        textInputTo         = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateEnd);
-        materialButtonToggleGroup = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
-
-        //TODO: constrain: sempre <= oggi
-        //TODO: constrain: sempre <= TO
+        barChartViewCal             = (BarChart) root.findViewById(R.id.BarCalChart);
+        barChartViewStep            = (BarChart) root.findViewById(R.id.BarStepChart);
+        textInputFrom               = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateStart);
+        textInputTo                 = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateEnd);
+        materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
 
         // Set default date values
         textInputTo.getEditText().setText(LocalDate.now().format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
@@ -80,20 +78,10 @@ public class ChartsFragment extends Fragment {
                 calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
             }
-
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 textInputFrom.getEditText().setText(sdf.format(calendarFrom.getTime()));
-                /*
-                try {
-                    From = new SimpleDateFormat(getString(R.string.date_layout_UI))
-                            .parse(textInputFrom.getEditText().getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                 */
             }
-
         };
 
         final DatePickerDialog.OnDateSetListener dateTo = new DatePickerDialog.OnDateSetListener() {
@@ -108,31 +96,34 @@ public class ChartsFragment extends Fragment {
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
                 textInputTo.getEditText().setText(sdf.format(calendarTo.getTime()));
-                /*
-                try {
-                    To = new SimpleDateFormat(getString(R.string.date_layout_UI))
-                            .parse(textInputTo.getEditText().getText().toString());
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                 */
             }
         };
 
         textInputTo.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getContext(), dateTo, calendarTo
-                        .get(Calendar.YEAR), calendarTo.get(Calendar.MONTH),
-                        calendarTo.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), dateTo,
+                        calendarTo.get(Calendar.YEAR),
+                        calendarTo.get(Calendar.MONTH),
+                        calendarTo.get(Calendar.DAY_OF_MONTH));
+                dialog.getDatePicker().setMaxDate(new Date().getTime());
+                dialog.show();
             }
         });
         textInputFrom.getEditText().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new DatePickerDialog(getContext(), dateFrom, calendarFrom
-                        .get(Calendar.YEAR), calendarFrom.get(Calendar.MONTH),
-                        calendarFrom.get(Calendar.DAY_OF_MONTH)).show();
+                DatePickerDialog dialog = new DatePickerDialog(getContext(), dateFrom,
+                        calendarFrom.get(Calendar.YEAR),
+                        calendarFrom.get(Calendar.MONTH),
+                        calendarFrom.get(Calendar.DAY_OF_MONTH));
+                try {
+                    dialog.getDatePicker().setMaxDate(new SimpleDateFormat(getString(R.string.date_layout_UI))
+                            .parse(textInputTo.getEditText().getText().toString()).getTime());
+                    dialog.show();
+                } catch (Exception e) {
+                    Log.w(TAG, "Error parsing the TO date.", e);
+                }
             }
         });
 
