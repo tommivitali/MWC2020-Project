@@ -47,7 +47,6 @@ import java.util.Locale;
 public class ChartsFragment extends Fragment {
 
     BarChart barChartViewStep, barChartViewCal;
-    ProgressBar progressBar;
 
     LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST
     MaterialButtonToggleGroup materialButtonToggleGroup;
@@ -66,7 +65,6 @@ public class ChartsFragment extends Fragment {
 
         barChartViewCal = root.findViewById(R.id.BarCalChart);
         barChartViewStep = (BarChart) root.findViewById(R.id.BarStepChart);
-        progressBar = (ProgressBar)root.findViewById(R.id.loadingBar);
 
         ChartsGraphsLayoutCalories.setVisibility(View.GONE);
         ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
@@ -149,36 +147,28 @@ public class ChartsFragment extends Fragment {
         //Case unckecked --> cal by default
         List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
         if (ids.size() == 0) {
-            progressBar.setVisibility(View.GONE);
             materialButtonToggleGroup.check(R.id.toggleCal);
-            Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
-            barChartViewCal.setFitBars(true);
             loadBarData(barChartViewCal);//
+            barChartViewCal.setFitBars(true);
             barChartViewCal.getDescription().setText("");
             barChartViewCal.getLegend().setEnabled(false);
             ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
             ChartsGraphsLayoutSteps.setVisibility(View.GONE);
         }
+
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
-                    progressBar.setVisibility(View.GONE);
-                    //Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
+                    loadBarData(barChartViewStep);
                     barChartViewStep.setFitBars(true);
-                    loadBarData(barChartViewStep);//
                     barChartViewStep.getDescription().setText("");
                     barChartViewStep.getLegend().setEnabled(false);
-                    //Cartesian cartesian = createColumnChart(); //redo graph
-                    //anyChartViewStep.setChart(cartesian);
                     ChartsGraphsLayoutCalories.setVisibility(View.GONE);
                     ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-                } else {// if (group.getCheckedButtonId() == R.id.toggleCal){
-                    progressBar.setVisibility(View.GONE);
-                    //Place code related to Cal button
-                   // Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
+                } else {
+                    loadBarData(barChartViewCal);
                     barChartViewCal.setFitBars(true);
-                    loadBarData(barChartViewCal);//
                     barChartViewCal.getDescription().setText("");
                     barChartViewCal.getLegend().setEnabled(false);
                     ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
@@ -192,33 +182,28 @@ public class ChartsFragment extends Fragment {
 
     public void loadBarData(BarChart chart){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
-
-        XAxis xAxis = chart.getXAxis();
-        xAxis.setPosition(XAxis.XAxisPosition.BOTTOM);
-        xAxis.setDrawGridLines(false);
-        xAxis.setGranularity(1f); // only intervals of 1 day
-
-        YAxis leftAxis = chart.getAxisLeft();
-        leftAxis.setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        leftAxis.setSpaceTop(15f);
-        leftAxis.setAxisMinimum(0f); // this replaces setStartAtZero(true)
-
-        final ArrayList<String> xVals = new ArrayList<>();//Arrays.asList(bar_graph_names)
+        ArrayList<String> xVals = new ArrayList<String>(); // FINAL
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
 
-        //stepsByDay = App.getDBInstance().stepDAO().getSteps(); // se passi i giorni restituisce direttamente solo i dati corretti
+        // Graphical setup of the chart
+        chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
+        chart.getXAxis().setDrawGridLines(false);
+        chart.getXAxis().setGranularity(1f);
+        chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        chart.getAxisLeft().setSpaceTop(15f);
+        chart.getAxisLeft().setAxisMinimum(0f);
 
+        // Get data from the DB
         stepsByDay = App.getDBInstance().stepDAO().getSteps(
                 Utils.generateDateIntervals(
                         LocalDate.parse(ds.getEditText().getText(), dateFormatter),
                         LocalDate.parse(de.getEditText().getText(), dateFormatter)
                 ));
 
-        // If the interval is empty
+        // If the query returns no data
         if(stepsByDay.size() == 1 && stepsByDay.get(0).getSteps() == 0) {
             Snackbar.make(getView(), R.string.charts_error, Snackbar.LENGTH_LONG).show();
             chart.setData(null);
-            //chart.invalidate();
             return;
         }
 
@@ -234,19 +219,17 @@ public class ChartsFragment extends Fragment {
         }
 
         chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xVals));
-        String label = "steps";
-        BarDataSet dataset = new BarDataSet(yVals, label);
-        dataset.setColors(ColorTemplate.MATERIAL_COLORS);
-        dataset.setValueTextColor(Color.BLACK);
-        dataset.setValueTextSize(16f);
-        //return new BarData(dataset);//new BarData(xVals, dataset);
-        ArrayList<IBarDataSet> dataSets = new ArrayList<>();
-        dataSets.add(dataset);
+        BarDataSet barDataSet = new BarDataSet(yVals, getString(R.string.charts_label_plot));
+        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
+        barDataSet.setValueTextColor(Color.BLACK);
+        barDataSet.setValueTextSize(16f);
+        ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
+        dataSet.add(barDataSet);
 
-        BarData data = new BarData(dataSets);
-        data.setValueTextSize(10f);
-        data.setBarWidth(0.9f);
+        BarData barData = new BarData(dataSet);
+        barData.setValueTextSize(10f);
+        barData.setBarWidth(0.9f);
 
-        chart.setData(data);
+        chart.setData(barData);
     }
 }
