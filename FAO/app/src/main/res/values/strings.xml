@@ -24,6 +24,7 @@
     <string name="home_wanna_eat">Wanna Eat?</string>
     <string name="home_start_stepcounter">Start stepcounter</string>
     <string name="home_stop_stepcounter">Stop stepcounter</string>
+    <string name="home_sensors_not_available">No sensors available</string>
     <!-- Charts -->
     <string name="charts_text_daterange">Range of dates</string>
     <string name="charts_date_to">To Date</string>
@@ -76,6 +77,4 @@
     <string name="title">Title</string>
     <string name="secondary_text">Secondary text</string>
     <string name="action_1">Go</string>
-    <string name="acc_not_available">accelerometer not available</string>
-    <string name="step_not_available">stepcounter not available</string>
 </resources>
