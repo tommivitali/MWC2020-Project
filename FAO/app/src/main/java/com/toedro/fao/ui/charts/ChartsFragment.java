@@ -64,10 +64,18 @@ public class ChartsFragment extends Fragment {
         materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
 
         // Set default date values
-        textInputTo.getEditText().setText(LocalDate.now().format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
-        textInputFrom.getEditText().setText(LocalDate.now().minusDays(5).format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
+        LocalDate defaultDateTo     = LocalDate.now();
+        LocalDate defaultDateFrom   = LocalDate.now().minusDays(5);
+        textInputTo.getEditText().setText(defaultDateTo.format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
+        textInputFrom.getEditText().setText(defaultDateFrom.format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
 
         Calendar calendarFrom   = Calendar.getInstance();
+        // Set initial values for the first time the user click in the from date selection
+        /*
+        calendarFrom.set(Calendar.YEAR, defaultDateFrom.getYear());
+        calendarFrom.set(Calendar.MONTH, defaultDateFrom.getMonthValue());
+        calendarFrom.set(Calendar.DAY_OF_MONTH, defaultDateFrom.getDayOfMonth());
+        */
         Calendar calendarTo     = Calendar.getInstance();
 
         final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
@@ -78,6 +86,7 @@ public class ChartsFragment extends Fragment {
                 calendarFrom.set(Calendar.MONTH, monthOfYear);
                 calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
+                generateChart();
             }
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
@@ -93,6 +102,7 @@ public class ChartsFragment extends Fragment {
                 calendarTo.set(Calendar.MONTH, monthOfYear);
                 calendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
+                generateChart();
             }
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
@@ -140,21 +150,7 @@ public class ChartsFragment extends Fragment {
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if (group.getCheckedButtonId() == R.id.toggleSteps) {
-                    loadBarData(barChartViewStep);
-                    barChartViewStep.setFitBars(true);
-                    barChartViewStep.getDescription().setText("");
-                    barChartViewStep.getLegend().setEnabled(false);
-                    ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-                    ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-                } else {
-                    loadBarData(barChartViewCal);
-                    barChartViewCal.setFitBars(true);
-                    barChartViewCal.getDescription().setText("");
-                    barChartViewCal.getLegend().setEnabled(false);
-                    ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
-                    ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-                }
+                generateChart();
             }
         });
 
@@ -165,7 +161,27 @@ public class ChartsFragment extends Fragment {
         return root;
     }
 
-    public void loadBarData(BarChart chart){
+    private void generateChart() {
+        if (materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps) {
+            loadBarData(barChartViewStep);
+            barChartViewStep.setFitBars(true);
+            barChartViewStep.getDescription().setText("");
+            barChartViewStep.getLegend().setEnabled(false);
+            ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+            ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
+        } else if(materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleCal) {
+            loadBarData(barChartViewCal);
+            barChartViewCal.setFitBars(true);
+            barChartViewCal.getDescription().setText("");
+            barChartViewCal.getLegend().setEnabled(false);
+            ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
+            ChartsGraphsLayoutSteps.setVisibility(View.GONE);
+        }
+        barChartViewStep.invalidate();
+        barChartViewCal.invalidate();
+    }
+
+    private void loadBarData(BarChart chart){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
         ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
