@@ -60,46 +60,38 @@ public class MainActivity extends AppCompatActivity {
         ////////////////NOTIFICATIONS////////////////////
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        int hour = 11, min = 33; //hour of the alarms
+        int hour = 14, min = 40; //hour of the alarms
         long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
+        Intent notifyIntent2 = new Intent(this, AlarmReceiver.class);
+        Intent notifyIntent3 = new Intent(this, AlarmReceiver.class);
 
-        setDailyAlarmOn(this, setNotifyAlarm(hour, min).getTimeInMillis(), repeatInterval);
-        setAlarm(setNotifyAlarm(hour, min+1), repeatInterval, NOTIFICATION_ID);
-        setAlarm(setNotifyAlarm(hour, min + 2), repeatInterval, NOTIFICATION_ID + 1);
+        setAlarm(setNotifyAlarm(hour, min), repeatInterval, NOTIFICATION_ID, notifyIntent);
+        setAlarm(setNotifyAlarm(hour, min + 1), repeatInterval, NOTIFICATION_ID + 1,
+                new Intent(this, AlarmReceiver.class));//this do not works
+        setAlarm(setNotifyAlarm(hour, min + 2), repeatInterval, NOTIFICATION_ID + 2, notifyIntent2);
+        setAlarm(setNotifyAlarm(hour, min + 5), repeatInterval, NOTIFICATION_ID + 3, notifyIntent3);
 
         alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
                 PendingIntent.FLAG_NO_CREATE) != null);
         Toast.makeText(this, "alarm is " + alarmUp, Toast.LENGTH_LONG).show();
     }
 
-    public void setDailyAlarmOn(Context context, long alarmTime, long repeatTime) {
-        Intent notifyIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent notifyPendingIntent = PendingIntent.getBroadcast
-                (this, NOTIFICATION_ID, notifyIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-
-        if (Build.VERSION.SDK_INT >= 23 && alarmManager != null) {
-            alarmManager.setRepeating(AlarmManager.RTC, alarmTime, repeatTime, notifyPendingIntent); //RTC_WAKEUP
-        } else {
-            alarmManager.setRepeating(AlarmManager.RTC, alarmTime, repeatTime, notifyPendingIntent);
-            alarmManager.cancel(notifyPendingIntent);//to remove the alarm
-        }
-    }
-    public void setAlarm(Calendar time, long repeatingTime,int pk) {
+    public void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent) {
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         if((Build.VERSION.SDK_INT >= 23 || android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
                 && alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC, time.getTimeInMillis(), repeatingTime, pendingIntent);
-        }else //notifications for older versions?
+        }else { //notifications for older versions?
             manager.setRepeating(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), repeatingTime, pendingIntent);
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
-    public void cancelAlarm(int pk) {
+    public void cancelAlarm(int pk, Intent notifyIntent) {
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, alarmIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, notifyIntent, 0);
         manager.cancel(pendingIntent);
     }
 
@@ -138,7 +130,6 @@ public class MainActivity extends AppCompatActivity {
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
     }
-
     //END NOTIFICATIONS//////////////////////////////////////////////////////////////////
 
     @Override

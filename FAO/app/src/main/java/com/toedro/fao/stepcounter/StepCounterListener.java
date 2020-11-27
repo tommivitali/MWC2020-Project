@@ -35,7 +35,7 @@ public class StepCounterListener implements SensorEventListener {
     private String day;
     private String hour;
 
-    private boolean active = false;
+    private static boolean active = false;
 
     // Constructor, get steps completed, TextView and ProgressTypeHome as args
     private StepCounterListener(int steps, TextView tv, ProgressTypeHome pth)  throws StepCounterListenerException {
@@ -73,7 +73,7 @@ public class StepCounterListener implements SensorEventListener {
     public void deactivate() {
         active = false;
     }
-    public boolean isActive() {
+    public static boolean isActive() {
         return active;
     }
 

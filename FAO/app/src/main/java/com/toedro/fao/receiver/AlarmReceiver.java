@@ -23,11 +23,13 @@ import java.util.concurrent.TimeUnit;
 public class AlarmReceiver extends BroadcastReceiver {
 
     private NotificationManager mNotificationManager;
+    private int count = 0; //for debug
 
     @Override
     public void onReceive(Context context, Intent intent) {
         mNotificationManager = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
         deliverNotification(context);
+        count++;
     }
     private void deliverNotification(Context context) {
         Intent contentIntent = new Intent(context, MainActivity.class);
@@ -40,7 +42,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         return new NotificationCompat.Builder(context, MainActivity.getPrimaryChannelId())
                 .setSmallIcon(R.drawable.ic_menu_recipes)
                 .setContentTitle("Stand Up Alert")
-                .setContentText("You should stand up and walk around now! " + MainActivity.getNotificationId())
+                .setContentText("You should stand up and walk around now! " + count)
                 .setContentIntent(intent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)
