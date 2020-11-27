@@ -3,14 +3,11 @@ package com.toedro.fao.ui.charts;
 import android.app.DatePickerDialog;
 import android.graphics.Color;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
-import android.widget.EditText;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,7 +23,6 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
-import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
@@ -49,13 +45,12 @@ public class ChartsFragment extends Fragment {
     public int todaySteps = 0;
     TextView numStepsTextView;
     BarChart barChartViewStep, barChartViewCal;
-    ProgressBar progressBar;
 
     String current_time = new SimpleDateFormat("yyyy-MM-dd").format(new Date());
     //check unit measure to show
     LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories; //TEST
     MaterialButtonToggleGroup materialButtonToggleGroup;
-    private boolean steps = true; //default steps? TODO
+    private boolean steps = true; //default cals
 
     public List<StepsQueryResult> stepsByDay = null;
 
@@ -71,14 +66,11 @@ public class ChartsFragment extends Fragment {
 
         barChartViewCal = root.findViewById(R.id.BarCalChart);
         barChartViewStep = (BarChart) root.findViewById(R.id.BarStepChart);
-        progressBar = (ProgressBar)root.findViewById(R.id.loadingBar);
 
         ChartsGraphsLayoutCalories.setVisibility(View.GONE);
         ChartsGraphsLayoutSteps.setVisibility(View.INVISIBLE);
 
         //DATEPICKERS  /////////////////////////////////////////////////////////////////////////////
-        //TODO: default TO = data di oggi , constrain: sempre <= oggi
-        //TODO: default From = data di 7 giorni fa, constrain: sempre <= TO
         ds = root.findViewById(R.id.chartsTextFieldDateStart); //From
         de = root.findViewById(R.id.chartsTextFieldDateEnd); //To
         // Set default date values
@@ -92,7 +84,6 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 CalendarFrom.set(Calendar.YEAR, year);
                 CalendarFrom.set(Calendar.MONTH, monthOfYear);
                 CalendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -117,7 +108,6 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
                                   int dayOfMonth) {
-                // TODO Auto-generated method stub
                 CalendarTo.set(Calendar.YEAR, year);
                 CalendarTo.set(Calendar.MONTH, monthOfYear);
                 CalendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
@@ -161,7 +151,6 @@ public class ChartsFragment extends Fragment {
         //Case unckecked --> cal by default
         List<Integer> ids = materialButtonToggleGroup.getCheckedButtonIds();
         if (ids.size() == 0){
-            progressBar.setVisibility(View.GONE);
             materialButtonToggleGroup.check(R.id.toggleCal);
             steps = false;
             Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
@@ -176,7 +165,6 @@ public class ChartsFragment extends Fragment {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
                 if (group.getCheckedButtonId() == R.id.toggleSteps) {
-                    progressBar.setVisibility(View.GONE);
                     steps = true;
                     //Toast.makeText(getContext(), "STEPS", Toast.LENGTH_SHORT).show(); //debug
                     barChartViewStep.setFitBars(true);
@@ -188,7 +176,6 @@ public class ChartsFragment extends Fragment {
                     ChartsGraphsLayoutCalories.setVisibility(View.GONE);
                     ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
                 } else {// if (group.getCheckedButtonId() == R.id.toggleCal){
-                    progressBar.setVisibility(View.GONE);
                     //Place code related to Cal button
                     steps = false;
                    // Toast.makeText(getContext(), "CAL", Toast.LENGTH_SHORT).show(); //debug
@@ -242,7 +229,7 @@ public class ChartsFragment extends Fragment {
             BarEntry val = new BarEntry(i++, Float.valueOf(
                     steps ?
                             entry.getSteps().toString() :
-                            String.valueOf(Utils.convertStepsToCal(entry.getSteps()))
+                            String.valueOf(Utils.convertStepsToCal(entry.getSteps(), getActivity(), getContext()))
             ));
             xVals.add(entry.getDay());
             yVals.add(val);

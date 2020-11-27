@@ -24,6 +24,7 @@
     <string name="home_wanna_eat">Wanna Eat?</string>
     <string name="home_start_stepcounter">Start stepcounter</string>
     <string name="home_stop_stepcounter">Stop stepcounter</string>
+    <string name="home_sensors_not_available">No sensors available</string>
     <!-- Charts -->
     <string name="charts_text_daterange">Range of dates</string>
     <string name="charts_date_to">To Date</string>
@@ -47,6 +48,21 @@
     <string name="saved_height_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.height</string>
     <string name="saved_weight_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.weight</string>
     <string name="saved_home_progress_type_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hpt</string>
+    <string name="saved_hour_1_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour1</string>
+    <string name="saved_hour_2_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour2</string>
+    <string name="saved_hour_3_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour3</string>
+    <string name="saved_hour_4_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour4</string>
+    <string name="saved_hour_5_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour5</string>
+    <string name="saved_minute_1_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minute1</string>
+    <string name="saved_minute_2_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minute2</string>
+    <string name="saved_minute_3_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minute3</string>
+    <string name="saved_minute_4_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minute4</string>
+    <string name="saved_minute_5_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minute5</string>
+    <string name="saved_notification_1_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification1</string>
+    <string name="saved_notification_2_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification2</string>
+    <string name="saved_notification_3_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification3</string>
+    <string name="saved_notification_4_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification4</string>
+    <string name="saved_notification_5_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification5</string>
     <!-- Date Layout -->
     <string name="date_layout_DB">yyyy-MM-dd</string>
     <string name="date_layout_UI">dd/MM/yyyy</string>
@@ -61,6 +77,7 @@
     <string name="title">Title</string>
     <string name="secondary_text">Secondary text</string>
     <string name="action_1">Go</string>
+    <string name="charts_label_plot">steps</string>
     <string name="acc_not_available">accelerometer not available</string>
     <string name="step_not_available">stepcounter not available</string>
 </resources>

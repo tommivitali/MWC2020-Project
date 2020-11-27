@@ -1,21 +1,23 @@
 package com.toedro.fao.ui.home;
 
+import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
+import android.app.PendingIntent;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Color;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
-import android.net.sip.SipSession;
-import android.os.Build;
 import android.os.Bundle;
 import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -26,6 +28,7 @@ import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
 import com.toedro.fao.App;
+import com.toedro.fao.MainActivity;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
@@ -37,8 +40,6 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.TimeZone;
-
-import okhttp3.internal.Util;
 
 public class HomeFragment extends Fragment {
 
@@ -55,14 +56,17 @@ public class HomeFragment extends Fragment {
     // Step Detector sensor
     private Sensor mSensorStepDetector;
 
-    public String NOTIFICATION_CHANNEL_ID = "notification channel id";
-    private NotificationManager mNotifyManager;
+    //public String NOTIFICATION_CHANNEL_ID = "notification channel id";
+    //private NotificationManager mNotifyManager;
 
     private ProgressTypeHome pth;
+    AlarmManager alarmManager;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
+//TEST TODO
+        super .onCreate(savedInstanceState);
 
         // Button to go scanning barcode
         MaterialButton buttonScanBarcode = (MaterialButton) root.findViewById(R.id.buttonScanBarcode);
@@ -89,7 +93,7 @@ public class HomeFragment extends Fragment {
                         .format(new Date()));
         stepsCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
-                        String.valueOf(Utils.convertStepsToCal(stepsCompleted)) :
+                        String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
                         String.valueOf(stepsCompleted)
         );
 
@@ -130,10 +134,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         });
-        createNotificationChannel();
-
-        NotificationCompat.Builder notifyBuilder = getNotificationBuilder();
-        //listener = new SipSession.Listener()
 
         return root;
     }
@@ -269,7 +269,7 @@ public class HomeFragment extends Fragment {
                         // Update the TextView
                         stepsCountTextView.setText(String.valueOf(
                                 pth == ProgressTypeHome.KCAL ?
-                                        Utils.convertStepsToCal(mACCStepCounter) :
+                                        Utils.convertStepsToCal(mACCStepCounter, getActivity(), getContext()) :
                                         mACCStepCounter
                         ));
 
@@ -280,12 +280,6 @@ public class HomeFragment extends Fragment {
                 }
             }
         }
-        //TODO delete this and replace everything from database
-        private double convertCal(int steps) {
-            //TODO get correct equation
-            return steps*0.5;
-        }
-
 
         // Calculate the number of steps from the step detector
         private void countSteps(float step) {
@@ -295,7 +289,7 @@ public class HomeFragment extends Fragment {
             Log.d("NUM STEPS ANDROID", "Num.steps: " + String.valueOf(mAndroidStepCounter));
         }
     }
-    ///notifications
+    /*notifications
     public void createNotificationChannel(){
         mNotifyManager = (NotificationManager) getActivity().getSystemService(getActivity().NOTIFICATION_SERVICE);
         if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
@@ -313,5 +307,5 @@ public class HomeFragment extends Fragment {
         NotificationCompat.Builder notifyBuilder = new NotificationCompat.Builder(getContext(), NOTIFICATION_CHANNEL_ID)
                 .setContentTitle("Time to eat").setSmallIcon(R.drawable.ic_menu_recipes);
         return notifyBuilder;
-    }
+    }*/
 }

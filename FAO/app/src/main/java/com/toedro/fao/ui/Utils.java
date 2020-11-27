@@ -1,5 +1,7 @@
 package com.toedro.fao.ui;
 
+import android.app.Activity;
+import android.content.Context;
 import android.content.res.Resources;
 import android.util.DisplayMetrics;
 
@@ -13,6 +15,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 import java.util.stream.IntStream;
+import com.toedro.fao.Preferences;
 
 public class Utils {
     public static int convertDpToPixel(float dp) {
@@ -22,7 +25,20 @@ public class Utils {
     }
 
     public static double convertStepsToCal(int steps) {
-        return steps * 0.5;
+        double speed = 3.0;
+
+        return steps * 0.4 * speed;
+    }
+    public static double convertStepsToCal(int steps, Activity activity, Context context) {
+        //Calories Burned = #steps * .04 * BMI * AgeFactor * Speed
+        int height = Preferences.getHeight(activity, context);
+        int weight = Preferences.getWeight(activity, context);
+        //BMI= Weight (kg)/ [height (m]^2
+        double BMI = weight/Math.pow(height/100,2);
+        //The average walking speed of a person is 3.0 mph.
+        double speed = 3.0;
+
+        return steps * 0.4 * BMI * speed;
     }
 
     public static int progressTypeHomeToId(ProgressTypeHome type) {
