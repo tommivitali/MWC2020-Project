@@ -26,19 +26,35 @@ public class Utils {
 
     public static double convertStepsToCal(int steps) {
         double speed = 3.0;
-
         return steps * 0.4 * speed;
     }
+    //new one
     public static double convertStepsToCal(int steps, Activity activity, Context context) {
+        //in media si bruciano 55cal(Cal?)/km, 1km every 1243 steps
         //Calories Burned = #steps * .04 * BMI * AgeFactor * Speed
-        int height = Preferences.getHeight(activity, context);
+        //average stride length / height = 0.43 (all in inches| 1in = 2.54cm; 1cm = 0,3937in)
+        //if you weigh 175 pounds, the calculation would look like this: 0.57 x 175 = 99.75 calories per mile.
+        // the calculation would look like this for a person who burns 87.5 calories per mile and walks a mile in 1,400 steps: 87.5 calories per mile / 1,400 steps per mile = 0.063 calories per step.
+        //MET, vVo2Max, VO2Max, KCal/min: MET = vVO2Max = VO2Max / 3.5 ~= kCalBurnt / (bodyMassKg * timePerformingHours) Kcal/Min
+        // ~= 5 * bodyMassKg * VO2 / 1000; VO2 ~= (currentHeartRate / MaxHeartRate) * VO2Max; MaxHeartRate ~= 210 - (0.8 * ageYears)
+        //calories burned = distance run (kilometres) x weight of runner (kilograms) x 1.036
+        //Kcal ~= METS * bodyMassKg * timePerformingHours; METS = costante che per camminata va dalle 1.8 alle 8.8: 1.8=(1km/h); 3.0 = (4.8km/h); 8.8 = (9km/h)
+        double height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
         //BMI= Weight (kg)/ [height (m]^2
-        double BMI = weight/Math.pow(height/100,2);
+        double BMI = weight/Math.pow(height,2);
         //The average walking speed of a person is 3.0 mph.
-        double speed = 3.0;
-
-        return steps * 0.4 * BMI * speed;
+        double speed = 4.8;
+        //in Cal(kcal)
+        return steps *0.57 * height*( height*0.3937*0.43)*1000; //steps * 0.4 * BMI * speed;
+    }
+    /*returns rounded Basal Metabolic Rate:
+    kcal(Cal) burned during 24h by doing nothing*/
+    public static double calculate_BMR(Activity activity, Context context, int age, boolean male){
+        int sex = male? 5 : -161;   //costante basata sul sesso dell'individuo
+        int height = Preferences.getHeight(activity, context);
+        int weight = Preferences.getWeight(activity, context);
+        return (10*weight)+(6.25*height)-(5*age)+sex;
     }
 
     public static int progressTypeHomeToId(ProgressTypeHome type) {

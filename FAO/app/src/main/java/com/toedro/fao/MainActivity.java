@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
         ////////////////NOTIFICATIONS////////////////////
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        int hour = 14, min = 40; //hour of the alarms
+        int hour = 16, min = 14; //hour of the alarms
         long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
         Intent notifyIntent2 = new Intent(this, AlarmReceiver.class);
@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity {
 
         alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
                 PendingIntent.FLAG_NO_CREATE) != null);
-        Toast.makeText(this, "alarm is " + alarmUp, Toast.LENGTH_LONG).show();
+        //Toast.makeText(this, "alarm is " + alarmUp, Toast.LENGTH_LONG).show();
     }
 
     public void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent) {
@@ -107,10 +107,10 @@ public class MainActivity extends AppCompatActivity {
         calendar.set(Calendar.HOUR_OF_DAY, hour);
         calendar.set(Calendar.MINUTE, min);
         calendar.set(Calendar.SECOND, 0);
-        /*if(Calendar.getInstance().after(calendar)){
+        if(Calendar.getInstance().after(calendar)){
             //if past Move to tomorrow
             calendar.add(Calendar.DATE, 1);
-        }*/
+        }
         return calendar;
     }
     public void createNotificationChannel() {
