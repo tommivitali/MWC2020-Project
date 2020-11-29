@@ -5,18 +5,11 @@ import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.content.pm.PackageManager;
-import android.graphics.Color;
 
 import androidx.core.app.NotificationCompat;
 
 import com.toedro.fao.MainActivity;
 import com.toedro.fao.R;
-
-import java.util.Calendar;
-import java.util.Date;
-import java.util.concurrent.TimeUnit;
 
 public class AlarmReceiver extends BroadcastReceiver {
 
@@ -42,7 +35,7 @@ public class AlarmReceiver extends BroadcastReceiver {
         return new NotificationCompat.Builder(context, MainActivity.getPrimaryChannelId())
                 .setSmallIcon(R.drawable.ic_menu_recipes)
                 .setContentTitle("Stand Up Alert")
-                .setContentText("You should stand up and walk around now! " + count)
+                .setContentText("You should stand up read recipe now! " + count)
                 .setContentIntent(intent)
                 .setPriority(NotificationCompat.PRIORITY_HIGH)
                 .setAutoCancel(true)

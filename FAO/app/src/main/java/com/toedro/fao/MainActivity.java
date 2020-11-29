@@ -59,7 +59,7 @@ public class MainActivity extends AppCompatActivity {
         // Notifications
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        int hour = 17, min = 45; //hour of the alarms
+        int hour = 17, min = 10; //hour of the alarms
         long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
         Intent notifyIntent2 = new Intent(this, AlarmReceiver.class);
@@ -124,7 +124,7 @@ public class MainActivity extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notifies every 15 minutes to stand up and walk");
+            notificationChannel.setDescription("Notifies test");
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
     }
