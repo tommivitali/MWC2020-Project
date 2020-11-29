@@ -78,7 +78,7 @@ public class HomeFragment extends Fragment {
                         .format(new Date()));
         stepsCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
-                        String.valueOf(Utils.convertStepsToCal(stepsCompleted)) :
+                        String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
                         String.valueOf(stepsCompleted)
         );
 
@@ -90,7 +90,7 @@ public class HomeFragment extends Fragment {
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         // Get listener instance, and check if it is already activated
-        listener = StepCounterListener.getInstance(stepsCompleted, stepsCountTextView, pth);
+        listener = StepCounterListener.getInstance(stepsCompleted, stepsCountTextView, pth, getContext(), getActivity());
         if(listener.isActive()) {
             buttonStartStop.setChecked(true);
             buttonStartStop.setText(R.string.home_stop_stepcounter);

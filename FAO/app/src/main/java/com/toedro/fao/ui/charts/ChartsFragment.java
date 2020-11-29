@@ -212,7 +212,7 @@ public class ChartsFragment extends Fragment {
             BarEntry val = new BarEntry(i++, Float.valueOf(
                     materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps ?
                             entry.getSteps().toString() :
-                            String.valueOf(Utils.convertStepsToCal(entry.getSteps()))
+                            String.valueOf(Utils.convertStepsToCal(entry.getSteps(), getActivity(), getContext()))
             ));
             xVals.add(entry.getDay());
             yVals.add(val);

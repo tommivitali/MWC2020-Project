@@ -9,35 +9,31 @@ import android.content.Intent;
 import android.graphics.Color;
 import android.os.Build;
 import android.os.Bundle;
-import android.view.View;
 import android.view.Menu;
 import android.widget.Toast;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
-import com.google.android.material.snackbar.Snackbar;
-import com.google.android.material.navigation.NavigationView;
-import com.toedro.fao.receiver.AlarmReceiver;
-import com.toedro.fao.ui.settings.SettingsFragment;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.Toolbar;
+import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
-import androidx.drawerlayout.widget.DrawerLayout;
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.widget.Toolbar;
+
+import com.google.android.material.navigation.NavigationView;
+import com.toedro.fao.receiver.AlarmReceiver;
 
 import java.util.Calendar;
 
 public class MainActivity extends AppCompatActivity {
 
-    private AppBarConfiguration mAppBarConfiguration;
-
-    private static AlarmManager alarmManager;
-    private NotificationManager mNotificationManager;
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     private static final int NOTIFICATION_ID = 0;
+    private NotificationManager mNotificationManager;
+    private static AlarmManager alarmManager;
     private boolean alarmUp;
+
+    private AppBarConfiguration mAppBarConfiguration;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,51 +56,40 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
-        // NOTIFICATIONS
-        mNotificationManager = (NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        // Notifications
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        int hour = 18, min = 23; //hour of the alarms
-        long repeatInterval = 5000;//AlarmManager.INTERVAL_DAY;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        int hour = 17, min = 45; //hour of the alarms
+        long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
+        Intent notifyIntent2 = new Intent(this, AlarmReceiver.class);
+        Intent notifyIntent3 = new Intent(this, AlarmReceiver.class);
 
-
-        setAlarm(setNotifyAlarm(hour, min+1), repeatInterval, NOTIFICATION_ID);
-        setAlarm(setNotifyAlarm(hour, min + 2), repeatInterval, NOTIFICATION_ID + 1);
+        setAlarm(setNotifyAlarm(hour, min), repeatInterval, NOTIFICATION_ID, notifyIntent);
+        setAlarm(setNotifyAlarm(hour, min + 1), repeatInterval, NOTIFICATION_ID + 1,
+                new Intent(this, AlarmReceiver.class));
+        setAlarm(setNotifyAlarm(hour, min + 2), repeatInterval, NOTIFICATION_ID + 2, notifyIntent2);
+        setAlarm(setNotifyAlarm(hour, min + 5), repeatInterval, NOTIFICATION_ID + 3, notifyIntent3);
 
         alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
                 PendingIntent.FLAG_NO_CREATE) != null);
-        Toast.makeText(this, "alarm is " + alarmUp, Toast.LENGTH_LONG).show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onSupportNavigateUp() {
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
-        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
-                || super.onSupportNavigateUp();
-    }
-
-    public void setAlarm(Calendar time, long repeatingTime,int pk) {
+    public void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent) {
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
-        if(Build.VERSION.SDK_INT >= 23 && alarmManager != null) {
+        if((Build.VERSION.SDK_INT >= 23 || android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
+                && alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC, time.getTimeInMillis(), repeatingTime, pendingIntent);
-        }else //notifications for older versions?
+        }else { //notifications for older versions?
             manager.setRepeating(AlarmManager.RTC_WAKEUP, time.getTimeInMillis(), repeatingTime, pendingIntent);
+            alarmManager.cancel(pendingIntent);
+        }
     }
 
-    public void cancelAlarm(int pk) {
+    public void cancelAlarm(int pk, Intent notifyIntent) {
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        Intent alarmIntent = new Intent(this, AlarmReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, alarmIntent, 0);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, notifyIntent, 0);
         manager.cancel(pendingIntent);
     }
 
@@ -139,9 +124,22 @@ public class MainActivity extends AppCompatActivity {
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription
-                    ("Notifies every 15 minutes to stand up and walk");
+            notificationChannel.setDescription("Notifies every 15 minutes to stand up and walk");
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        // Inflate the menu; this adds items to the action bar if it is present.
+        getMenuInflater().inflate(R.menu.main, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onSupportNavigateUp() {
+        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        return NavigationUI.navigateUp(navController, mAppBarConfiguration)
+                || super.onSupportNavigateUp();
     }
 }

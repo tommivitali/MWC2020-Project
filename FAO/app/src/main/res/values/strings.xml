@@ -78,4 +78,6 @@
     <string name="secondary_text">Secondary text</string>
     <string name="action_1">Go</string>
     <string name="charts_label_plot">steps</string>
+    <string name="channel_name">FAO</string>
+    <string name="channel_description">FAO Description</string>
 </resources>

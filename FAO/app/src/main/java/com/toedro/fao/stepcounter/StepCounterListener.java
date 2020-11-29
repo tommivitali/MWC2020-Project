@@ -1,5 +1,7 @@
 package com.toedro.fao.stepcounter;
 
+import android.app.Activity;
+import android.content.Context;
 import android.hardware.Sensor;
 import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
@@ -35,26 +37,33 @@ public class StepCounterListener implements SensorEventListener {
     private String day;
     private String hour;
 
+    private Context context;
+    private Activity activity;
+
     private boolean active = false;
 
     // Constructor, get steps completed, TextView and ProgressTypeHome as args
-    private StepCounterListener(int steps, TextView tv, ProgressTypeHome pth)  throws StepCounterListenerException {
+    private StepCounterListener(int steps, TextView tv, ProgressTypeHome pth, Context c, Activity a)  throws StepCounterListenerException {
         if (instance != null) {
             throw new StepCounterListenerException();
         }
         stepsCompleted = steps;
         stepsCountTextView = tv;
         this.pth = pth;
+        context = c;
+        activity = a;
     }
 
-    public static StepCounterListener getInstance(int steps, TextView tv, ProgressTypeHome pth) {
+    public static StepCounterListener getInstance(int steps, TextView tv, ProgressTypeHome pth, Context c, Activity a) {
         if (instance == null) {
             try {
-                instance = new StepCounterListener(steps, tv, pth);
+                instance = new StepCounterListener(steps, tv, pth, c, a);
             } catch (Exception e) { }
         } else {
             instance.setProgressTypeHome(pth);
             instance.setTextView(tv);
+            instance.setActivity(a);
+            instance.setContext(c);
         }
         return instance;
     }
@@ -62,7 +71,6 @@ public class StepCounterListener implements SensorEventListener {
     private void setTextView(TextView tv) {
         stepsCountTextView = tv;
     }
-
     private void setProgressTypeHome(ProgressTypeHome progress) {
         pth = progress;
     }
@@ -76,6 +84,9 @@ public class StepCounterListener implements SensorEventListener {
     public boolean isActive() {
         return active;
     }
+
+    private void setContext(Context c) { context = c; }
+    private void setActivity(Activity a) { activity = a; }
 
     @Override
     public void onSensorChanged(SensorEvent event) {
@@ -179,7 +190,7 @@ public class StepCounterListener implements SensorEventListener {
         // Update the TextView
         stepsCountTextView.setText(String.valueOf(
                 pth == ProgressTypeHome.KCAL ?
-                        Utils.convertStepsToCal(stepsCompleted) :
+                        Utils.convertStepsToCal(stepsCompleted, activity, context) :
                         stepsCompleted
         ));
     }
