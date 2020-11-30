@@ -44,7 +44,10 @@ public class Utils {
         double height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
         //in Cal(kcal) //((height * 0.3937 * 0.413) = passo in inches) *0.0254 = passi in metri)/1000) * weight*const = kcal for step
-        return  0.5 * weight * (steps * (height * 0.3937 * 0.413)*0.0254) /1000; //steps * 0.4 * BMI * speed;
+        double cal = 0.5 * weight * (steps * (height * 0.3937 * 0.413)*0.0254) /1000; //steps * 0.4 * BMI * speed;
+
+        // Round to 2 decimal places
+        return Math.round(cal * 100) / 100.0;
     }
 
     /*returns rounded Basal Metabolic Rate:
