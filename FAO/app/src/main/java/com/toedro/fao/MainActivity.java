@@ -1,5 +1,6 @@
 package com.toedro.fao;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -7,8 +8,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
+import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
+import android.util.Pair;
 import android.view.Menu;
 import android.widget.Toast;
 
@@ -23,7 +27,9 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.toedro.fao.receiver.AlarmReceiver;
 
+import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -57,22 +63,31 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // Notifications
+        cancelAllAlarms(this); //delete all pending intents here?
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        int hour = 17, min = 10; //hour of the alarms
+
+        List<Pair<Integer, Integer>> alarms = Preferences.getNotificationsHours(this, this);
         long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
-        Intent notifyIntent = new Intent(this, AlarmReceiver.class);
-        Intent notifyIntent2 = new Intent(this, AlarmReceiver.class);
-        Intent notifyIntent3 = new Intent(this, AlarmReceiver.class);
 
-        setAlarm(setNotifyAlarm(hour, min), repeatInterval, NOTIFICATION_ID, notifyIntent);
-        setAlarm(setNotifyAlarm(hour, min + 1), repeatInterval, NOTIFICATION_ID + 1,
-                new Intent(this, AlarmReceiver.class));
-        setAlarm(setNotifyAlarm(hour, min + 2), repeatInterval, NOTIFICATION_ID + 2, notifyIntent2);
-        setAlarm(setNotifyAlarm(hour, min + 5), repeatInterval, NOTIFICATION_ID + 3, notifyIntent3);
+        /*List<Intent> intents = new ArrayList<Intent>();
+        Intent notifyIntent = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
+        Intent notifyIntent2 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
+        Intent notifyIntent3 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
+        Intent notifyIntent4 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
+        Intent notifyIntent5 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);*/
 
-        alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
-                PendingIntent.FLAG_NO_CREATE) != null);
+        int i = 0;
+        while(i < alarms.size()){
+            Intent notifyIntent = new Intent(this, AlarmReceiver.class);
+            //setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second), repeatInterval, NOTIFICATION_ID + i, intents.get(i));
+            setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second),
+                    repeatInterval, NOTIFICATION_ID + i, notifyIntent);
+            i++;
+        }
+
+        /*alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
+                PendingIntent.FLAG_NO_CREATE) != null);*/
     }
 
     public void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent) {
@@ -87,11 +102,26 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void cancelAlarm(int pk, Intent notifyIntent) {
+    public void cancelAllAlarms(Context context){
+        int countId = 0;
+        // Cancel alarms
+        while(true) {
+            Intent updateServiceIntent = new Intent(context, AlarmReceiver.class);
+            PendingIntent pendingUpdateIntent = PendingIntent.getService(context, countId, updateServiceIntent, 0);
+            try {
+                alarmManager.cancel(pendingUpdateIntent);
+            } catch (Exception e) {
+                Log.e("Restart notifications", "AlarmManager update was not canceled. " + countId); //+ e.toString()
+                return;
+            }
+            countId++;
+        }
+    }
+    /*public void cancelAlarm(int pk, Intent notifyIntent) {
         AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, notifyIntent, 0);
         manager.cancel(pendingIntent);
-    }
+    }*/
 
     public static String getPrimaryChannelId() {
         return PRIMARY_CHANNEL_ID;

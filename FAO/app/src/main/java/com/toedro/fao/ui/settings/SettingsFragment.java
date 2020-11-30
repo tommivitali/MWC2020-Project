@@ -24,14 +24,8 @@ import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
 
-import java.sql.Time;
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.LocalTime;
-import java.time.format.DateTimeFormatter;
-import java.time.temporal.ChronoField;
 import java.util.Calendar;
-import java.util.Date;
 
 public class SettingsFragment extends Fragment {
 
