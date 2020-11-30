@@ -21,11 +21,13 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
+import com.toedro.fao.MainActivity;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.prefs.Preferences;
 
 public class SettingsFragment extends Fragment {
 
@@ -182,6 +184,9 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.setTitle("Choose hour:");
                 timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 timePickerDialog.show();
+                //reload notifications
+                MainActivity.setNotifications(getContext(), Preferences.getNotificationsHours(getActivity(), getContext()),
+                        MainActivity.getNotificationId());
             }
         });
 
@@ -192,6 +197,9 @@ public class SettingsFragment extends Fragment {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt(getString(savedKeyNotification), isChecked ? 1 : 0);
                 editor.apply();
+                //reload notifications
+                MainActivity.setNotifications(getContext(), Preferences.getNotificationsHours(getActivity(), getContext())
+                        ,MainActivity.getNotificationId());
             }
         });
     }

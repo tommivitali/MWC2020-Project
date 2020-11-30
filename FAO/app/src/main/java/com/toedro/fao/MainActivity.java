@@ -66,33 +66,31 @@ public class MainActivity extends AppCompatActivity {
         cancelAllAlarms(this); //delete all pending intents here?
         createNotificationChannel();
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-
+        Intent notifyIntent = new Intent(this, AlarmReceiver.class);
         List<Pair<Integer, Integer>> alarms = Preferences.getNotificationsHours(this, this);
-        long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        //long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
+        setNotifications(this, alarms, NOTIFICATION_ID);
 
-        /*List<Intent> intents = new ArrayList<Intent>();
-        Intent notifyIntent = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
-        Intent notifyIntent2 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
-        Intent notifyIntent3 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
-        Intent notifyIntent4 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);
-        Intent notifyIntent5 = new Intent(this, AlarmReceiver.class); intents.add(notifyIntent);*/
+        alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
+                PendingIntent.FLAG_NO_CREATE) != null);
+    }
 
+    public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){
+        long repeatInterval = AlarmManager.INTERVAL_DAY;
         int i = 0;
+
         while(i < alarms.size()){
-            Intent notifyIntent = new Intent(this, AlarmReceiver.class);
-            //setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second), repeatInterval, NOTIFICATION_ID + i, intents.get(i));
+            Intent notifyIntent = new Intent(context, AlarmReceiver.class);
             setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second),
-                    repeatInterval, NOTIFICATION_ID + i, notifyIntent);
+                    repeatInterval, id + i, notifyIntent, context);
             i++;
         }
 
-        /*alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
-                PendingIntent.FLAG_NO_CREATE) != null);*/
     }
 
-    public void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent) {
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
+    private static void setAlarm(Calendar time, long repeatingTime, int pk, Intent alarmIntent, Context context) {
+        AlarmManager manager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, pk, alarmIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         if((Build.VERSION.SDK_INT >= 23 || android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.O)
                 && alarmManager != null) {
             alarmManager.setRepeating(AlarmManager.RTC, time.getTimeInMillis(), repeatingTime, pendingIntent);
@@ -102,7 +100,7 @@ public class MainActivity extends AppCompatActivity {
         }
     }
 
-    public void cancelAllAlarms(Context context){
+    private void cancelAllAlarms(Context context){
         int countId = 0;
         // Cancel alarms
         while(true) {
