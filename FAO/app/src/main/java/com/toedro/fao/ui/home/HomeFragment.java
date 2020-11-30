@@ -79,7 +79,7 @@ public class HomeFragment extends Fragment {
         stepsCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
                         String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
-                        String.valueOf(stepsCompleted)
+                        String.valueOf((int)stepsCompleted)
         );
 
         //  Get an instance of the sensor manager

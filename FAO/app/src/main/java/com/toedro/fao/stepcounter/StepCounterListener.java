@@ -190,8 +190,8 @@ public class StepCounterListener implements SensorEventListener {
         // Update the TextView
         stepsCountTextView.setText(String.valueOf(
                 pth == ProgressTypeHome.KCAL ?
-                        Utils.convertStepsToCal(stepsCompleted, activity, context) :
-                        stepsCompleted
+                        String.valueOf(Utils.convertStepsToCal(stepsCompleted, activity, context)) :
+                        String.valueOf((int)stepsCompleted)
         ));
     }
 }
