@@ -1,6 +1,5 @@
 package com.toedro.fao;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -8,13 +7,11 @@ import android.app.PendingIntent;
 import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
 import android.view.Menu;
-import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -27,7 +24,6 @@ import androidx.navigation.ui.NavigationUI;
 import com.google.android.material.navigation.NavigationView;
 import com.toedro.fao.receiver.AlarmReceiver;
 
-import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
 
@@ -71,8 +67,6 @@ public class MainActivity extends AppCompatActivity {
         //long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         setNotifications(this, alarms, NOTIFICATION_ID);
 
-        alarmUp = (PendingIntent.getBroadcast(this, NOTIFICATION_ID, notifyIntent,
-                PendingIntent.FLAG_NO_CREATE) != null);
     }
 
     public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){

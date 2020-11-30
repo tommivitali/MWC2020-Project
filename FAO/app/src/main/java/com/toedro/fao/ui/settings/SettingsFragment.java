@@ -27,7 +27,6 @@ import com.toedro.fao.ui.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-import java.util.prefs.Preferences;
 
 public class SettingsFragment extends Fragment {
 
@@ -185,7 +184,7 @@ public class SettingsFragment extends Fragment {
                 timePickerDialog.getWindow().setBackgroundDrawableResource(android.R.color.transparent);
                 timePickerDialog.show();
                 //reload notifications
-                MainActivity.setNotifications(getContext(), Preferences.getNotificationsHours(getActivity(), getContext()),
+                MainActivity.setNotifications(getContext(), com.toedro.fao.Preferences.getNotificationsHours(getActivity(), getContext()),
                         MainActivity.getNotificationId());
             }
         });
@@ -198,7 +197,7 @@ public class SettingsFragment extends Fragment {
                 editor.putInt(getString(savedKeyNotification), isChecked ? 1 : 0);
                 editor.apply();
                 //reload notifications
-                MainActivity.setNotifications(getContext(), Preferences.getNotificationsHours(getActivity(), getContext())
+                MainActivity.setNotifications(getContext(), com.toedro.fao.Preferences.getNotificationsHours(getActivity(), getContext())
                         ,MainActivity.getNotificationId());
             }
         });
