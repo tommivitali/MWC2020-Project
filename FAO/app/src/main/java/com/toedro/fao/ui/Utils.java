@@ -26,7 +26,7 @@ public class Utils {
     public static double convertStepsToCal(int steps, Activity activity, Context context) {
         //in media si bruciano 55cal(Cal?)/km, 1km every 1243 steps
         //Calories Burned = #steps * .04 * BMI * AgeFactor * Speed //https://calculator.academy/steps-to-calories-calculator/
-        //average stride length / height = 0.43 (all in inches| 1in = 2.54cm; 1cm = 0,3937in)
+        //average stride length / height = 0.413 (all in inches| 1in = 2.54cm; 1cm = 0,3937in)
         //Multiply your height in inches by 0.413 to know average walking stride(in) https://lowellrunning.com/stepspermile/
         //if you weigh 175 pounds, the calculation would look like this: 0.57 x 175 = 99.75 calories per mile. https://www.verywellfit.com/walking-calories-and-distance-calculators-3432711
         // the calculation would look like this for a person who burns 87.5 calories per mile and walks a mile in 1,400 steps: 87.5 calories per mile / 1,400 steps per mile = 0.063 calories per step.
@@ -39,7 +39,7 @@ public class Utils {
         //kcal = const(0,5)*weight*dist(in km) https://www.projectinvictus.it/wp-content/uploads/2014/05/quanto-si-consuma-a-correre-e-camminare.png
         double height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
-        //in Cal(kcal) //((height * 0.3937 * 0.413) = passo in inches) *0.0254 = passi in metri)/1000) * weight*const = kcal for step
+        //formula Arcelli in Cal(kcal) //((height * 0.3937 * 0.413) = passo in inches) *0.0254 = passi in metri)/1000) * weight*const = kcal for step
         double cal = 0.5 * weight * (steps * (height * 0.3937 * 0.413)*0.0254) /1000; //steps * 0.4 * BMI * speed;
         // Round to 2 decimal places
         return Math.round(cal * 100) / 100.0;

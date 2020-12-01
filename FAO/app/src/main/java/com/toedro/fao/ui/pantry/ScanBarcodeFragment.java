@@ -23,7 +23,9 @@ import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
+import com.toedro.fao.App;
 import com.toedro.fao.R;
+import com.toedro.fao.db.Pantry;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -107,15 +109,15 @@ public class ScanBarcodeFragment extends Fragment {
             public void receiveDetections(Detector.Detections<Barcode> detections) {
                 final SparseArray<Barcode> barcodes = detections.getDetectedItems();
                 if (barcodes.size() != 0) {
+                    barcodeDetector.release();
                     barcodeText.post(new Runnable() {
-
                         @Override
                         public void run() {
+                            cameraSource.stop();
                             if (barcodes.valueAt(0).email != null) {
                                 barcodeText.removeCallbacks(null);
                                 barcodeData = barcodes.valueAt(0).email.address;
                                 barcodeText.setText(barcodeData);
-                                //toneGen1.startTone(ToneGenerator.TONE_CDMA_PIP, 150);
                             } else {
                                 barcodeData = barcodes.valueAt(0).displayValue;
                                 barcodeText.setText(barcodeData);
@@ -125,25 +127,37 @@ public class ScanBarcodeFragment extends Fragment {
                                     public void run() {
                                         try  {
 
-                                            Log.d("prova", "https://world.openfoodfacts.org/api/v0/product/"+barcodeData+".json");
-
                                             URL url = new URL("https://world.openfoodfacts.org/api/v0/product/"+barcodeData+".json");
-                                            Log.d("prova", "0");
-                                            URLConnection request = url.openConnection();
-                                            Log.d("prova", "1");
-                                            request.connect();
-                                            Log.d("prova", "2");
+                                            String content = ReadURL("https://world.openfoodfacts.org/api/v0/product/"+barcodeData+".json");
 
-                                            JsonParser jp = new JsonParser(); //from gson
-                                            JsonElement root = jp.parse(new InputStreamReader((InputStream) request.getContent())); //Convert the input stream to a json element
-                                            JsonObject jsonObject = root.getAsJsonObject();
+                                            Log.d("prova_content", content);
+                                            JSONObject root = new JSONObject(content);
+                                            String barcode = root.getString("code");
+                                            Log.d("prova_code", barcode);
 
+                                            JSONObject product = root.getJSONObject("product");
+                                            JSONObject nutriments = product.getJSONObject("nutriments");
+                                            Integer energy_100g = nutriments.getInt("energy-kcal_100g");
+                                            Log.d("nutriments", energy_100g.toString());
+                                            String name = product.getString("product_name_fr");
+                                            Log.d("name", name);
+                                            String quantity1 = product.getString("quantity");
 
-                                            Log.d("prova", jsonObject.toString());
+                                            Log.d("quantity", quantity1);
+                                            quantity1 = quantity1.substring(0,quantity1.indexOf(' '));
+                                            Integer quantity = Integer.parseInt(quantity1);
+                                            Log.d("quantity", quantity.toString());
+                                            //String keywords = jsonObject.get("isbn"); creare tabella
+                                            String image = product.getString("image_front_url");
+                                            Log.d("image", image);
+
+                                            Pantry pantries = new Pantry(name, quantity, energy_100g, barcode, image);
+                                            App.getDBInstance().pantryDAO().addPantry(pantries);
 
                                         } catch (Exception e) {
                                             Log.d("prova", "errore");
                                         }
+
                                     }
                                 });
 
@@ -167,5 +181,19 @@ public class ScanBarcodeFragment extends Fragment {
     public void onResume() {
         super.onResume();
         initialiseDetectorsAndSources();
+    }
+    public static String ReadURL(String URL) throws Exception{
+        URL test = new URL(URL);
+        URLConnection uc = test.openConnection();
+        BufferedReader in = new BufferedReader(new InputStreamReader(uc
+                .getInputStream()));
+        String inputLine;
+        StringBuilder sb = new StringBuilder();
+        while ((inputLine = in.readLine()) != null) {
+            sb.append(inputLine);
+        }
+
+        in.close();
+        return(sb.toString());
     }
 }
