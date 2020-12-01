@@ -18,8 +18,10 @@ import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
 import com.google.firebase.firestore.FirebaseFirestoreException;
 import com.google.firebase.firestore.QuerySnapshot;
+import com.google.gson.Gson;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
+import com.toedro.fao.db.Ingredient;
 import com.toedro.fao.db.Recipe;
 
 import java.util.ArrayList;
@@ -68,5 +70,28 @@ public class SplashFragment extends Fragment {
                     }
                 });
 
+        db.collection("ingredients")
+                .addSnapshotListener(new EventListener<QuerySnapshot>() {
+                    @Override
+                    public void onEvent(@Nullable QuerySnapshot value,
+                                        @Nullable FirebaseFirestoreException e) {
+                        if (e != null) {
+                            Log.w(TAG, "Listen failed.", e);
+                            Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
+                        } else if (value != null) {
+                            List<Ingredient> ingredients = new ArrayList<Ingredient>();
+                            for (DocumentSnapshot document : value.getDocuments()) {
+                                ingredients.add(new Ingredient(document.getId(),
+                                        document.getLong("calories").intValue(),
+                                        (new Gson()).fromJson(document.get("keywords").toString(), List.class),
+                                        document.getString("name"),
+                                        document.getDouble("quantity")));
+                            }
+                            App.getDBInstance().ingredientDAO().addIngredients(ingredients);
+                        } else {
+                            Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
+                        }
+                    }
+                });
     }
 }
