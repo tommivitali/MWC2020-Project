@@ -81,7 +81,11 @@ public class HomeFragment extends Fragment {
                         String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
                         String.valueOf((int)stepsCompleted)
         );
-
+        //change also icon
+        stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(
+                pth == ProgressTypeHome.KCAL ?
+                        R.drawable.ic_calorie : R.drawable.ic_footprints, 0, 0, 0
+        );
         //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
         // Get an instance of Accelerometer

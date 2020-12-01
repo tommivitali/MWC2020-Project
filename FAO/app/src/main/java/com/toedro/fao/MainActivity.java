@@ -74,6 +74,7 @@ public class MainActivity extends AppCompatActivity {
         int i = 0;
 
         while(i < alarms.size()){
+            //check if 5 intents are needed
             Intent notifyIntent = new Intent(context, AlarmReceiver.class);
             setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second),
                     repeatInterval, id + i, notifyIntent, context);

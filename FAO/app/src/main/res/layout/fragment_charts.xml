@@ -122,7 +122,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/charts_toggle_steps"
-                app:icon="@drawable/ic_menu_storage"
+                app:icon="@drawable/ic_footprints"
                 android:layout_weight="1"/>
 
             <com.google.android.material.button.MaterialButton
@@ -131,7 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/charts_toggle_cal"
-                app:icon="@drawable/ic_camera"
+                app:icon="@drawable/ic_calorie"
                 android:layout_weight="1"/>
 
         </com.google.android.material.button.MaterialButtonToggleGroup>
