@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.google.android.material.snackbar.Snackbar;
+import com.google.firebase.firestore.DocumentReference;
 import com.google.firebase.firestore.DocumentSnapshot;
 import com.google.firebase.firestore.EventListener;
 import com.google.firebase.firestore.FirebaseFirestore;
@@ -23,9 +24,11 @@ import com.toedro.fao.App;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Ingredient;
 import com.toedro.fao.db.Recipe;
+import com.toedro.fao.db.RecipeIngredients;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 
@@ -61,6 +64,15 @@ public class SplashFragment extends Fragment {
                                         document.getString("text"),
                                         document.getString("type"),
                                         document.getString("image")));
+                                List<RecipeIngredients> recipeIngredients = new ArrayList<RecipeIngredients>();
+                                for (Map m : (List<Map>) document.get("Ingredients")) {
+                                    DocumentReference docRef = (DocumentReference) m.get("key");
+                                    recipeIngredients.add(new RecipeIngredients(
+                                            document.getId(),
+                                            ((DocumentReference) m.get("key")).getId(),
+                                            ((Long) m.get("quantity")).intValue()));
+                                }
+                                App.getDBInstance().recipeIngredientsDAO().addRecipeIngredients(recipeIngredients);
                             }
                             App.getDBInstance().recipeDAO().addRecipes(recipes);
                         } else {
@@ -83,7 +95,7 @@ public class SplashFragment extends Fragment {
                             for (DocumentSnapshot document : value.getDocuments()) {
                                 ingredients.add(new Ingredient(document.getId(),
                                         document.getLong("calories").intValue(),
-                                        (new Gson()).fromJson(document.get("keywords").toString(), List.class),
+                                        (List<String>) document.get("keywords"),
                                         document.getString("name"),
                                         document.getDouble("quantity")));
                             }
