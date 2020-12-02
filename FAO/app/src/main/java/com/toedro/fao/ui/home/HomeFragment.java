@@ -1,12 +1,11 @@
 package com.toedro.fao.ui.home;
 
 import android.content.Context;
+import android.content.SharedPreferences;
 import android.hardware.Sensor;
-import android.hardware.SensorEvent;
-import android.hardware.SensorEventListener;
 import android.hardware.SensorManager;
+import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.os.SystemClock;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,27 +19,27 @@ import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
 
 import com.google.android.material.button.MaterialButton;
+import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Recipe;
-import com.toedro.fao.db.Step;
 import com.toedro.fao.stepcounter.StepCounterListener;
 import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.TimeZone;
 
 public class HomeFragment extends Fragment {
 
     private TextView stepsCountTextView;
     private TextView kindOfCountTextView;
     private MaterialButton buttonStartStop;
+
+    MaterialButtonToggleGroup materialButtonToggleGroup;
 
     // ACC sensors
     private Sensor mSensorACC;
@@ -69,22 +68,28 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Log.d("CAL", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
-                /*
+                Log.d("CALories", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
+
                 List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
                 double BMR = Utils.calculate_BMR(getActivity(), getContext());
-                Date date = new Date();
+                Calendar rightNow = Calendar.getInstance();
+                Log.d("BMR", String.valueOf(BMR));
                 double calories = Utils.convertStepsToCal(App.getDBInstance().stepDAO().getDaySteps(
                         new SimpleDateFormat(getString(R.string.date_layout_DB))
                                 .format(new Date())), getActivity(), getContext()) + (BMR *
-                        ((date.getHours() * 60 * 60 + (date.getMinutes() * 60) + (date.getSeconds()))) / 24 * 60 * 60);
+                        ((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
+                                + (rightNow.get(Calendar.SECOND))) / 24 * 60 * 60));
+                Log.d("BMR", String.valueOf(((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
+                        + (rightNow.get(Calendar.SECOND))) / 24 * 60 * 60))));
                 //get min distance
                 double distances[] = new double[recipeList.size()];
                 //for(Recipe recipe: recipeList) { //iterate with iterator
                 for (int i = 0; i < recipeList.size(); i++) {
                     if(App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()) != null)
                         distances[i] = Math.abs(calories - App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()));
-                    Log.d("Distances", String.valueOf(calories) + ' ' +String.valueOf(
-                            App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()))+' ' +String.valueOf(distances[i]));
+                    Log.d("Distances/CALories", String.valueOf(calories).toString() + ' ' +String.valueOf(
+                            App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId())).toString()
+                            +' ' +String.valueOf(distances[i]).toString());
                 }
                 //Toast.makeText(getContext(), "distances"  + distances, Toast.LENGTH_LONG).show();
                 //minimum
@@ -98,8 +103,6 @@ public class HomeFragment extends Fragment {
                 }
                 Toast.makeText(getContext(), "Best suited recipe = " + recipeList.get(minPos).getName(), Toast.LENGTH_LONG).show();
                 //Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
-
-                 */
             }
         });
 
@@ -127,6 +130,22 @@ public class HomeFragment extends Fragment {
                 pth == ProgressTypeHome.KCAL ?
                         R.drawable.ic_calorie : R.drawable.ic_footprints, 0, 0, 0
         );
+        //changes in local qith button
+        materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
+        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if(materialButtonToggleGroup.getCheckedButtonId() == root.findViewById(R.id.setSteps).getId()){
+                    stepsCountTextView.setText(String.valueOf((int)stepsCompleted));
+                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_footprints,0, 0, 0);
+                }else {
+                    stepsCountTextView.setText(String.valueOf(Utils.convertStepsToCal(stepsCompleted,
+                            getActivity(), getContext())));
+                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calorie,0, 0, 0);
+                }
+            }
+        });
+
         //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
         // Get an instance of Accelerometer
