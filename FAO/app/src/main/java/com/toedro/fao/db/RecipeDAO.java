@@ -13,10 +13,9 @@ public abstract class RecipeDAO {
     public abstract Recipe getRecipe(String id);
     @Query("SELECT * FROM Recipes")
     public abstract List<Recipe> getRecipes();
-    @Query("SELECT SUM(RI.quantity / I.quantity * I.calories) " +
-            "FROM Recipes R JOIN RecipesIngredients RI ON R.id = RI.idRecipe " +
-            "JOIN Ingredients I ON RI.idIngredient = I.id " +
-            "WHERE R.id = :idRecipe")
+    @Query("SELECT SUM(RI.quantity * I.calories) " +
+            "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
+            "WHERE RI.idRecipe = :idRecipe")
     public abstract Integer getCalories(String idRecipe);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addRecipes(List<Recipe> recipes);

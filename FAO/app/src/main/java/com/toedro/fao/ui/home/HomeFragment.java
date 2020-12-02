@@ -68,6 +68,8 @@ public class HomeFragment extends Fragment {
         buttonWannaEat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.d("CAL", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
+                /*
                 List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
                 double BMR = Utils.calculate_BMR(getActivity(), getContext());
                 Date date = new Date();
@@ -96,6 +98,8 @@ public class HomeFragment extends Fragment {
                 }
                 Toast.makeText(getContext(), "Best suited recipe = " + recipeList.get(minPos).getName(), Toast.LENGTH_LONG).show();
                 //Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
+
+                 */
             }
         });
 
