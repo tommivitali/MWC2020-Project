@@ -24,6 +24,7 @@ import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
+import com.toedro.fao.db.Recipe;
 import com.toedro.fao.db.Step;
 import com.toedro.fao.stepcounter.StepCounterListener;
 import com.toedro.fao.ui.Utils;
@@ -59,6 +60,42 @@ public class HomeFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 Navigation.findNavController(getView()).navigate(R.id.action_nav_homepage_to_scanBarcodeFragment);
+            }
+        });
+
+        // Button to get a recipe
+        MaterialButton buttonWannaEat = (MaterialButton) root.findViewById(R.id.buttonWannaEat);
+        buttonWannaEat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
+                double BMR = Utils.calculate_BMR(getActivity(), getContext());
+                Date date = new Date();
+                double calories = Utils.convertStepsToCal(App.getDBInstance().stepDAO().getDaySteps(
+                        new SimpleDateFormat(getString(R.string.date_layout_DB))
+                                .format(new Date())), getActivity(), getContext()) + (BMR *
+                        ((date.getHours() * 60 * 60 + (date.getMinutes() * 60) + (date.getSeconds()))) / 24 * 60 * 60);
+                //get min distance
+                double distances[] = new double[recipeList.size()];
+                //for(Recipe recipe: recipeList) { //iterate with iterator
+                for (int i = 0; i < recipeList.size(); i++) {
+                    if(App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()) != null)
+                        distances[i] = Math.abs(calories - App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()));
+                    Log.d("Distances", String.valueOf(calories) + ' ' +String.valueOf(
+                            App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId()))+' ' +String.valueOf(distances[i]));
+                }
+                //Toast.makeText(getContext(), "distances"  + distances, Toast.LENGTH_LONG).show();
+                //minimum
+                int minPos = 0;
+                double minValue = distances[0];
+                for (int i = 1; i < distances.length; i++) {
+                    if (distances[i] < minValue) {
+                        minValue = distances[i];
+                        minPos = i;
+                    }
+                }
+                Toast.makeText(getContext(), "Best suited recipe = " + recipeList.get(minPos).getName(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
             }
         });
 
