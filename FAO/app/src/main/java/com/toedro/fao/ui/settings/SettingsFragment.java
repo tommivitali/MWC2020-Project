@@ -43,9 +43,9 @@ public class SettingsFragment extends Fragment {
         String languageShared = sharedPref.getString(getString(R.string.saved_language_saved_key), defaultLanguageValue);
         // Fill the languages dropdown
         String[] languages = new String[] {"Italian", "English"};
-        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.dropdown_languages_item, languages);
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), R.layout.dropdown_languages_item, languages);
         AutoCompleteTextView editTextFilledExposedDropdown = root.findViewById(R.id.languages_dropdown);
-        editTextFilledExposedDropdown.setAdapter(adapter);
+        editTextFilledExposedDropdown.setAdapter(adapter1);
         editTextFilledExposedDropdown.setText(languageShared, false);
         // If someone changes the value of the dropdown then save it to the SharedPreferences
         editTextFilledExposedDropdown.addTextChangedListener(new TextWatcher() {
@@ -60,16 +60,42 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
+        // Get the SharedPreferences sex value (if exists)
+        String defaultSexValue = getString(R.string.saved_sex_default_key);
+        String sexShared = sharedPref.getString(getString(R.string.saved_sex_saved_key), defaultSexValue);
+        // Fill the sex dropdown
+        String[] sex = new String[] {"Male", "Female"};
+        ArrayAdapter<String> adapter2 = new ArrayAdapter<>(getContext(), R.layout.dropdown_sex_item, sex);
+        AutoCompleteTextView editTextFilledExposedDropdownS = root.findViewById(R.id.sex_dropdown);
+        editTextFilledExposedDropdownS.setAdapter(adapter2);
+        editTextFilledExposedDropdownS.setText(sexShared, false);
+        // If someone changes the value of the dropdown then save it to the SharedPreferences
+        editTextFilledExposedDropdownS.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.saved_sex_saved_key), s.toString());
+                editor.apply();
+            }
+        });
 
-        // Get the height and weight value and, if exists, put it in the textEdit
+        // Get the age, height and weight value and, if exists, put it in the textEdit
         Integer defaultHeightValue = getResources().getInteger(R.integer.saved_height_default_key);
         Integer defaultWeightValue = getResources().getInteger(R.integer.saved_weight_default_key);
+        Integer defaultAgeValue = getResources().getInteger(R.integer.saved_age_default_key);
         Integer heightShared = sharedPref.getInt(getString(R.string.saved_height_saved_key), defaultHeightValue);
         Integer weightShared = sharedPref.getInt(getString(R.string.saved_weight_saved_key), defaultWeightValue);
+        Integer ageShared = sharedPref.getInt(getString(R.string.saved_age_saved_key), defaultAgeValue);
         TextInputEditText editTextHeight = root.findViewById(R.id.editHeight);
         TextInputEditText editTextWeight = root.findViewById(R.id.editWeight);
+        TextInputEditText editTextAge = root.findViewById(R.id.editAge);
         editTextHeight.setText(heightShared.toString());
         editTextWeight.setText(weightShared.toString());
+        editTextAge.setText(ageShared.toString());
         editTextHeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -93,6 +119,19 @@ public class SettingsFragment extends Fragment {
                 if(s.toString().length() == 0) return;
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt(getString(R.string.saved_weight_saved_key), Integer.parseInt(s.toString()));
+                editor.apply();
+            }
+        });
+        editTextAge.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length() == 0) return;
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt(getString(R.string.saved_age_saved_key), Integer.parseInt(s.toString()));
                 editor.apply();
             }
         });

@@ -19,6 +19,13 @@ public class Preferences {
         return languageShared;
     }
 
+    public static String getSex(Activity activity, Context context) {
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        String defaultSexValue = context.getString(R.string.saved_sex_default_key);
+        String sexShared = sharedPref.getString(context.getString(R.string.saved_sex_saved_key), defaultSexValue);
+        return sexShared;
+    }
+
     public static ProgressTypeHome getProgressTypeHome(Activity activity, Context context) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         String defaultHomeProgressTypeValue = context.getString(R.string.saved_home_progress_type_default_key);
@@ -38,6 +45,13 @@ public class Preferences {
         Integer defaultWeightValue = context.getResources().getInteger(R.integer.saved_weight_default_key);
         Integer weightShared = sharedPref.getInt(context.getString(R.string.saved_weight_saved_key), defaultWeightValue);
         return weightShared;
+    }
+
+    public static Integer getAge(Activity activity, Context context) {
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        Integer defaultAgeValue = context.getResources().getInteger(R.integer.saved_age_default_key);
+        Integer ageShared = sharedPref.getInt(context.getString(R.string.saved_age_saved_key), defaultAgeValue);
+        return ageShared;
     }
 
     private static Integer getValueNotification(int defaultId, int savedKeyId, Context context, Activity activity) {

@@ -48,8 +48,8 @@ public class Utils {
     /*returns rounded Basal Metabolic Rate:
     kcal(Cal) burned during 24h by doing nothing*/
     private static double calculate_BMR(Activity activity, Context context){
-        int age = 23;
-        boolean male = true;
+        int age =  Preferences.getAge(activity, context);
+        boolean male = (Preferences.getSex(activity, context).equals("Male"));
         int sex = male? 5 : -161;   //costante basata sul sesso dell'individuo
         int height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
