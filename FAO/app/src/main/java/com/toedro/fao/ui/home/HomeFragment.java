@@ -76,13 +76,16 @@ public class HomeFragment extends Fragment {
                 //Calendar rightNow = Calendar.getInstance();
                 Calendar c = Calendar.getInstance();
                 long now = c.getTimeInMillis();
-                //TODO substitute this part (zeros) with data taken from last meal[getCalories()]
                 c.set(Calendar.HOUR_OF_DAY, 0);
                 c.set(Calendar.MINUTE, 0);
                 c.set(Calendar.SECOND, 0);
                 c.set(Calendar.MILLISECOND, 0);
                 //end todo
+//              long lastMeal = App.getDBInstance().CaloriesDao().getLastMeal(); //todo if this return null --> use calendar
+                //or save data on app installation with id = value = 0
+
                 long passed = now - c.getTimeInMillis();
+                //long passed = now - lastMeal; //TODO test
                 long secondsPassed = passed / 1000;
                 Log.d("BMR", String.valueOf(BMR));
                 double calories = Utils.convertStepsToCal(App.getDBInstance().stepDAO().getDaySteps(

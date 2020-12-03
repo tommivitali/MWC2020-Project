@@ -11,10 +11,11 @@ import java.util.List;
 public abstract class CaloriesDao {
     @Query("SELECT * FROM Calories")
     public abstract List<Calories> getCalories();
-    //@Query("SELECT value, COUNT(id) FROM Calories WHERE timestamp > (:date)")
-    //public abstract List<Calories> getCalories(Long date);
-    //@Query("SELECT * FROM Calories WHERE timestamp > (:date)") //TODO prendi ultimo pasto, se non esiste ritorna data installazione app
-    //public abstract List<Calories> getCalories(Long date);
+    @Query("SELECT * FROM Calories WHERE timestamp > (:date)")
+    public abstract List<Calories> getCalories(Long date);
+    @Query("SELECT timestamp FROM Calories INNER JOIN (SELECT max(timestamp) as Last FROM Calories GROUP BY timestamp)" +
+            " cal on Calories.timestamp = cal.Last")
+    public abstract Long getLastMeal(); //TODO prendi ultimo pasto, se non esiste ritorna data installazione app
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addCalories(Calories calories);
 }
