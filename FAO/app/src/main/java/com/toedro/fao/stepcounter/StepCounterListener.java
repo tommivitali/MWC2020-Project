@@ -23,6 +23,7 @@ public class StepCounterListener implements SensorEventListener {
     private static StepCounterListener instance;
 
     private int stepsCompleted;
+
     private ProgressTypeHome pth;
     private TextView stepsCountTextView;
 

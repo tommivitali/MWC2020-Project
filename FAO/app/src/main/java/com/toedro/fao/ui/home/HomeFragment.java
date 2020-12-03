@@ -24,10 +24,13 @@ import com.google.android.material.snackbar.Snackbar;
 import com.toedro.fao.App;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
+import com.toedro.fao.db.Calories;
 import com.toedro.fao.db.Recipe;
+import com.toedro.fao.db.Step;
 import com.toedro.fao.stepcounter.StepCounterListener;
 import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
+import com.toedro.fao.ui.settings.SettingsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -73,20 +76,20 @@ public class HomeFragment extends Fragment {
                 //Calendar rightNow = Calendar.getInstance();
                 Calendar c = Calendar.getInstance();
                 long now = c.getTimeInMillis();
+                //TODO substitute this part (zeros) with data taken from last meal[getCalories()]
                 c.set(Calendar.HOUR_OF_DAY, 0);
                 c.set(Calendar.MINUTE, 0);
                 c.set(Calendar.SECOND, 0);
                 c.set(Calendar.MILLISECOND, 0);
+                //end todo
                 long passed = now - c.getTimeInMillis();
                 long secondsPassed = passed / 1000;
                 Log.d("BMR", String.valueOf(BMR));
                 double calories = Utils.convertStepsToCal(App.getDBInstance().stepDAO().getDaySteps(
                         new SimpleDateFormat(getString(R.string.date_layout_DB))
                                 .format(new Date())), getActivity(), getContext()) + (BMR * (double)secondsPassed/(double)(24*3600));
-                        /*(float) ((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
-                                + (rightNow.get(Calendar.SECOND))) / (24 * 60 * 60)));*/
-                Log.d("BMR", String.valueOf(((double)(secondsPassed)/(double)(24*3600))));/*(double)(((rightNow.get(Calendar.HOUR_OF_DAY) * 3600) + (rightNow.get(Calendar.MINUTE) * 60)
-                        + (rightNow.get(Calendar.SECOND))) / (24 * 3600))));*/
+                Log.d("BMR", String.valueOf(((double)(secondsPassed)/(double)(24*3600))));
+                App.getDBInstance().CaloriesDao().addCalories(new Calories(calories, now));
                 //get min distance
                 double distances[] = new double[recipeList.size()];
                 //for(Recipe recipe: recipeList) { //iterate with iterator
@@ -116,14 +119,14 @@ public class HomeFragment extends Fragment {
         kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
         buttonStartStop     = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
 
+        int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
+                new SimpleDateFormat(getString(R.string.date_layout_DB))
+                        .format(new Date()));
         kindOfCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
                         getString(R.string.home_calories_description) :
                         getString(R.string.home_steps_description)
         );
-        int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
-                new SimpleDateFormat(getString(R.string.date_layout_DB))
-                        .format(new Date()));
         stepsCountTextView.setText(
                 pth == ProgressTypeHome.KCAL ?
                         String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
@@ -134,21 +137,7 @@ public class HomeFragment extends Fragment {
                 pth == ProgressTypeHome.KCAL ?
                         R.drawable.ic_calorie : R.drawable.ic_footprints, 0, 0, 0
         );
-        //changes in local qith button
-        materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
-        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if(materialButtonToggleGroup.getCheckedButtonId() == root.findViewById(R.id.setSteps).getId()){
-                    stepsCountTextView.setText(String.valueOf((int)stepsCompleted));
-                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_footprints,0, 0, 0);
-                }else {
-                    stepsCountTextView.setText(String.valueOf(Utils.convertStepsToCal(stepsCompleted,
-                            getActivity(), getContext())));
-                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calorie,0, 0, 0);
-                }
-            }
-        });
+        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -193,6 +182,30 @@ public class HomeFragment extends Fragment {
                     // Change button text and icon
                     buttonStartStop.setText(R.string.home_start_stepcounter);
                     buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_play));
+                }
+            }
+        });
+
+        //changes in local with button
+        materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
+        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                if(materialButtonToggleGroup.getCheckedButtonId() == root.findViewById(R.id.setSteps).getId()){
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.saved_home_progress_type_saved_key), "STEPS");
+                    editor.apply();
+                    stepsCountTextView.setText(String.valueOf((int)stepsCompleted));
+                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_footprints,0, 0, 0);
+                    kindOfCountTextView.setText(getString(R.string.home_steps_description));
+                }else {
+                    SharedPreferences.Editor editor = sharedPref.edit();
+                    editor.putString(getString(R.string.saved_home_progress_type_saved_key), "KCAL");
+                    editor.apply();
+                    stepsCountTextView.setText(String.valueOf(Utils.convertStepsToCal(stepsCompleted,
+                            getActivity(), getContext())));
+                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calorie,0, 0, 0);
+                    kindOfCountTextView.setText(getString(R.string.home_calories_description));
                 }
             }
         });

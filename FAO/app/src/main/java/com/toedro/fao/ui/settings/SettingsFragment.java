@@ -30,7 +30,7 @@ import java.util.Calendar;
 
 public class SettingsFragment extends Fragment {
 
-    public SharedPreferences sharedPref;
+    public SharedPreferences sharedPref; //added static to change stuff from home
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
