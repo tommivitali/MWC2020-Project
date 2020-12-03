@@ -67,20 +67,26 @@ public class HomeFragment extends Fragment {
         buttonWannaEat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("CAL", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
-                Log.d("CALories", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
-
+                //Log.d("CAL", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
                 List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
                 double BMR = Utils.calculate_BMR(getActivity(), getContext());
-                Calendar rightNow = Calendar.getInstance();
+                //Calendar rightNow = Calendar.getInstance();
+                Calendar c = Calendar.getInstance();
+                long now = c.getTimeInMillis();
+                c.set(Calendar.HOUR_OF_DAY, 0);
+                c.set(Calendar.MINUTE, 0);
+                c.set(Calendar.SECOND, 0);
+                c.set(Calendar.MILLISECOND, 0);
+                long passed = now - c.getTimeInMillis();
+                long secondsPassed = passed / 1000;
                 Log.d("BMR", String.valueOf(BMR));
                 double calories = Utils.convertStepsToCal(App.getDBInstance().stepDAO().getDaySteps(
                         new SimpleDateFormat(getString(R.string.date_layout_DB))
-                                .format(new Date())), getActivity(), getContext()) + (BMR *
-                        ((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
-                                + (rightNow.get(Calendar.SECOND))) / 24 * 60 * 60));
-                Log.d("BMR", String.valueOf(((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
-                        + (rightNow.get(Calendar.SECOND))) / 24 * 60 * 60))));
+                                .format(new Date())), getActivity(), getContext()) + (BMR * (double)secondsPassed/(double)(24*3600));
+                        /*(float) ((rightNow.get(Calendar.HOUR_OF_DAY) * 60 * 60 + (rightNow.get(Calendar.MINUTE) * 60)
+                                + (rightNow.get(Calendar.SECOND))) / (24 * 60 * 60)));*/
+                Log.d("BMR", String.valueOf(((double)(secondsPassed)/(double)(24*3600))));/*(double)(((rightNow.get(Calendar.HOUR_OF_DAY) * 3600) + (rightNow.get(Calendar.MINUTE) * 60)
+                        + (rightNow.get(Calendar.SECOND))) / (24 * 3600))));*/
                 //get min distance
                 double distances[] = new double[recipeList.size()];
                 //for(Recipe recipe: recipeList) { //iterate with iterator
@@ -91,7 +97,6 @@ public class HomeFragment extends Fragment {
                             App.getDBInstance().recipeDAO().getCalories(recipeList.get(i).getId())).toString()
                             +' ' +String.valueOf(distances[i]).toString());
                 }
-                //Toast.makeText(getContext(), "distances"  + distances, Toast.LENGTH_LONG).show();
                 //minimum
                 int minPos = 0;
                 double minValue = distances[0];
@@ -102,7 +107,6 @@ public class HomeFragment extends Fragment {
                     }
                 }
                 Toast.makeText(getContext(), "Best suited recipe = " + recipeList.get(minPos).getName(), Toast.LENGTH_LONG).show();
-                //Toast.makeText(getContext(), "test", Toast.LENGTH_LONG).show();
             }
         });
 
