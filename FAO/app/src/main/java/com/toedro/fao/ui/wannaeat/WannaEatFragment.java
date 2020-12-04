@@ -168,15 +168,16 @@ public class WannaEatFragment extends Fragment {
                              Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_wanna_eat, container, false);
 
-        double bmr = Utils.calculateDailyBMR(getActivity(), getContext());
-        double stepsCals = Utils.convertStepsToCal(App.getDBInstance().stepDAO()
+        Double bmr = Utils.calculateDailyBMR(getActivity(), getContext());
+        Double stepsCals = Utils.convertStepsToCal(App.getDBInstance().stepDAO()
                         .getDaySteps(new SimpleDateFormat(getString(R.string.date_layout_DB))
                                 .format(new Date())),
                 getActivity(), getContext());
-        double mealsCals = App.getDBInstance().caloriesDao().getSumCalories(
+        Double mealsCals = App.getDBInstance().caloriesDao().getSumCalories(
                 new SimpleDateFormat(getString(R.string.date_layout_DB)).format(new Date()));
+        if (mealsCals == null) mealsCals = 0.0; //in case null
 
-        double kcals = bmr + stepsCals - mealsCals;
+        Double kcals = bmr + stepsCals - mealsCals;
 
         Log.d("KCAL", "BMR -> " + String.valueOf(bmr));
         Log.d("KCAL", "STEPS -> " + String.valueOf(stepsCals));
