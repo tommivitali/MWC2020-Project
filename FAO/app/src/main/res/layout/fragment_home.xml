@@ -8,51 +8,13 @@
     tools:context=".ui.home.HomeFragment">
 
     <LinearLayout
-        android:id="@+id/typeView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="horizontal"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-        <com.google.android.material.button.MaterialButtonToggleGroup
-            android:id="@+id/toggleButtonGroup"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginBottom="8dp"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/chartsTextFieldDateEnd"
-            app:layout_constraintStart_toStartOf="parent"
-            app:singleSelection="true"
-            >
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/setSteps"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/charts_toggle_steps"
-                app:icon="@drawable/ic_footprints"
-                android:layout_weight="1"/>
-            <com.google.android.material.button.MaterialButton
-                android:id="@+id/setCal"
-                style="?attr/materialButtonOutlinedStyle"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="@string/charts_toggle_cal"
-                app:icon="@drawable/ic_calorie"
-                android:layout_weight="1"/>
-        </com.google.android.material.button.MaterialButtonToggleGroup>
-    </LinearLayout>
-
-    <LinearLayout
         android:id="@+id/showCount"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginTop="8dp"
         android:gravity="center"
         android:orientation="vertical"
-        app:layout_constraintStart_toStartOf="@id/typeView"
-        app:layout_constraintTop_toBottomOf="@id/typeView">
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
 
         <TextView
             android:id="@+id/stepsCount"
@@ -61,13 +23,14 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/home_0"
             android:textAlignment="center"
             android:textSize="65sp"
-            android:text="@string/home_0"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
+
         <TextView
             android:id="@+id/kindOfCount"
             android:layout_width="wrap_content"
@@ -75,9 +38,9 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="1dp"
             android:layout_marginEnd="8dp"
+            android:text="@string/home_steps_description"
             android:textAlignment="center"
             android:textSize="20sp"
-            android:text="@string/home_steps_description"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"

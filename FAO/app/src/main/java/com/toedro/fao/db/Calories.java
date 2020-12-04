@@ -12,12 +12,12 @@ public class Calories {
     @NonNull
     Integer id;
     Double value;
-    //String timestamp;
-    //Calendar timestamp;
-    Long timestamp;
+    String day;
+    String timestamp;
 
-    public Calories(Double value, Long timestamp) {
+    public Calories(Double value, String day, String timestamp) {
         this.value = value;
+        this.day = day;
         this.timestamp = timestamp;
     }
 
@@ -27,7 +27,8 @@ public class Calories {
     public Double getValue() {
         return value;
     }
-    public Long getTimestamp() {
-        return timestamp;
+    public String getDay() {
+        return day;
     }
+    public String getTimestamp() {return timestamp; }
 }

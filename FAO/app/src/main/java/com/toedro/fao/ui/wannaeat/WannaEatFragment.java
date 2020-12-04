@@ -1,8 +1,11 @@
-package com.toedro.fao.ui.recipes;
+package com.toedro.fao.ui.wannaeat;
 
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+
+import androidx.fragment.app.Fragment;
+
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -12,31 +15,20 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-import androidx.fragment.app.Fragment;
-
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
-
+import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
-import com.toedro.fao.db.Recipe;
+import com.toedro.fao.db.RecipeQueryResult;
 import com.toedro.fao.ui.Utils;
+import com.toedro.fao.ui.recipes.RecipesFragment;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
-import com.squareup.picasso.Picasso;
-
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
-import java.util.Map;
 
-import static android.content.ContentValues.TAG;
-
-public class RecipesFragment extends Fragment {
+public class WannaEatFragment extends Fragment {
 
     LinearLayout containerRecipes;
 
@@ -171,36 +163,54 @@ public class RecipesFragment extends Fragment {
         return newButton;
     }
 
-    public View onCreateView(@NonNull LayoutInflater inflater,
-                             ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_recipes, container, false);
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        View root = inflater.inflate(R.layout.fragment_wanna_eat, container, false);
 
-        containerRecipes = (LinearLayout) root.findViewById(R.id.container_recipes);
+        double bmr = Utils.calculateDailyBMR(getActivity(), getContext());
+        double stepsCals = Utils.convertStepsToCal(App.getDBInstance().stepDAO()
+                        .getDaySteps(new SimpleDateFormat(getString(R.string.date_layout_DB))
+                                .format(new Date())),
+                getActivity(), getContext());
+        double mealsCals = App.getDBInstance().caloriesDao().getSumCalories(
+                new SimpleDateFormat(getString(R.string.date_layout_DB)).format(new Date()));
 
-        List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
+        double kcals = bmr + stepsCals - mealsCals;
 
-        for(Recipe recipe : recipeList) {
-            materialCardView    = createMaterialCardView();
-            imageView           = createImageView();
-            linearLayout1       = createLinearLayout1();
-            linearLayout2       = createLinearLayout2();
-            relativeLayout      = createRelativeLayout();
-            textView1           = createTextView1();
-            textView2           = createTextView2();
-            materialButton      = createMaterialButton();
+        Log.d("KCAL", "BMR -> " + String.valueOf(bmr));
+        Log.d("KCAL", "STEPS -> " + String.valueOf(stepsCals));
+        Log.d("KCAL", "MEALS -> " + String.valueOf(mealsCals));
+        Log.d("KCAL", String.valueOf(kcals));
 
-            Picasso.get().load(recipe.getImage()).into(imageView);
-            textView1.setText(recipe.getName());
-            textView2.setText(recipe.getType());
+        if (kcals <= 0) {
 
-            linearLayout2.addView(textView1);
-            linearLayout2.addView(textView2);
-            relativeLayout.addView(linearLayout2);
-            relativeLayout.addView(materialButton);
-            linearLayout1.addView(imageView);
-            linearLayout1.addView(relativeLayout);
-            materialCardView.addView(linearLayout1);
-            containerRecipes.addView(materialCardView);
+        } else {
+            containerRecipes = (LinearLayout) root.findViewById(R.id.container_wannaeat);
+            for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(0.0, 1000.0)) {
+                Log.d("RECIPE", "1");
+                materialCardView    = createMaterialCardView();
+                imageView           = createImageView();
+                linearLayout1       = createLinearLayout1();
+                linearLayout2       = createLinearLayout2();
+                relativeLayout      = createRelativeLayout();
+                textView1           = createTextView1();
+                textView2           = createTextView2();
+                materialButton      = createMaterialButton();
+
+                Picasso.get().load(recipe.getImage()).into(imageView);
+                textView1.setText(recipe.getName());
+                textView2.setText("Kcal: " + String.valueOf(recipe.getKcal()));
+
+                linearLayout2.addView(textView1);
+                linearLayout2.addView(textView2);
+                relativeLayout.addView(linearLayout2);
+                relativeLayout.addView(materialButton);
+                linearLayout1.addView(imageView);
+                linearLayout1.addView(relativeLayout);
+                materialCardView.addView(linearLayout1);
+                containerRecipes.addView(materialCardView);
+            }
         }
 
         return root;

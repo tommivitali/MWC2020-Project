@@ -26,11 +26,9 @@ import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Calories;
 import com.toedro.fao.db.Recipe;
-import com.toedro.fao.db.Step;
 import com.toedro.fao.stepcounter.StepCounterListener;
 import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
-import com.toedro.fao.ui.settings.SettingsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -70,9 +68,22 @@ public class HomeFragment extends Fragment {
         buttonWannaEat.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
+                Navigation.findNavController(v).navigate(R.id.action_nav_homepage_to_wannaEatFragment);
+
+                /*
+                App.getDBInstance().caloriesDao().addCalories(new Calories(170.0, new SimpleDateFormat(getString(R.string.date_layout_DB))
+                        .format(new Date()), String.valueOf(Calendar.getInstance().getTimeInMillis() - 5000)));
+
+                App.getDBInstance().caloriesDao().addCalories(new Calories(750.0, new SimpleDateFormat(getString(R.string.date_layout_DB))
+                        .format(new Date()), String.valueOf(Calendar.getInstance().getTimeInMillis())));
+
+
+                 */
+                /*
                 //Log.d("CAL", App.getDBInstance().recipeDAO().getCalories("9EiSp5POUJRXLuESvAtD").toString());
                 List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
-                double BMR = Utils.calculate_BMR(getActivity(), getContext());
+                double BMR = Utils.calculateBMR(getActivity(), getContext());
                 //Calendar rightNow = Calendar.getInstance();
                 Calendar c = Calendar.getInstance();
                 long now = c.getTimeInMillis();
@@ -113,6 +124,8 @@ public class HomeFragment extends Fragment {
                     }
                 }
                 Toast.makeText(getContext(), "Best suited recipe = " + recipeList.get(minPos).getName(), Toast.LENGTH_LONG).show();
+
+                 */
             }
         });
 
@@ -185,30 +198,6 @@ public class HomeFragment extends Fragment {
                     // Change button text and icon
                     buttonStartStop.setText(R.string.home_start_stepcounter);
                     buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_play));
-                }
-            }
-        });
-
-        //changes in local with button
-        materialButtonToggleGroup   = (MaterialButtonToggleGroup) root.findViewById(R.id.toggleButtonGroup);
-        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                if(materialButtonToggleGroup.getCheckedButtonId() == root.findViewById(R.id.setSteps).getId()){
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(getString(R.string.saved_home_progress_type_saved_key), "STEPS");
-                    editor.apply();
-                    stepsCountTextView.setText(String.valueOf((int)stepsCompleted));
-                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_footprints,0, 0, 0);
-                    kindOfCountTextView.setText(getString(R.string.home_steps_description));
-                }else {
-                    SharedPreferences.Editor editor = sharedPref.edit();
-                    editor.putString(getString(R.string.saved_home_progress_type_saved_key), "KCAL");
-                    editor.apply();
-                    stepsCountTextView.setText(String.valueOf(Utils.convertStepsToCal(stepsCompleted,
-                            getActivity(), getContext())));
-                    stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(R.drawable.ic_calorie,0, 0, 0);
-                    kindOfCountTextView.setText(getString(R.string.home_calories_description));
                 }
             }
         });

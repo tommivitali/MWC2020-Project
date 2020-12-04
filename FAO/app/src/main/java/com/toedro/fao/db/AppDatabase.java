@@ -7,7 +7,7 @@ import androidx.room.RoomDatabase;
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDAO recipeDAO();
     public abstract StepDAO stepDAO();
-    public abstract CaloriesDao CaloriesDao();
+    public abstract CaloriesDao caloriesDao();
     public abstract IngredientDAO ingredientDAO();
     public abstract PantryDAO pantryDAO();
     public abstract RecipeIngredientsDAO recipeIngredientsDAO();

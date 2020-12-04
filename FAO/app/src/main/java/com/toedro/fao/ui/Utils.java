@@ -3,6 +3,7 @@ package com.toedro.fao.ui;
 import android.app.Activity;
 import android.content.Context;
 import android.content.res.Resources;
+import android.icu.util.Calendar;
 import android.util.DisplayMetrics;
 
 import com.toedro.fao.Preferences;
@@ -47,13 +48,28 @@ public class Utils {
 
     /*returns rounded Basal Metabolic Rate:
     kcal(Cal) burned during 24h by doing nothing*/
-    public static double calculate_BMR(Activity activity, Context context){
+    public static double calculateBMR(Activity activity, Context context){
         int age =  Preferences.getAge(activity, context);
         boolean male = (Preferences.getSex(activity, context).equals("Male"));
-        int sex = male? 5 : -161;   //costante basata sul sesso dell'individuo
+        int sex = male ? 5 : -161;   //costante basata sul sesso dell'individuo
         int height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
-        return (10*weight)+(6.25*height)-(5*age)+sex;
+        return (10 * weight) + (6.25 * height) - (5 * age) + sex;
+    }
+
+    public static double calculateDailyBMR(Activity activity, Context context) {
+        double bmr = calculateBMR(activity, context);
+
+        Calendar c = Calendar.getInstance();
+        long now = c.getTimeInMillis();
+        c.set(Calendar.HOUR_OF_DAY, 0);
+        c.set(Calendar.MINUTE, 0);
+        c.set(Calendar.SECOND, 0);
+        c.set(Calendar.MILLISECOND, 0);
+
+        long seconds = (now - c.getTimeInMillis()) / 1000;
+
+        return bmr / (24 * 60 * 60) * seconds;
     }
 
     public static int progressTypeHomeToId(ProgressTypeHome type) {
