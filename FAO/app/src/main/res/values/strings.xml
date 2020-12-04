@@ -53,6 +53,8 @@
     <string name="saved_height_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.height</string>
     <string name="saved_weight_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.weight</string>
     <string name="saved_age_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.age</string>
+    <string name="saved_min_cal_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minCal</string>
+    <string name="saved_max_cal_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.maxCal</string>
     <string name="saved_home_progress_type_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hpt</string>
     <string name="saved_hour_1_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour1</string>
     <string name="saved_hour_2_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour2</string>
@@ -86,4 +88,7 @@
     <string name="channel_description">FAO Description</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="caloriesRange">Calories Range</string>
+    <string name="settings_max_cal_measure">Maximum number of Cal you want the recipe to be MORE than what you burned</string>
+    <string name="settings_min_cal_measure">Maximum number of Cal you want the recipe to be LESS than what you burned</string>
 </resources>

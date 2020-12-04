@@ -18,4 +18,5 @@
     <integer name="saved_notification_4_default_key">0</integer>
     <integer name="saved_notification_5_default_key">0</integer>
     <integer name="saved_age_default_key">20</integer>
+    <integer name="saved_cal_default_key">0</integer>
 </resources>

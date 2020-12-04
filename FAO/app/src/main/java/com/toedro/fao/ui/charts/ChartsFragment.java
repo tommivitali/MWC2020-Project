@@ -30,9 +30,7 @@ import com.toedro.fao.R;
 import com.toedro.fao.db.StepsQueryResult;
 import com.toedro.fao.ui.Utils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
-import java.time.Instant;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
@@ -78,6 +76,8 @@ public class ChartsFragment extends Fragment {
         */
         Calendar calendarTo     = Calendar.getInstance();
 
+        List<Integer> checked = materialButtonToggleGroup.getCheckedButtonIds();
+
         final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -86,7 +86,7 @@ public class ChartsFragment extends Fragment {
                 calendarFrom.set(Calendar.MONTH, monthOfYear);
                 calendarFrom.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
-                generateChart();
+                generateChart(checked);
             }
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
@@ -102,7 +102,7 @@ public class ChartsFragment extends Fragment {
                 calendarTo.set(Calendar.MONTH, monthOfYear);
                 calendarTo.set(Calendar.DAY_OF_MONTH, dayOfMonth);
                 updateLabel();
-                generateChart();
+                generateChart(checked);
             }
             private void updateLabel() {
                 SimpleDateFormat sdf = new SimpleDateFormat(getString(R.string.date_layout_UI), Locale.US);
@@ -150,19 +150,29 @@ public class ChartsFragment extends Fragment {
         materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
             @Override
             public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                generateChart();
+                List<Integer> checked = group.getCheckedButtonIds();
+                Log.d("checked", "onButtonChecked: " + checked);
+                generateChart(checked);
             }
         });
 
         // Show calories by default
-        materialButtonToggleGroup.setSelectionRequired(true);
-        materialButtonToggleGroup.check(R.id.toggleCal);
+        materialButtonToggleGroup.setSelectionRequired(false);
+        materialButtonToggleGroup.setSingleSelection(false);
+        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+        //materialButtonToggleGroup.check(R.id.toggleCal);
 
         return root;
     }
 
-    private void generateChart() {
-        if (materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps) {
+    private void generateChart(List<Integer> checked) {
+        loadBarData(barChartViewStep, checked);
+        barChartViewStep.setFitBars(true);
+        barChartViewStep.getDescription().setText("");
+        barChartViewStep.getLegend().setEnabled(false);
+        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
+        ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
+        /*if (materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps) {
             loadBarData(barChartViewStep);
             barChartViewStep.setFitBars(true);
             barChartViewStep.getDescription().setText("");
@@ -176,15 +186,15 @@ public class ChartsFragment extends Fragment {
             barChartViewCal.getLegend().setEnabled(false);
             ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
             ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-        }
+        }*/
         barChartViewStep.invalidate();
         barChartViewCal.invalidate();
     }
 
-    private void loadBarData(BarChart chart){
+    private void loadBarData(BarChart chart, List<Integer> checked){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
-        ArrayList<String> xVals = new ArrayList<String>();
-        ArrayList<BarEntry> yVals = new ArrayList<BarEntry>();
+        ArrayList<String> xValsSteps = new ArrayList<String>(), xValsCals = new ArrayList<String>();
+        ArrayList<BarEntry> yValsSteps = new ArrayList<BarEntry>(), yValsCals = new ArrayList<BarEntry>();
 
         // Graphical setup of the chart
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
@@ -208,25 +218,42 @@ public class ChartsFragment extends Fragment {
         }
 
         int i = 0;
+
         for (StepsQueryResult entry : stepsByDay) {
-            BarEntry val = new BarEntry(i++, Float.valueOf(
-                    materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps ?
-                            entry.getSteps().toString() :
-                            String.valueOf(Utils.convertStepsToCal(entry.getSteps(), getActivity(), getContext()))
-            ));
-            xVals.add(entry.getDay());
-            yVals.add(val);
+            if( checked.contains(R.id.toggleSteps) ) {
+                BarEntry valStep = new BarEntry(i++,  Float.valueOf(entry.getSteps().toString()));
+                xValsSteps.add(entry.getDay());
+                yValsSteps.add(valStep);
+            }
+            if( checked.contains(R.id.toggleCal) ) {
+                BarEntry valCals = new BarEntry(i++, Float.valueOf(String.valueOf(Utils.convertStepsToCal(entry.getSteps(), getActivity(), getContext()))));
+                xValsCals.add(entry.getDay());
+                yValsCals.add(valCals);
+            }
         }
 
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xVals));
-        BarDataSet barDataSet = new BarDataSet(yVals, getString(R.string.charts_label_plot));
-        barDataSet.setColors(ColorTemplate.MATERIAL_COLORS);
-        barDataSet.setValueTextColor(Color.BLACK);
-        barDataSet.setValueTextSize(16f);
-        ArrayList<IBarDataSet> dataSet = new ArrayList<IBarDataSet>();
-        dataSet.add(barDataSet);
-
-        BarData barData = new BarData(dataSet);
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValsCals));
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValsSteps));
+        BarData barData = new BarData();
+        if(yValsSteps.size() > 0) {
+            BarDataSet barDataSetSteps = new BarDataSet(yValsSteps, getString(R.string.charts_label_plot));
+            barDataSetSteps.setColors(ColorTemplate.MATERIAL_COLORS);
+            barDataSetSteps.setValueTextColor(Color.BLACK);
+            barDataSetSteps.setValueTextSize(16f);
+            //ArrayList<IBarDataSet> dataSetStep = new ArrayList<IBarDataSet>();
+            //dataSetStep.add(barDataSetSteps);
+            barData.addDataSet(barDataSetSteps);
+        }
+        if(yValsCals.size() > 0) {
+            BarDataSet barDataSetCals = new BarDataSet(yValsCals, getString(R.string.charts_label_plot));
+            barDataSetCals.setColors(ColorTemplate.MATERIAL_COLORS);
+            barDataSetCals.setValueTextColor(Color.BLACK);
+            barDataSetCals.setValueTextSize(16f);
+            //ArrayList<IBarDataSet> dataSetCal = new ArrayList<IBarDataSet>();
+            //dataSetCal.add(barDataSetCals);
+            barData.addDataSet( barDataSetCals);
+        }
+        //BarData barData = new BarData(barDataSetSteps, barDataSetCals);
         barData.setValueTextSize(10f);
         barData.setBarWidth(0.9f);
 

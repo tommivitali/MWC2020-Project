@@ -185,6 +185,49 @@
             </RadioGroup>
 
             <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/range"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="8dp"
+                android:layout_marginTop="8dp"
+                android:layout_marginEnd="8dp"
+                android:text="@string/caloriesRange"
+                android:textAlignment="textStart"
+                android:textColor="@android:color/primary_text_light_nodisable"
+                android:textSize="30sp" />
+            <LinearLayout
+                android:id="@+id/rangeLayout"
+                android:layout_width="fill_parent"
+                android:layout_height="wrap_content"
+                android:background="#FFFFFF"
+                android:orientation="vertical">
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_min"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/settings_min_cal_measure">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editMin"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+                <com.google.android.material.textfield.TextInputLayout
+                    android:id="@+id/text_max"
+                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:hint="@string/settings_max_cal_measure">
+                    <com.google.android.material.textfield.TextInputEditText
+                        android:id="@+id/editMax"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:inputType="number" />
+                </com.google.android.material.textfield.TextInputLayout>
+            </LinearLayout>
+
+            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/notifications"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

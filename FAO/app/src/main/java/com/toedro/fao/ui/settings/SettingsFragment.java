@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.text.Editable;
+import android.text.InputType;
 import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,15 +88,26 @@ public class SettingsFragment extends Fragment {
         Integer defaultHeightValue = getResources().getInteger(R.integer.saved_height_default_key);
         Integer defaultWeightValue = getResources().getInteger(R.integer.saved_weight_default_key);
         Integer defaultAgeValue = getResources().getInteger(R.integer.saved_age_default_key);
+        double defaultCalValue = 0.0;
         Integer heightShared = sharedPref.getInt(getString(R.string.saved_height_saved_key), defaultHeightValue);
         Integer weightShared = sharedPref.getInt(getString(R.string.saved_weight_saved_key), defaultWeightValue);
         Integer ageShared = sharedPref.getInt(getString(R.string.saved_age_saved_key), defaultAgeValue);
+        Integer minCalShared = sharedPref.getInt(getString(R.string.saved_min_cal_saved_key), (int) defaultCalValue);
+        Integer maxCalShared = sharedPref.getInt(getString(R.string.saved_max_cal_saved_key), (int) defaultCalValue);
         TextInputEditText editTextHeight = root.findViewById(R.id.editHeight);
         TextInputEditText editTextWeight = root.findViewById(R.id.editWeight);
         TextInputEditText editTextAge = root.findViewById(R.id.editAge);
+        TextInputEditText editTextMinCal = root.findViewById(R.id.editMin);
+        TextInputEditText editTextMaxCAl = root.findViewById(R.id.editMax);
         editTextHeight.setText(heightShared.toString());
         editTextWeight.setText(weightShared.toString());
         editTextAge.setText(ageShared.toString());
+        //editTextMinCal.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL); //to parse every number
+        editTextMinCal.setText(minCalShared.toString());
+        //editTextMaxCAl.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
+        editTextMaxCAl.setText(maxCalShared.toString());
+
+
         editTextHeight.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -132,6 +144,32 @@ public class SettingsFragment extends Fragment {
                 if(s.toString().length() == 0) return;
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putInt(getString(R.string.saved_age_saved_key), Integer.parseInt(s.toString()));
+                editor.apply();
+            }
+        });
+        editTextMinCal.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length() == 0) return;
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt(getString(R.string.saved_min_cal_saved_key), Integer.parseInt(s.toString()));//Float.parseFloat(s.toString()));
+                editor.apply();
+            }
+        });
+        editTextMaxCAl.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+                if(s.toString().length() == 0) return;
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putInt(getString(R.string.saved_max_cal_saved_key), Integer.parseInt(s.toString()));
                 editor.apply();
             }
         });
