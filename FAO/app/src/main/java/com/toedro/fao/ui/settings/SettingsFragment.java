@@ -142,20 +142,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Get the home progress type and, if exists, select it in the RadioGroup
-        String defaultHomeProgressTypeValue = getString(R.string.saved_home_progress_type_default_key);
-        String homeProgressTypeShared = sharedPref.getString(getString(R.string.saved_home_progress_type_saved_key), defaultHomeProgressTypeValue);
-        RadioGroup rGroup = root.findViewById(R.id.progressGroup);
-        rGroup.check(Utils.progressTypeHomeToId(ProgressTypeHome.valueOf(homeProgressTypeShared)));
-        rGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(RadioGroup group, int checkedId) {
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putString(getString(R.string.saved_home_progress_type_saved_key), Utils.idToProgressTypeHome(checkedId).toString());
-                editor.apply();
-            }
-        });
-
         // Get the choice type and, if exists, select it in the RadioGroup
         String defaultChoiceProgressTypeValue = getString(R.string.saved_choice_progress_type_default_key);
         String choiceProgressTypeShared = sharedPref.getString(getString(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);

@@ -156,35 +156,6 @@
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textview.MaterialTextView
-                android:id="@+id/Home_progress"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="8dp"
-                android:layout_marginTop="8dp"
-                android:layout_marginEnd="8dp"
-                android:text="@string/settings_label_home_progress"
-                android:textAlignment="textStart"
-                android:textColor="@android:color/primary_text_light_nodisable"
-                android:textSize="30sp" />
-
-            <RadioGroup
-                android:id="@+id/progressGroup"
-                android:checkedButton="@+id/radio_button_1"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" >
-                <RadioButton
-                    android:id="@+id/radio_button_1"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/settings_hp_label_kcal" />
-                <RadioButton
-                    android:id="@+id/radio_button_2"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="@string/settings_hp_label_steps" />
-            </RadioGroup>
-
-            <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/range"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

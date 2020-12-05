@@ -9,7 +9,6 @@ import android.util.DisplayMetrics;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.settings.ChoiceTypeSettings;
-import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
@@ -71,32 +70,6 @@ public class Utils {
         long seconds = (now - c.getTimeInMillis()) / 1000;
 
         return bmr / (24 * 60 * 60) * seconds;
-    }
-
-    public static int progressTypeHomeToId(ProgressTypeHome type) {
-        int r = R.id.radio_button_1;
-        switch (type) {
-            case STEPS:
-                r = R.id.radio_button_2;
-                break;
-            case KCAL:
-                r = R.id.radio_button_1;
-                break;
-        }
-        return r;
-    }
-
-    public static ProgressTypeHome idToProgressTypeHome(int id) {
-        ProgressTypeHome r = ProgressTypeHome.KCAL;
-        switch (id) {
-            case R.id.radio_button_2:
-                r = ProgressTypeHome.STEPS;
-                break;
-            case R.id.radio_button_1:
-                r = ProgressTypeHome.KCAL;
-                break;
-        }
-        return r;
     }
 
     public static int ChoiceTypeSettingsToId(ChoiceTypeSettings type) {

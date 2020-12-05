@@ -1,17 +1,12 @@
 package com.toedro.fao.ui.home;
 
 import android.content.Context;
-import android.content.SharedPreferences;
 import android.hardware.Sensor;
 import android.hardware.SensorManager;
-import android.icu.util.Calendar;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
@@ -25,13 +20,9 @@ import com.google.android.material.snackbar.Snackbar;
 import com.google.android.material.tabs.TabLayout;
 import com.google.android.material.tabs.TabLayoutMediator;
 import com.toedro.fao.App;
-import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
-import com.toedro.fao.db.Calories;
-import com.toedro.fao.db.Recipe;
 import com.toedro.fao.stepcounter.StepCounterListener;
 import com.toedro.fao.ui.Utils;
-import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;

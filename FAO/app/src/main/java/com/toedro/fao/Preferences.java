@@ -5,8 +5,6 @@ import android.content.Context;
 import android.content.SharedPreferences;
 import android.util.Pair;
 
-import com.toedro.fao.ui.settings.ProgressTypeHome;
-
 import java.util.ArrayList;
 import java.util.List;
 
@@ -24,13 +22,6 @@ public class Preferences {
         String defaultSexValue = context.getString(R.string.saved_sex_default_key);
         String sexShared = sharedPref.getString(context.getString(R.string.saved_sex_saved_key), defaultSexValue);
         return sexShared;
-    }
-
-    public static ProgressTypeHome getProgressTypeHome(Activity activity, Context context) {
-        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
-        String defaultHomeProgressTypeValue = context.getString(R.string.saved_home_progress_type_default_key);
-        String homeProgressTypeShared = sharedPref.getString(context.getString(R.string.saved_home_progress_type_saved_key), defaultHomeProgressTypeValue);
-        return ProgressTypeHome.valueOf(homeProgressTypeShared);
     }
 
     public static Integer getHeight(Activity activity, Context context) {

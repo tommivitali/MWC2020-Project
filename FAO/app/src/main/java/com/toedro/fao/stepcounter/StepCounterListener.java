@@ -7,7 +7,6 @@ import android.hardware.SensorEvent;
 import android.hardware.SensorEventListener;
 import android.os.SystemClock;
 import android.util.Log;
-import android.widget.TextView;
 
 import com.toedro.fao.App;
 import com.toedro.fao.R;
@@ -15,7 +14,6 @@ import com.toedro.fao.db.Step;
 import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.home.HomePagerData;
 import com.toedro.fao.ui.home.HomeViewPagerAdapter;
-import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
