@@ -17,10 +17,13 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.navigation.Navigation;
+import androidx.viewpager2.widget.ViewPager2;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
+import com.google.android.material.tabs.TabLayout;
+import com.google.android.material.tabs.TabLayoutMediator;
 import com.toedro.fao.App;
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
@@ -31,13 +34,12 @@ import com.toedro.fao.ui.Utils;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
 public class HomeFragment extends Fragment {
 
-    private TextView stepsCountTextView;
-    private TextView kindOfCountTextView;
     private MaterialButton buttonStartStop;
 
     MaterialButtonToggleGroup materialButtonToggleGroup;
@@ -49,6 +51,8 @@ public class HomeFragment extends Fragment {
     // Listener and SensorManager
     private SensorManager mSensorManager;
     private StepCounterListener listener;
+
+    private HomeViewPagerAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -62,6 +66,32 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.action_nav_homepage_to_scanBarcodeFragment);
             }
         });
+
+        // Initial data of the view pager
+        int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
+                new SimpleDateFormat(getString(R.string.date_layout_DB))
+                        .format(new Date()));
+        List data = new ArrayList<HomePagerData>();
+        data.add(new HomePagerData(R.drawable.ic_calories,
+                String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())),
+                getString(R.string.home_calories_description)));
+        data.add(new HomePagerData(R.drawable.ic_steps,
+                String.valueOf(stepsCompleted),
+                getString(R.string.home_steps_description)));
+        // View Pager to show steps and calories
+        ViewPager2 viewPager = root.findViewById(R.id.homeViewPager);
+        adapter = new HomeViewPagerAdapter();
+        viewPager.setAdapter(adapter);
+        viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
+        adapter.setData(data);
+
+        TabLayout progressPager = root.findViewById(R.id.progressViewPager);
+        new TabLayoutMediator(progressPager, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
+            @Override
+            public void onConfigureTab(@NonNull TabLayout.Tab tab, int position) {
+
+            }
+        }).attach();
 
         // Button to get a recipe
         MaterialButton buttonWannaEat = (MaterialButton) root.findViewById(R.id.buttonWannaEat);
@@ -129,31 +159,7 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        ProgressTypeHome pth = Preferences.getProgressTypeHome(getActivity(), getContext());
-
-        stepsCountTextView  = (TextView) root.findViewById(R.id.stepsCount);
-        kindOfCountTextView = (TextView) root.findViewById(R.id.kindOfCount);
         buttonStartStop     = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
-
-        int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
-                new SimpleDateFormat(getString(R.string.date_layout_DB))
-                        .format(new Date()));
-        kindOfCountTextView.setText(
-                pth == ProgressTypeHome.KCAL ?
-                        getString(R.string.home_calories_description) :
-                        getString(R.string.home_steps_description)
-        );
-        stepsCountTextView.setText(
-                pth == ProgressTypeHome.KCAL ?
-                        String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())) :
-                        String.valueOf((int)stepsCompleted)
-        );
-        //change also icon
-        stepsCountTextView.setCompoundDrawablesWithIntrinsicBounds(
-                pth == ProgressTypeHome.KCAL ?
-                        R.drawable.ic_calorie : R.drawable.ic_footprints, 0, 0, 0
-        );
-        SharedPreferences sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
 
         //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
@@ -163,7 +169,7 @@ public class HomeFragment extends Fragment {
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
 
         // Get listener instance, and check if it is already activated
-        listener = StepCounterListener.getInstance(stepsCompleted, stepsCountTextView, pth, getContext(), getActivity());
+        listener = StepCounterListener.getInstance(stepsCompleted, adapter, getContext(), getActivity());
         if(listener.isActive()) {
             buttonStartStop.setChecked(true);
             buttonStartStop.setText(R.string.home_stop_stepcounter);

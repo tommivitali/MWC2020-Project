@@ -7,59 +7,38 @@
     android:id="@+id/homeFragment"
     tools:context=".ui.home.HomeFragment">
 
-    <LinearLayout
-        android:id="@+id/showCount"
+    <androidx.viewpager2.widget.ViewPager2
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:orientation="vertical"
+        android:id="@+id/homeViewPager"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <TextView
-            android:id="@+id/stepsCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="8dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/home_0"
-            android:textAlignment="center"
-            android:textSize="65sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <TextView
-            android:id="@+id/kindOfCount"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="8dp"
-            android:layout_marginTop="1dp"
-            android:layout_marginEnd="8dp"
-            android:text="@string/home_steps_description"
-            android:textAlignment="center"
-            android:textSize="20sp"
-            app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </LinearLayout>
+        app:layout_constraintTop_toTopOf="parent"
+        >
+    </androidx.viewpager2.widget.ViewPager2>
+    <com.google.android.material.tabs.TabLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/progressViewPager"
+        app:layout_constraintTop_toBottomOf="@+id/homeViewPager"
+        app:tabBackground="@drawable/tab_selector"
+        app:tabGravity="center"
+        app:tabIndicatorHeight="0dp"
+        >
+    </com.google.android.material.tabs.TabLayout>
 
     <com.google.android.material.button.MaterialButton
         android:id="@+id/buttonAddIngredient"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="80dp"
+        android:layout_marginTop="16dp"
         android:layout_marginEnd="8dp"
         android:backgroundTint="@color/colorPrimaryDark"
         android:drawableTint="@android:color/white"
         android:textColor="@android:color/white"
         android:textAlignment="center"
         android:text="@string/home_add_ingredients"
-        app:layout_constraintTop_toBottomOf="@+id/showCount"
+        app:layout_constraintTop_toBottomOf="@+id/progressViewPager"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:icon="@drawable/ic_add"

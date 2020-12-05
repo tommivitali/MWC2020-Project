@@ -10,8 +10,11 @@ import android.util.Log;
 import android.widget.TextView;
 
 import com.toedro.fao.App;
+import com.toedro.fao.R;
 import com.toedro.fao.db.Step;
 import com.toedro.fao.ui.Utils;
+import com.toedro.fao.ui.home.HomePagerData;
+import com.toedro.fao.ui.home.HomeViewPagerAdapter;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.text.SimpleDateFormat;
@@ -24,8 +27,7 @@ public class StepCounterListener implements SensorEventListener {
 
     private int stepsCompleted;
 
-    private ProgressTypeHome pth;
-    private TextView stepsCountTextView;
+    private HomeViewPagerAdapter adapter;
 
     private ArrayList<Integer> mACCSeries = new ArrayList<Integer>();
     private ArrayList<String> mTimeSeries = new ArrayList<String>();
@@ -44,37 +46,30 @@ public class StepCounterListener implements SensorEventListener {
     private boolean active = false;
 
     // Constructor, get steps completed, TextView and ProgressTypeHome as args
-    private StepCounterListener(int steps, TextView tv, ProgressTypeHome pth, Context c, Activity a)  throws StepCounterListenerException {
+    private StepCounterListener(int steps, HomeViewPagerAdapter adapter, Context c, Activity a)  throws StepCounterListenerException {
         if (instance != null) {
             throw new StepCounterListenerException();
         }
         stepsCompleted = steps;
-        stepsCountTextView = tv;
-        this.pth = pth;
+        this.adapter = adapter;
         context = c;
         activity = a;
     }
 
-    public static StepCounterListener getInstance(int steps, TextView tv, ProgressTypeHome pth, Context c, Activity a) {
+    public static StepCounterListener getInstance(int steps, HomeViewPagerAdapter ad, Context c, Activity a) {
         if (instance == null) {
             try {
-                instance = new StepCounterListener(steps, tv, pth, c, a);
+                instance = new StepCounterListener(steps, ad, c, a);
             } catch (Exception e) { }
         } else {
-            instance.setProgressTypeHome(pth);
-            instance.setTextView(tv);
+            instance.setAdapter(ad);
             instance.setActivity(a);
             instance.setContext(c);
         }
         return instance;
     }
 
-    private void setTextView(TextView tv) {
-        stepsCountTextView = tv;
-    }
-    private void setProgressTypeHome(ProgressTypeHome progress) {
-        pth = progress;
-    }
+    private void setAdapter(HomeViewPagerAdapter adapter) { this.adapter = adapter; }
 
     public void activate() {
         active = true;
@@ -187,12 +182,15 @@ public class StepCounterListener implements SensorEventListener {
         }
     }
 
+    // Update the TextViews
     private void updateTextView() {
-        // Update the TextView
-        stepsCountTextView.setText(String.valueOf(
-                pth == ProgressTypeHome.KCAL ?
-                        String.valueOf(Utils.convertStepsToCal(stepsCompleted, activity, context)) :
-                        String.valueOf((int)stepsCompleted)
-        ));
+        List<HomePagerData> newData = new ArrayList<HomePagerData>();
+        newData.add(new HomePagerData(R.drawable.ic_calories,
+                String.valueOf(Utils.convertStepsToCal(stepsCompleted, activity, context)),
+                context.getString(R.string.home_calories_description)));
+        newData.add(new HomePagerData(R.drawable.ic_steps,
+                String.valueOf(stepsCompleted),
+                context.getString(R.string.home_steps_description)));
+        adapter.setData(newData);
     }
 }
