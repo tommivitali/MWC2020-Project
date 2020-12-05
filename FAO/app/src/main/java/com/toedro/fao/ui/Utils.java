@@ -8,6 +8,7 @@ import android.util.DisplayMetrics;
 
 import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
+import com.toedro.fao.ui.settings.ChoiceTypeSettings;
 import com.toedro.fao.ui.settings.ProgressTypeHome;
 
 import java.time.LocalDate;
@@ -93,6 +94,38 @@ public class Utils {
                 break;
             case R.id.radio_button_1:
                 r = ProgressTypeHome.KCAL;
+                break;
+        }
+        return r;
+    }
+
+    public static int ChoiceTypeSettingsToId(ChoiceTypeSettings type) {
+        int r = R.id.choice_unchanged;
+        switch (type) {
+            case DIMAGRIRE:
+                r = R.id.choice_dimagrire;
+                break;
+            case INGRASSARE:
+                r = R.id.choice_ingrassare;
+                break;
+            case MANTENERE:
+                r = R.id.choice_unchanged;
+                break;
+        }
+        return r;
+    }
+
+    public static ChoiceTypeSettings idToChoiceTypeSettings(int id) {
+        ChoiceTypeSettings r = ChoiceTypeSettings.MANTENERE;
+        switch (id) {
+            case R.id.choice_dimagrire:
+                r = ChoiceTypeSettings.DIMAGRIRE;
+                break;
+            case R.id.choice_ingrassare:
+                r = ChoiceTypeSettings.INGRASSARE;
+                break;
+            case R.id.choice_unchanged:
+                r = ChoiceTypeSettings.MANTENERE;
                 break;
         }
         return r;

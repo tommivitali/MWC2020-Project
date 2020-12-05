@@ -38,27 +38,6 @@
                 />
         </LinearLayout>
 
-        <LinearLayout
-            xmlns:android="http://schemas.android.com/apk/res/android"
-            android:id="@+id/CalGraphsLayout"
-            android:layout_width="match_parent"
-            android:layout_height="300dp"
-            android:gravity="center"
-            android:orientation="vertical"
-            android:paddingLeft="0dp"
-            android:paddingRight="0dp">
-            <com.github.mikephil.charting.charts.BarChart
-                android:id="@+id/BarCalChart"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_margin="10dp"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                />
-        </LinearLayout>
-
         <com.google.android.material.textfield.TextInputLayout
             android:id="@+id/chartsTextFieldDateStart"
             android:layout_width="match_parent"

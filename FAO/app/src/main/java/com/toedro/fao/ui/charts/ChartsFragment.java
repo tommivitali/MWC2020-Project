@@ -43,8 +43,8 @@ import static android.content.ContentValues.TAG;
 
 public class ChartsFragment extends Fragment {
 
-    BarChart barChartViewStep, barChartViewCal;
-    LinearLayout ChartsGraphsLayoutSteps, ChartsGraphsLayoutCalories;
+    BarChart barChartViewStep;
+    LinearLayout ChartsGraphsLayoutSteps;
     MaterialButtonToggleGroup materialButtonToggleGroup;
     com.google.android.material.textfield.TextInputLayout textInputFrom, textInputTo;
 
@@ -54,8 +54,6 @@ public class ChartsFragment extends Fragment {
 
         // Get objects from layout
         ChartsGraphsLayoutSteps     = (LinearLayout) root.findViewById(R.id.StepsGraphsLayout);
-        ChartsGraphsLayoutCalories  = (LinearLayout) root.findViewById(R.id.CalGraphsLayout);
-        barChartViewCal             = (BarChart) root.findViewById(R.id.BarCalChart);
         barChartViewStep            = (BarChart) root.findViewById(R.id.BarStepChart);
         textInputFrom               = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateStart);
         textInputTo                 = (TextInputLayout) root.findViewById(R.id.chartsTextFieldDateEnd);
@@ -156,11 +154,10 @@ public class ChartsFragment extends Fragment {
             }
         });
 
-        // Show calories by default
+        // Show only calories by default
         materialButtonToggleGroup.setSelectionRequired(false);
         materialButtonToggleGroup.setSingleSelection(false);
-        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-        //materialButtonToggleGroup.check(R.id.toggleCal);
+        materialButtonToggleGroup.check(R.id.toggleCal);
 
         return root;
     }
@@ -170,36 +167,20 @@ public class ChartsFragment extends Fragment {
         barChartViewStep.setFitBars(true);
         barChartViewStep.getDescription().setText("");
         barChartViewStep.getLegend().setEnabled(false);
-        ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-        ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-        /*if (materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleSteps) {
-            loadBarData(barChartViewStep);
-            barChartViewStep.setFitBars(true);
-            barChartViewStep.getDescription().setText("");
-            barChartViewStep.getLegend().setEnabled(false);
-            ChartsGraphsLayoutCalories.setVisibility(View.GONE);
-            ChartsGraphsLayoutSteps.setVisibility(View.VISIBLE);
-        } else if(materialButtonToggleGroup.getCheckedButtonId() == R.id.toggleCal) {
-            loadBarData(barChartViewCal);
-            barChartViewCal.setFitBars(true);
-            barChartViewCal.getDescription().setText("");
-            barChartViewCal.getLegend().setEnabled(false);
-            ChartsGraphsLayoutCalories.setVisibility(View.VISIBLE);
-            ChartsGraphsLayoutSteps.setVisibility(View.GONE);
-        }*/
         barChartViewStep.invalidate();
-        barChartViewCal.invalidate();
     }
 
     private void loadBarData(BarChart chart, List<Integer> checked){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
-        ArrayList<String> xValsSteps = new ArrayList<String>(), xValsCals = new ArrayList<String>();
+        ArrayList<String> xVals = new ArrayList<String>();
         ArrayList<BarEntry> yValsSteps = new ArrayList<BarEntry>(), yValsCals = new ArrayList<BarEntry>();
 
         // Graphical setup of the chart
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.getXAxis().setDrawGridLines(false);
         chart.getXAxis().setGranularity(1f);
+        chart.getXAxis().setGranularityEnabled(false);
+        chart.getXAxis().setCenterAxisLabels(false);
         chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         chart.getAxisLeft().setSpaceTop(15f);
         chart.getAxisLeft().setAxisMinimum(0f);
@@ -220,28 +201,24 @@ public class ChartsFragment extends Fragment {
         int i = 0;
 
         for (StepsQueryResult entry : stepsByDay) {
+            xVals.add(entry.getDay());
             if( checked.contains(R.id.toggleSteps) ) {
                 BarEntry valStep = new BarEntry(i++,  Float.valueOf(entry.getSteps().toString()));
-                xValsSteps.add(entry.getDay());
                 yValsSteps.add(valStep);
             }
             if( checked.contains(R.id.toggleCal) ) {
                 BarEntry valCals = new BarEntry(i++, Float.valueOf(String.valueOf(Utils.convertStepsToCal(entry.getSteps(), getActivity(), getContext()))));
-                xValsCals.add(entry.getDay());
                 yValsCals.add(valCals);
             }
         }
 
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValsCals));
-        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xValsSteps));
+        chart.getXAxis().setValueFormatter(new IndexAxisValueFormatter(xVals));
         BarData barData = new BarData();
         if(yValsSteps.size() > 0) {
             BarDataSet barDataSetSteps = new BarDataSet(yValsSteps, getString(R.string.charts_label_plot));
             barDataSetSteps.setColors(ColorTemplate.MATERIAL_COLORS);
             barDataSetSteps.setValueTextColor(Color.BLACK);
             barDataSetSteps.setValueTextSize(16f);
-            //ArrayList<IBarDataSet> dataSetStep = new ArrayList<IBarDataSet>();
-            //dataSetStep.add(barDataSetSteps);
             barData.addDataSet(barDataSetSteps);
         }
         if(yValsCals.size() > 0) {
@@ -249,13 +226,11 @@ public class ChartsFragment extends Fragment {
             barDataSetCals.setColors(ColorTemplate.MATERIAL_COLORS);
             barDataSetCals.setValueTextColor(Color.BLACK);
             barDataSetCals.setValueTextSize(16f);
-            //ArrayList<IBarDataSet> dataSetCal = new ArrayList<IBarDataSet>();
-            //dataSetCal.add(barDataSetCals);
             barData.addDataSet( barDataSetCals);
         }
-        //BarData barData = new BarData(barDataSetSteps, barDataSetCals);
         barData.setValueTextSize(10f);
         barData.setBarWidth(0.9f);
+        chart.getXAxis().setLabelCount(xVals.size());
 
         chart.setData(barData);
     }

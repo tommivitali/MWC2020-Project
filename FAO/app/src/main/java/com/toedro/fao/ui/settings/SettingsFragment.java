@@ -97,15 +97,9 @@ public class SettingsFragment extends Fragment {
         TextInputEditText editTextHeight = root.findViewById(R.id.editHeight);
         TextInputEditText editTextWeight = root.findViewById(R.id.editWeight);
         TextInputEditText editTextAge = root.findViewById(R.id.editAge);
-        TextInputEditText editTextMinCal = root.findViewById(R.id.editMin);
-        TextInputEditText editTextMaxCAl = root.findViewById(R.id.editMax);
         editTextHeight.setText(heightShared.toString());
         editTextWeight.setText(weightShared.toString());
         editTextAge.setText(ageShared.toString());
-        //editTextMinCal.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL); //to parse every number
-        editTextMinCal.setText(minCalShared.toString());
-        //editTextMaxCAl.setInputType(InputType.TYPE_NUMBER_FLAG_SIGNED | InputType.TYPE_NUMBER_FLAG_DECIMAL);
-        editTextMaxCAl.setText(maxCalShared.toString());
 
 
         editTextHeight.addTextChangedListener(new TextWatcher() {
@@ -147,32 +141,6 @@ public class SettingsFragment extends Fragment {
                 editor.apply();
             }
         });
-        editTextMinCal.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().length() == 0) return;
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(getString(R.string.saved_min_cal_saved_key), Integer.parseInt(s.toString()));//Float.parseFloat(s.toString()));
-                editor.apply();
-            }
-        });
-        editTextMaxCAl.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) { }
-            @Override
-            public void afterTextChanged(Editable s) {
-                if(s.toString().length() == 0) return;
-                SharedPreferences.Editor editor = sharedPref.edit();
-                editor.putInt(getString(R.string.saved_max_cal_saved_key), Integer.parseInt(s.toString()));
-                editor.apply();
-            }
-        });
 
         // Get the home progress type and, if exists, select it in the RadioGroup
         String defaultHomeProgressTypeValue = getString(R.string.saved_home_progress_type_default_key);
@@ -184,6 +152,20 @@ public class SettingsFragment extends Fragment {
             public void onCheckedChanged(RadioGroup group, int checkedId) {
                 SharedPreferences.Editor editor = sharedPref.edit();
                 editor.putString(getString(R.string.saved_home_progress_type_saved_key), Utils.idToProgressTypeHome(checkedId).toString());
+                editor.apply();
+            }
+        });
+
+        // Get the choice type and, if exists, select it in the RadioGroup
+        String defaultChoiceProgressTypeValue = getString(R.string.saved_choice_progress_type_default_key);
+        String choiceProgressTypeShared = sharedPref.getString(getString(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);
+        RadioGroup cGroup = root.findViewById(R.id.choiceGroup);
+        cGroup.check(Utils.ChoiceTypeSettingsToId(ChoiceTypeSettings.valueOf(choiceProgressTypeShared)));
+        cGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, int checkedId) {
+                SharedPreferences.Editor editor = sharedPref.edit();
+                editor.putString(getString(R.string.saved_choice_progress_type_saved_key), Utils.idToChoiceTypeSettings(checkedId).toString());
                 editor.apply();
             }
         });

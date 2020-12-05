@@ -4,3 +4,4 @@ public enum ProgressTypeHome {
     STEPS,
     KCAL
 }
+

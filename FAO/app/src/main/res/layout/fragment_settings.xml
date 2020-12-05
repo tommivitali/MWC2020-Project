@@ -195,37 +195,27 @@
                 android:textAlignment="textStart"
                 android:textColor="@android:color/primary_text_light_nodisable"
                 android:textSize="30sp" />
-            <LinearLayout
-                android:id="@+id/rangeLayout"
-                android:layout_width="fill_parent"
-                android:layout_height="wrap_content"
-                android:background="#FFFFFF"
-                android:orientation="vertical">
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_min"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+            <RadioGroup
+                android:id="@+id/choiceGroup"
+                android:checkedButton="@id/choice_unchanged"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" >
+                <RadioButton
+                    android:id="@+id/choice_dimagrire"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/settings_min_cal_measure">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editMin"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-                <com.google.android.material.textfield.TextInputLayout
-                    android:id="@+id/text_max"
-                    style="@style/Widget.MaterialComponents.TextInputLayout.OutlinedBox"
+                    android:text="@string/dimagrire" />
+                <RadioButton
+                    android:id="@+id/choice_ingrassare"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:hint="@string/settings_max_cal_measure">
-                    <com.google.android.material.textfield.TextInputEditText
-                        android:id="@+id/editMax"
-                        android:layout_width="match_parent"
-                        android:layout_height="match_parent"
-                        android:inputType="number" />
-                </com.google.android.material.textfield.TextInputLayout>
-            </LinearLayout>
+                    android:text="@string/ingrassare" />
+                <RadioButton
+                    android:id="@+id/choice_unchanged"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:text="@string/notChange" />
+            </RadioGroup>
 
             <com.google.android.material.textview.MaterialTextView
                 android:id="@+id/notifications"

@@ -44,10 +44,14 @@
     <string name="settings_age_unit_measure">year</string>
     <string name="settings_hp_label_kcal">Calories (kcal)</string>
     <string name="settings_hp_label_steps">Steps</string>
+    <string name="notChange">Vuoi mantenere il tuo peso?</string>
+    <string name="ingrassare">Vuoi ingrassare?</string>
+    <string name="dimagrire">Vuoi Dimagrire?</string>
     <!-- Settings SharedPreferences -->
     <string name="saved_language_default_key">English</string>
     <string name="saved_sex_default_key">Male</string>
     <string name="saved_home_progress_type_default_key">KCAL</string>
+    <string name="saved_choice_progress_type_default_key">MANTENERE</string>
     <string name="saved_language_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.language</string>
     <string name="saved_sex_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.sex</string>
     <string name="saved_height_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.height</string>
@@ -56,6 +60,7 @@
     <string name="saved_min_cal_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.minCal</string>
     <string name="saved_max_cal_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.maxCal</string>
     <string name="saved_home_progress_type_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hpt</string>
+    <string name="saved_choice_progress_type_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.cpt</string>
     <string name="saved_hour_1_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour1</string>
     <string name="saved_hour_2_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour2</string>
     <string name="saved_hour_3_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.hour3</string>
