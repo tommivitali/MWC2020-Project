@@ -20,7 +20,6 @@ import com.github.mikephil.charting.data.BarData;
 import com.github.mikephil.charting.data.BarDataSet;
 import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IndexAxisValueFormatter;
-import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.github.mikephil.charting.utils.ColorTemplate;
 import com.google.android.material.button.MaterialButtonToggleGroup;
 import com.google.android.material.snackbar.Snackbar;
@@ -179,8 +178,7 @@ public class ChartsFragment extends Fragment {
         chart.getXAxis().setPosition(XAxis.XAxisPosition.BOTTOM);
         chart.getXAxis().setDrawGridLines(false);
         chart.getXAxis().setGranularity(1f);
-        chart.getXAxis().setGranularityEnabled(false);
-        chart.getXAxis().setCenterAxisLabels(false);
+        chart.animateX(500);
         chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
         chart.getAxisLeft().setSpaceTop(15f);
         chart.getAxisLeft().setAxisMinimum(0f);
@@ -229,9 +227,23 @@ public class ChartsFragment extends Fragment {
             barData.addDataSet( barDataSetCals);
         }
         barData.setValueTextSize(10f);
-        barData.setBarWidth(0.9f);
         chart.getXAxis().setLabelCount(xVals.size());
+        //x axis fix
+        float barWidth = 0.92f;
+        float groupSpace = 0.06f;
+        float barSpace = 0.02f;
+        //labels will be centered as long as "(barSpace + barWidth) * 5 + groupSpace = 1" is satisfied
 
         chart.setData(barData);
+        if( checked.contains(R.id.toggleSteps) && checked.contains(R.id.toggleCal)) {
+            barData.setBarWidth(barWidth/2);
+            chart.groupBars(0f, groupSpace, barSpace);
+            chart.getXAxis().setCenterAxisLabels(true);
+            chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(groupSpace, barSpace) * xVals.size());
+        }
+        else{
+            barData.setBarWidth(barWidth);
+            chart.getXAxis().setCenterAxisLabels(false);
+        }
     }
 }
