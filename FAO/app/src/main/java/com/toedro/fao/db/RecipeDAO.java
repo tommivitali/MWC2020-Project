@@ -13,7 +13,7 @@ public abstract class RecipeDAO {
     public abstract Recipe getRecipe(String id);
     @Query("SELECT * FROM Recipes")
     public abstract List<Recipe> getRecipes();
-    @Query("SELECT SUM(RI.quantity * I.calories) " +
+    @Query("SELECT SUM(RI.quantity * I.calories /100) " +
             "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
             "WHERE RI.idRecipe = :idRecipe")
     public abstract Integer getCalories(String idRecipe);

@@ -179,9 +179,17 @@ public class ChartsFragment extends Fragment {
         chart.getXAxis().setDrawGridLines(false);
         chart.getXAxis().setGranularity(1f);
         chart.animateX(500);
+        //set decently horizontal distance bars (Y axis)
         chart.getAxisLeft().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
-        chart.getAxisLeft().setSpaceTop(15f);
+        chart.getAxisRight().setPosition(YAxis.YAxisLabelPosition.OUTSIDE_CHART);
+        chart.getAxisLeft().setSpaceTop(10f);
+        chart.getAxisRight().setSpaceTop(10f);
+        chart.getAxisRight().setMaxWidth(2f);
+        chart.getAxisLeft().setMaxWidth(2f);
         chart.getAxisLeft().setAxisMinimum(0f);
+        chart.getAxisRight().setAxisMinimum(0f);
+        chart.getAxisRight().setLabelCount(chart.getAxisLeft().getLabelCount(), true);
+        chart.getAxisLeft().setLabelCount(chart.getAxisRight().getLabelCount(), true);
 
         // Get data from the DB
         List<StepsQueryResult> stepsByDay = App.getDBInstance().stepDAO().getSteps(
@@ -232,7 +240,7 @@ public class ChartsFragment extends Fragment {
         float barWidth = 0.92f;
         float groupSpace = 0.06f;
         float barSpace = 0.02f;
-        //labels will be centered as long as "(barSpace + barWidth) * 5 + groupSpace = 1" is satisfied
+        //labels will be centered as long as "(barSpace + barWidth) * n + groupSpace = 1" is satisfied
 
         chart.setData(barData);
         if( checked.contains(R.id.toggleSteps) && checked.contains(R.id.toggleCal)) {
