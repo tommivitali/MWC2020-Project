@@ -46,6 +46,7 @@ public class ChartsFragment extends Fragment {
     LinearLayout ChartsGraphsLayoutSteps;
     MaterialButtonToggleGroup materialButtonToggleGroup;
     com.google.android.material.textfield.TextInputLayout textInputFrom, textInputTo;
+    List<Integer> checked;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -65,16 +66,24 @@ public class ChartsFragment extends Fragment {
         textInputFrom.getEditText().setText(defaultDateFrom.format(DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI))));
 
         Calendar calendarFrom   = Calendar.getInstance();
-        // Set initial values for the first time the user click in the from date selection
-        /*
-        calendarFrom.set(Calendar.YEAR, defaultDateFrom.getYear());
-        calendarFrom.set(Calendar.MONTH, defaultDateFrom.getMonthValue());
-        calendarFrom.set(Calendar.DAY_OF_MONTH, defaultDateFrom.getDayOfMonth());
-        */
         Calendar calendarTo     = Calendar.getInstance();
 
-        List<Integer> checked = materialButtonToggleGroup.getCheckedButtonIds();
+        //select graph type
+        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
+            @Override
+            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
+                List<Integer> checked = group.getCheckedButtonIds();
+                Log.d("checked", "onButtonChecked: " + checked);
+                generateChart(checked);
+            }
+        });
 
+        // Show only calories by default
+        materialButtonToggleGroup.setSelectionRequired(false);
+        materialButtonToggleGroup.setSingleSelection(false);
+        materialButtonToggleGroup.check(R.id.toggleCal);
+
+        checked = materialButtonToggleGroup.getCheckedButtonIds();
         final DatePickerDialog.OnDateSetListener dateFrom = new DatePickerDialog.OnDateSetListener() {
             @Override
             public void onDateSet(DatePicker view, int year, int monthOfYear,
@@ -143,20 +152,6 @@ public class ChartsFragment extends Fragment {
                 }
             }
         });
-
-        materialButtonToggleGroup.addOnButtonCheckedListener(new MaterialButtonToggleGroup.OnButtonCheckedListener() {
-            @Override
-            public void onButtonChecked(MaterialButtonToggleGroup group, int checkedId, boolean isChecked) {
-                List<Integer> checked = group.getCheckedButtonIds();
-                Log.d("checked", "onButtonChecked: " + checked);
-                generateChart(checked);
-            }
-        });
-
-        // Show only calories by default
-        materialButtonToggleGroup.setSelectionRequired(false);
-        materialButtonToggleGroup.setSingleSelection(false);
-        materialButtonToggleGroup.check(R.id.toggleCal);
 
         return root;
     }
