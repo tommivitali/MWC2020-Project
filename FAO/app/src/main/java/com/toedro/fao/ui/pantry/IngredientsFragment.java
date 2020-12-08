@@ -23,12 +23,11 @@ public class IngredientsFragment extends Fragment {
     Button add;
     EditText product, quantity, campo1, campo2, campo3;
 
-    // @Override
-    public View onCreate(@NonNull LayoutInflater inflater,
-                         ViewGroup container, Bundle savedInstanceState) {
-
-        super.onCreate(savedInstanceState);
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater,
+                             ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_ingredients, container, false);
+
         product = (EditText) root.findViewById(R.id.editText1);
         quantity = (EditText) root.findViewById(R.id.editText2);
         campo1 = (EditText) root.findViewById(R.id.editText3);
@@ -65,18 +64,8 @@ public class IngredientsFragment extends Fragment {
                 }
             }
         });
-        return root; }
 
-
-
-    @Override
-    public View onCreateView (LayoutInflater inflater, ViewGroup container,
-                              Bundle savedInstanceState){
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_ingredients, container, false);
+        return root;
     }
-    // check
-    // public IngredientsFragment() {}
-    //
 }
 
