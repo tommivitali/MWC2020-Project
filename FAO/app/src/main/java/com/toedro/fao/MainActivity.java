@@ -1,5 +1,6 @@
 package com.toedro.fao;
 
+import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -23,6 +24,7 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.toedro.fao.receiver.AlarmReceiver;
+import com.toedro.fao.ui.wannaeat.WannaEatFragment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -67,6 +69,21 @@ public class MainActivity extends AppCompatActivity {
         //long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         setNotifications(this, alarms, NOTIFICATION_ID);
 
+        //get notifications intent to go to wannaEat
+        Intent intent = getIntent();
+        try{
+            String action = intent.getAction().toUpperCase();
+            if(action != null){
+                if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action))){
+                    Log.d("notifiIntent", "Intent was " + intent.toString());
+                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_splashFragment_to_wannaEatFragment);
+                }
+            }else{
+                Log.d("notifiIntent", "Intent was null");
+            }
+        }catch(Exception e){
+            Log.e("notifiIntent", "Problem consuming action from intent", e);
+        }
     }
 
     public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){

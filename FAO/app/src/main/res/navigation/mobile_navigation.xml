@@ -60,6 +60,9 @@
         <action
             android:id="@+id/action_splashFragment_to_tutorialActivity"
             app:destination="@id/tutorialActivity" />
+        <action
+            android:id="@+id/action_splashFragment_to_wannaEatFragment"
+            app:destination="@id/wannaEatFragment" />
     </fragment>
     <fragment
         android:id="@+id/scanBarcodeFragment"
