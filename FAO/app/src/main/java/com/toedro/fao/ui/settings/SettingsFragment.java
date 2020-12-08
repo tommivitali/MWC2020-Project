@@ -19,7 +19,9 @@ import android.widget.TimePicker;
 
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.MainActivity;
@@ -38,6 +40,13 @@ public class SettingsFragment extends Fragment {
         View root = inflater.inflate(R.layout.fragment_settings, container, false);
 
         sharedPref = getActivity().getPreferences(Context.MODE_PRIVATE);
+
+        root.findViewById(R.id.buttonShowTutorial).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(root).navigate(R.id.action_nav_settings_to_tutorialActivity);
+            }
+        });
 
         // Get the SharedPreferences language value (if exists)
         String defaultLanguageValue = getString(R.string.saved_language_default_key);

@@ -306,22 +306,23 @@
         </LinearLayout>
 
             <com.google.android.material.button.MaterialButton
-                android:id="@+id/buttonWannaTeast"
+                android:id="@+id/buttonShowTutorial"
                 style="@style/ButtonHome"
-                android:layout_width="363dp"
-                android:layout_height="80dp"
-                android:layout_marginStart="8dp"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="0dp"
                 android:layout_marginTop="24dp"
-                android:layout_marginEnd="36dp"
+                android:layout_marginEnd="16dp"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:drawableTint="@android:color/white"
-                android:text="@string/home_wanna_eat"
+                android:text="@string/settings_show_tutorial"
                 android:textAlignment="center"
                 android:textColor="@android:color/white"
-                app:icon="@drawable/ic_camera"
+                app:icon="@drawable/ic_help"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/checkboxContainer5" />
+
         </LinearLayout>
 
     </ScrollView>

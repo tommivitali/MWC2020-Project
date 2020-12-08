@@ -35,7 +35,11 @@
         android:id="@+id/nav_settings"
         android:name="com.toedro.fao.ui.settings.SettingsFragment"
         android:label="@string/menu_settings"
-        tools:layout="@layout/fragment_settings" />
+        tools:layout="@layout/fragment_settings" >
+        <action
+            android:id="@+id/action_nav_settings_to_tutorialActivity"
+            app:destination="@id/tutorialActivity" />
+    </fragment>
 
     <fragment
         android:id="@+id/nav_recipes"
