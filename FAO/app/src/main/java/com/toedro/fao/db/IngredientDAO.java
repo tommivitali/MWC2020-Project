@@ -15,6 +15,10 @@ public abstract class IngredientDAO {
     public abstract List<Ingredient> getIngredients(List<String> id);
     @Query("SELECT * FROM Ingredients")
     public abstract List<Ingredient> getIngredients();
+    @Query("SELECT keywords FROM Ingredients")
+    public abstract List<String> getKeywords();
+    @Query("SELECT calories FROM Ingredients WHERE (name = :keywords OR keywords = :keywords)")
+    public abstract Integer getCals_100g(String keywords);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addIngredients(List<Ingredient> ingredients);
 }

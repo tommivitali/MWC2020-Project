@@ -1,9 +1,13 @@
 package com.toedro.fao.ui.pantry;
 
+import android.content.Context;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
 
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -12,28 +16,60 @@ import com.toedro.fao.R;
 import androidx.annotation.NonNull;
 
 
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
 import com.toedro.fao.App;
+import com.toedro.fao.db.IngredientDAO;
 import com.toedro.fao.db.Pantry;
+import com.toedro.fao.db.RecipeQueryResult;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class IngredientsFragment extends Fragment {
+
     Button add;
-    EditText product, quantity, campo1, campo2, campo3;
+    EditText quantity, campo1, campo2, campo3;
+    AutoCompleteTextView product;
 
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_ingredients, container, false);
 
-        product = (EditText) root.findViewById(R.id.editText1);
+        product = (AutoCompleteTextView) root.findViewById(R.id.keywordsDropdown);//(EditText) root.findViewById(R.id.editText1);
         quantity = (EditText) root.findViewById(R.id.editText2);
         campo1 = (EditText) root.findViewById(R.id.editText3);
         campo2 = (EditText) root.findViewById(R.id.editText4);
         campo3 = (EditText) root.findViewById(R.id.editText5);
         add = (Button) root.findViewById(R.id.button);
+
+        //Dropdown code
+        List<String> keywords = new ArrayList<String>();
+        // ingredients from database TODO fix it
+        for (String keys : App.getDBInstance().ingredientDAO().getKeywords()) {
+            keywords.add(keys);
+        }
+        String defaultKeywordValue = keywords.get(0);
+        // Fill the dropdown
+        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), R.layout.dropdown_languages_item, keywords);
+        AutoCompleteTextView keywordsDropdown = root.findViewById(R.id.keywordsDropdown);
+        keywordsDropdown.setAdapter(adapter1);
+        keywordsDropdown.setText(defaultKeywordValue, false);
+        // If someone changes the value of the dropdown then ...
+        keywordsDropdown.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) { }
+            @Override
+            public void afterTextChanged(Editable s) {
+            }
+        });
 
         add.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -47,11 +83,11 @@ public class IngredientsFragment extends Fragment {
                     // add to local db
 
                     // name --> ad as none
-                    String name = "Gocciole";
+                    String name = String.valueOf(keywordsDropdown.getText());//"Gocciole";
                     String quant1 = quantity.getText().toString();
                     Integer quantity = Integer.parseInt(quant1);
                     // Integer energy_100g = nutriments.getInt("energy-kcal_100g"); ---> recuperare calorie (???)
-                    Integer energy_100g = 10;
+                    Integer energy_100g = App.getDBInstance().ingredientDAO().getCals_100g(name);//10;
                     // String barcode = root.getString("code"); --> add as none?
                     String barcode = "123456789";
                     // String image = product.getString("image_front_url");

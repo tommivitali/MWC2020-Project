@@ -20,11 +20,16 @@ import com.google.android.material.card.MaterialCardView;
 import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
+import com.toedro.fao.db.Pantry;
 import com.toedro.fao.db.RecipeQueryResult;
 import com.toedro.fao.ui.Utils;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 
 public class WannaEatFragment extends Fragment {
 
@@ -211,6 +216,15 @@ public class WannaEatFragment extends Fragment {
                 containerRecipes.addView(materialCardView);
             }
         }
+
+        List<String> names = new ArrayList<>();
+        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
+        for(Pantry recipe :App.getDBInstance().pantryDAO().getPantry()){
+            hmap.put(recipe.getName(), recipe.getQuantity());
+            names.add(recipe.getName());
+        }
+        //Log.d("KCAL", "Pantry -> " + names);
+        Log.d("KCAL", "Pantry -> " + hmap);
 
         return root;
     }
