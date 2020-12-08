@@ -240,7 +240,8 @@ public class ChartsFragment extends Fragment {
         chart.setData(barData);
         if( checked.contains(R.id.toggleSteps) && checked.contains(R.id.toggleCal)) {
             barData.setBarWidth(barWidth/2);
-            chart.groupBars(0f, groupSpace, barSpace);
+            if(barData.getDataSetCount() > 1){ //do this only if you have data or it crashes
+                chart.groupBars(0f, groupSpace, barSpace);}
             chart.getXAxis().setCenterAxisLabels(true);
             chart.getXAxis().setAxisMaximum(0 + chart.getBarData().getGroupWidth(groupSpace, barSpace) * xVals.size());
         }
