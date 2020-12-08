@@ -49,16 +49,16 @@ public class IngredientsFragment extends Fragment {
         add = (Button) root.findViewById(R.id.button);
 
         //Dropdown code
-        List<String> keywords = new ArrayList<String>();
+        List<String> names = new ArrayList<String>();
         // ingredients from database TODO fix it
-        for (String keys : App.getDBInstance().ingredientDAO().getKeywords()) {
-            keywords.add(keys);
+        for (String keys : App.getDBInstance().ingredientDAO().getKeywords()) { //getNames does not work
+            names.add(keys);
         }
-        String defaultKeywordValue = keywords.get(0);
+        String defaultKeywordValue = names.get(0);
         // Fill the dropdown
-        ArrayAdapter<String> adapter1 = new ArrayAdapter<>(getContext(), R.layout.dropdown_languages_item, keywords);
+        ArrayAdapter<String> adapter = new ArrayAdapter<>(getContext(), R.layout.dropdown_languages_item, names);
         AutoCompleteTextView keywordsDropdown = root.findViewById(R.id.keywordsDropdown);
-        keywordsDropdown.setAdapter(adapter1);
+        keywordsDropdown.setAdapter(adapter);
         keywordsDropdown.setText(defaultKeywordValue, false);
         // If someone changes the value of the dropdown then ...
         keywordsDropdown.addTextChangedListener(new TextWatcher() {
