@@ -15,6 +15,9 @@
             android:id="@+id/action_nav_homepage_to_scanBarcodeFragment"
             app:destination="@id/scanBarcodeFragment" />
         <action
+            android:id="@+id/action_nav_homepage_to_ingredientsFragment"
+            app:destination="@id/ingredientsFragment" />
+        <action
             android:id="@+id/action_nav_homepage_to_wannaEatFragment"
             app:destination="@id/wannaEatFragment" />
     </fragment>
@@ -73,4 +76,9 @@
         android:name="com.toedro.fao.TutorialActivity"
         android:label="activity_tutorial"
         tools:layout="@layout/activity_tutorial" />
+    <activity
+        android:id="@+id/ingredientsFragment"
+        android:name="com.toedro.fao.ui.pantry.IngredientsFragment"
+        android:label="fragment_ingredients"
+        tools:layout="@layout/fragment_ingredients" />
 </navigation>

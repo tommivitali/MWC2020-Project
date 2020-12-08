@@ -48,7 +48,14 @@ public class HomeFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-
+        //button to add ingredients
+        MaterialButton buttonAddIngredient = (MaterialButton) root.findViewById(R.id.buttonAddIngredient);
+        buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getView()).navigate(R.id.action_nav_homepage_to_ingredientsFragment);
+            }
+        });
         // Button to go scanning barcode
         MaterialButton buttonScanBarcode = (MaterialButton) root.findViewById(R.id.buttonScanBarcode);
         buttonScanBarcode.setOnClickListener(new View.OnClickListener() {

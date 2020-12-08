@@ -150,8 +150,8 @@ public class ScanBarcodeFragment extends Fragment {
                                             //String keywords = jsonObject.get("isbn"); creare tabella
                                             String image = product.getString("image_front_url");
                                             Log.d("image", image);
-
-                                            Pantry pantries = new Pantry(name, quantity, energy_100g, barcode, image);
+                                            //TODO associate name to keywords
+                                            Pantry pantries = new Pantry(name, quantity, energy_100g, name, barcode, image);
                                             App.getDBInstance().pantryDAO().addPantry(pantries);
 
                                         } catch (Exception e) {
