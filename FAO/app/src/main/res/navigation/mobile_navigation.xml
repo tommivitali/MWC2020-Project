@@ -50,6 +50,9 @@
         <action
             android:id="@+id/action_splashFragment_to_nav_homepage"
             app:destination="@id/nav_homepage" />
+        <action
+            android:id="@+id/action_splashFragment_to_tutorialActivity"
+            app:destination="@id/tutorialActivity" />
     </fragment>
     <fragment
         android:id="@+id/scanBarcodeFragment"
@@ -61,4 +64,9 @@
         android:name="com.toedro.fao.ui.wannaeat.WannaEatFragment"
         android:label="fragment_wanna_eat"
         tools:layout="@layout/fragment_wanna_eat" />
+    <activity
+        android:id="@+id/tutorialActivity"
+        android:name="com.toedro.fao.TutorialActivity"
+        android:label="activity_tutorial"
+        tools:layout="@layout/activity_tutorial" />
 </navigation>

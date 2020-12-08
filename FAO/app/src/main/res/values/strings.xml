@@ -97,4 +97,5 @@
     <string name="settings_max_cal_measure">Maximum number of Cal you want the recipe to be MORE than what you burned</string>
     <string name="settings_min_cal_measure">Maximum number of Cal you want the recipe to be LESS than what you burned</string>
     <string name="recipes_button_hide">Hide</string>
+    <string name="settings_show_tutorial">See the tutorial again</string>
 </resources>

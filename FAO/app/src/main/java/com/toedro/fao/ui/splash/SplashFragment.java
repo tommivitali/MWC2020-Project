@@ -1,5 +1,6 @@
 package com.toedro.fao.ui.splash;
 
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
 import androidx.annotation.NonNull;
@@ -32,13 +33,16 @@ import java.util.List;
 import java.util.Map;
 
 import static android.content.ContentValues.TAG;
+import static android.content.Context.MODE_PRIVATE;
 
 public class SplashFragment extends Fragment {
-    private FirebaseFirestore db;
+    FirebaseFirestore db;
+    SharedPreferences prefs;
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
+        prefs = getActivity().getSharedPreferences("com.toedro.fao", MODE_PRIVATE);
         return inflater.inflate(R.layout.fragment_splash, container, false);
     }
 
@@ -79,7 +83,12 @@ public class SplashFragment extends Fragment {
                         } else {
                             Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
                         }
+
+                        if (prefs.getBoolean("firstrun", true)) {
+                            Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_tutorialActivity);
+                        }
                         Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_nav_homepage);
+
                     }
                 });
 
