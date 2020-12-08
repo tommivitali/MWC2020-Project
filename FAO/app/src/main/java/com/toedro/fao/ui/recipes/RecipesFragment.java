@@ -23,18 +23,9 @@ import com.toedro.fao.R;
 import com.toedro.fao.db.Recipe;
 import com.toedro.fao.ui.Utils;
 
-import com.google.android.gms.tasks.OnCompleteListener;
-import com.google.android.gms.tasks.Task;
-import com.google.firebase.firestore.QueryDocumentSnapshot;
-import com.google.firebase.firestore.FirebaseFirestore;
-import com.google.firebase.firestore.QuerySnapshot;
-
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-import java.util.Map;
-
-import static android.content.ContentValues.TAG;
 
 public class RecipesFragment extends Fragment {
 
@@ -43,7 +34,7 @@ public class RecipesFragment extends Fragment {
     ImageView imageView;
     LinearLayout linearLayout1, linearLayout2;
     MaterialCardView materialCardView;
-    TextView textView1, textView2;
+    TextView textView1, textView2, textViewContent;
     RelativeLayout relativeLayout;
     MaterialButton materialButton;
 
@@ -154,7 +145,7 @@ public class RecipesFragment extends Fragment {
         }
     }
 
-    private MaterialButton createMaterialButton() {
+    private MaterialButton createMaterialButton(TextView textViewContent, String content) {
         MaterialButton newButton = new MyMaterialButton(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -167,8 +158,37 @@ public class RecipesFragment extends Fragment {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         newButton.setLayoutParams(layoutParams);
         newButton.setPadding(0, Utils.convertDpToPixel(16), 0, 0);
-        newButton.setText(R.string.action_1);
+        newButton.setText(R.string.recipes_button_view);
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if(newButton.getText().toString().equals(getString(R.string.recipes_button_view))) {
+                    textViewContent.setText(content);
+                    newButton.setText(R.string.recipes_button_hide);
+                } else {
+                    textViewContent.setText("");
+                    newButton.setText(R.string.recipes_button_view);
+                }
+            }
+        });
         return newButton;
+    }
+
+    private TextView createTextViewContent() {
+        TextView textView = new TextView(getContext());
+        RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
+                RelativeLayout.LayoutParams.WRAP_CONTENT,
+                RelativeLayout.LayoutParams.WRAP_CONTENT
+        );
+        layoutParams.addRule(RelativeLayout.ALIGN_PARENT_TOP);
+        layoutParams.setMargins(
+                Utils.convertDpToPixel(8),
+                Utils.convertDpToPixel(88),
+                Utils.convertDpToPixel(8),
+                Utils.convertDpToPixel(8) );
+        textView.setLayoutParams(layoutParams);
+        textView.setText("");
+        return textView;
     }
 
     public View onCreateView(@NonNull LayoutInflater inflater,
@@ -187,12 +207,14 @@ public class RecipesFragment extends Fragment {
             relativeLayout      = createRelativeLayout();
             textView1           = createTextView1();
             textView2           = createTextView2();
-            materialButton      = createMaterialButton();
+            textViewContent     = createTextViewContent();
+            materialButton      = createMaterialButton(textViewContent, recipe.getText());
 
             Picasso.get().load(recipe.getImage()).into(imageView);
             textView1.setText(recipe.getName());
             textView2.setText(recipe.getType());
 
+            relativeLayout.addView(textViewContent);
             linearLayout2.addView(textView1);
             linearLayout2.addView(textView2);
             relativeLayout.addView(linearLayout2);

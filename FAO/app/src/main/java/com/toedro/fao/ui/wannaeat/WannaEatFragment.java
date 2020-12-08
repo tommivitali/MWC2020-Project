@@ -22,11 +22,9 @@ import com.toedro.fao.App;
 import com.toedro.fao.R;
 import com.toedro.fao.db.RecipeQueryResult;
 import com.toedro.fao.ui.Utils;
-import com.toedro.fao.ui.recipes.RecipesFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
-import java.util.List;
 
 public class WannaEatFragment extends Fragment {
 
@@ -159,7 +157,7 @@ public class WannaEatFragment extends Fragment {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         newButton.setLayoutParams(layoutParams);
         newButton.setPadding(0, Utils.convertDpToPixel(16), 0, 0);
-        newButton.setText(R.string.action_1);
+        newButton.setText(R.string.recipes_button_view);
         return newButton;
     }
 

@@ -87,7 +87,7 @@
     <string name="content_description_media">image for the recipe</string>
     <string name="title">Title</string>
     <string name="secondary_text">Secondary text</string>
-    <string name="action_1">Go</string>
+    <string name="recipes_button_view">View</string>
     <string name="charts_label_plot">steps</string>
     <string name="channel_name">FAO</string>
     <string name="channel_description">FAO Description</string>
@@ -96,4 +96,5 @@
     <string name="caloriesRange">Calories Range</string>
     <string name="settings_max_cal_measure">Maximum number of Cal you want the recipe to be MORE than what you burned</string>
     <string name="settings_min_cal_measure">Maximum number of Cal you want the recipe to be LESS than what you burned</string>
+    <string name="recipes_button_hide">Hide</string>
 </resources>
