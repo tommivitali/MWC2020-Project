@@ -172,8 +172,9 @@ public class ScanBarcodeFragment extends Fragment {
                                             Log.d("image", image);
                                             //TODO associate name to keywords
                                             Pantry pantries = new Pantry(name, quantity, energy_100g, name, barcode, image);
+                                            //Pantry pantry = App.getDBInstance().pantryDAO().getPantry(name, barcode);
+                                            //if(pantry == null) {
                                             App.getDBInstance().pantryDAO().addPantry(pantries);
-
                                         } catch (Exception e) {
                                             Log.d("prova", "errore");
                                         }

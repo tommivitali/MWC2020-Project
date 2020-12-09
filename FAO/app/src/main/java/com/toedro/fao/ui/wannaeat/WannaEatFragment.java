@@ -226,6 +226,13 @@ public class WannaEatFragment extends Fragment {
         //Log.d("KCAL", "Pantry -> " + names);
         Log.d("KCAL", "Pantry -> " + hmap);
 
+        hmap = new HashMap<String, Integer>();
+        for(RecipeQueryResult recipe :App.getDBInstance().recipeDAO().getRecipes(0.0, 100000.0)){
+            hmap.put(recipe.getName(), (int)Math.round(recipe.getKcal()));
+            names.add(recipe.getName());
+        }
+        Log.d("KCAL", "Pantry -> " + hmap);
+
         return root;
     }
 }

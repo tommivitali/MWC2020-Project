@@ -11,6 +11,8 @@ import java.util.List;
 public abstract class PantryDAO {
     @Query("SELECT * FROM Pantry WHERE id = :id")
     public abstract Pantry getPantry(Integer id);
+    @Query("SELECT * FROM Pantry WHERE (name = :name AND barcode = :barcode)")
+    public abstract Pantry getPantry(String name, String barcode);
     @Query("SELECT * FROM Pantry")
     public abstract List<Pantry> getPantry();
     @Insert(onConflict = OnConflictStrategy.REPLACE)

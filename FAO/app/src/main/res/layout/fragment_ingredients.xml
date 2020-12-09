@@ -15,8 +15,8 @@
         style="@style/Widget.MaterialComponents.TextInputLayout.FilledBox.ExposedDropdownMenu"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="50dp"
-        android:layout_marginStart="50dp"
+        android:layout_marginStart="10dp"
+        android:layout_marginEnd="4dp"
         android:layout_marginTop="24dp"
         android:hint="Type of product">
 
@@ -29,45 +29,45 @@
 
     <EditText
         android:id="@+id/editText2"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText1"
         android:layout_alignStart="@+id/editText1"
         android:layout_below="@+id/editText1"
-        android:layout_marginTop="19dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="Quantity in grams" />
 
     <EditText
         android:id="@+id/editText3"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText2"
         android:layout_alignStart="@+id/editText2"
         android:layout_below="@+id/editText2"
-        android:layout_marginTop="12dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
-        android:hint="campo" />
+        android:hint="Barcode" />
 
     <EditText
         android:id="@+id/editText4"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText3"
         android:layout_alignStart="@+id/editText3"
         android:layout_below="@+id/editText3"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="campo" />
 
     <EditText
         android:id="@+id/editText5"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignLeft="@+id/editText4"
         android:layout_alignStart="@+id/editText4"
         android:layout_below="@+id/editText4"
-        android:layout_marginTop="18dp"
+        android:layout_marginTop="20dp"
         android:ems="10"
         android:hint="campo"/>
 
@@ -82,5 +82,7 @@
         android:layout_marginTop="62dp"
         android:text="Add to pantry"
         android:textSize="16sp"
-        android:textStyle="normal|bold" />
+        android:textStyle="normal|bold"
+        android:backgroundTint="@color/colorPrimaryDark"
+        android:drawableTint="@android:color/white"/>
 </RelativeLayout>
