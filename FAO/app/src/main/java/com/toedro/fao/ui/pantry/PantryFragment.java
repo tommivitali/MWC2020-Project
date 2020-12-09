@@ -1,6 +1,7 @@
 package com.toedro.fao.ui.pantry;
 
 import android.content.Context;
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -27,7 +28,7 @@ public class PantryFragment extends Fragment {
     ImageView imageView;
     LinearLayout linearLayout1, linearLayout2;
     MaterialCardView materialCardView;
-    TextView textView1;
+    TextView textView1, textView2, textView3;
     RelativeLayout relativeLayout;
 
     @Override
@@ -46,11 +47,17 @@ public class PantryFragment extends Fragment {
             linearLayout2       = createLinearLayout2();
             relativeLayout      = createRelativeLayout();
             textView1           = createTextView1();
+            textView2           = createTextView2();
+            textView3           = createTextView3();
 
             Picasso.get().load(pantry.getImage()).into(imageView);
             textView1.setText(pantry.getName());
+            textView2.setText("Cal on 100g = " + String.valueOf(pantry.getKcal()));
+            textView3.setText("Quantity: " + String.valueOf(pantry.getQuantity()));
 
             linearLayout2.addView(textView1);
+            linearLayout2.addView(textView2);
+            linearLayout2.addView(textView3);
             relativeLayout.addView(linearLayout2);
             linearLayout1.addView(imageView);
             linearLayout1.addView(relativeLayout);
@@ -82,7 +89,7 @@ public class PantryFragment extends Fragment {
         ImageView newImage = new ImageView(getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
                 ViewGroup.LayoutParams.MATCH_PARENT,
-                Utils.convertDpToPixel(150) );
+                Utils.convertDpToPixel(50) ); //getting smaller
         newImage.setLayoutParams(layoutParams);
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return newImage;
@@ -134,6 +141,34 @@ public class PantryFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT,
                 ViewGroup.LayoutParams.WRAP_CONTENT );
         newText.setLayoutParams(layoutParams);
+        return newText;
+    }
+
+    private class MyDescription extends androidx.appcompat.widget.AppCompatTextView {
+        public MyDescription(Context context) {
+            super(context, null, R.attr.textAppearanceBody1);
+        }
+    }
+    private TextView createTextView2() {
+        TextView newText = new PantryFragment.MyDescription(getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT );
+        layoutParams.setMargins(0, Utils.convertDpToPixel(8), 0, 0);
+        newText.setLayoutParams(layoutParams);
+        newText.setTextColor(Color.GRAY);
+
+        return newText;
+    }
+    private TextView createTextView3() {
+        TextView newText = new PantryFragment.MyDescription(getContext());
+        LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
+                ViewGroup.LayoutParams.WRAP_CONTENT,
+                ViewGroup.LayoutParams.WRAP_CONTENT );
+        layoutParams.setMargins(0, Utils.convertDpToPixel(8), 0, 0);
+        newText.setLayoutParams(layoutParams);
+        newText.setTextColor(Color.GRAY);
+
         return newText;
     }
 }
