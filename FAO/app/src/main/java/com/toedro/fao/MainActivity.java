@@ -1,6 +1,5 @@
 package com.toedro.fao;
 
-import android.app.Activity;
 import android.app.AlarmManager;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -12,7 +11,6 @@ import android.os.Build;
 import android.os.Bundle;
 import android.util.Log;
 import android.util.Pair;
-import android.view.Menu;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
@@ -24,7 +22,6 @@ import androidx.navigation.ui.NavigationUI;
 
 import com.google.android.material.navigation.NavigationView;
 import com.toedro.fao.receiver.AlarmReceiver;
-import com.toedro.fao.ui.wannaeat.WannaEatFragment;
 
 import java.util.Calendar;
 import java.util.List;
@@ -35,7 +32,6 @@ public class MainActivity extends AppCompatActivity {
     private static final int NOTIFICATION_ID = 0;
     private NotificationManager mNotificationManager;
     private static AlarmManager alarmManager;
-    private boolean alarmUp;
 
     private AppBarConfiguration mAppBarConfiguration;
 

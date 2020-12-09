@@ -68,7 +68,11 @@
         android:id="@+id/scanBarcodeFragment"
         android:name="com.toedro.fao.ui.pantry.ScanBarcodeFragment"
         android:label="fragment_scan_barcode"
-        tools:layout="@layout/fragment_scan_barcode" />
+        tools:layout="@layout/fragment_scan_barcode" >
+        <action
+            android:id="@+id/action_scanBarcodeFragment_self"
+            app:destination="@id/scanBarcodeFragment" />
+    </fragment>
     <fragment
         android:id="@+id/wannaEatFragment"
         android:name="com.toedro.fao.ui.wannaeat.WannaEatFragment"

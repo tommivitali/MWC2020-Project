@@ -6,7 +6,9 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
+import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -20,6 +22,7 @@ import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
+import com.google.android.material.button.MaterialButton;
 import com.google.gson.JsonElement;
 import com.google.gson.JsonObject;
 import com.google.gson.JsonParser;
@@ -44,6 +47,7 @@ public class ScanBarcodeFragment extends Fragment {
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
     private TextView barcodeText;
+    private MaterialButton nextButton;
     private String barcodeData;
     private static final int REQUEST_CAMERA_PERMISSION = 201;
 
@@ -59,6 +63,16 @@ public class ScanBarcodeFragment extends Fragment {
 
         surfaceView = v.findViewById(R.id.surface_view);
         barcodeText = v.findViewById(R.id.barcode_text);
+        nextButton = v.findViewById(R.id.buttonAdd);
+        nextButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
+            }
+        });
+
+        barcodeText.setVisibility(View.INVISIBLE);
+
 
         return v;
     }
@@ -68,10 +82,15 @@ public class ScanBarcodeFragment extends Fragment {
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
                 .build();
 
+        DisplayMetrics displayMetrics = new DisplayMetrics();
+        this.getActivity().getWindowManager().getDefaultDisplay().getMetrics(displayMetrics);
+        int width = displayMetrics.widthPixels;
+        int height = displayMetrics.heightPixels;
         cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(1920, 1080)
+                .setRequestedPreviewSize(width, height)//.setRequestedPreviewSize(1920, 1080)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
+
 
         surfaceView.getHolder().addCallback(new SurfaceHolder.Callback() {
             @Override
@@ -113,6 +132,7 @@ public class ScanBarcodeFragment extends Fragment {
                     barcodeText.post(new Runnable() {
                         @Override
                         public void run() {
+                            barcodeText.setVisibility(View.VISIBLE);
                             cameraSource.stop();
                             if (barcodes.valueAt(0).email != null) {
                                 barcodeText.removeCallbacks(null);
