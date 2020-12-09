@@ -5,9 +5,7 @@ public class HomePagerData {
     String content;
     String description;
 
-    public Integer getImage() {
-        return image;
-    }
+    public Integer getImage() { return image; }
     public String getContent() {
         return content;
     }

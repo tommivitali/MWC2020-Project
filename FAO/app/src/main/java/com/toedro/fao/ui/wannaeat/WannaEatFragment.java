@@ -217,22 +217,6 @@ public class WannaEatFragment extends Fragment {
             }
         }
 
-        List<String> names = new ArrayList<>();
-        HashMap<String, Integer> hmap = new HashMap<String, Integer>();
-        for(Pantry recipe :App.getDBInstance().pantryDAO().getPantry()){
-            hmap.put(recipe.getName(), recipe.getQuantity());
-            names.add(recipe.getName());
-        }
-        //Log.d("KCAL", "Pantry -> " + names);
-        Log.d("KCAL", "Pantry -> " + hmap);
-
-        hmap = new HashMap<String, Integer>();
-        for(RecipeQueryResult recipe :App.getDBInstance().recipeDAO().getRecipes(0.0, 100000.0)){
-            hmap.put(recipe.getName(), (int)Math.round(recipe.getKcal()));
-            names.add(recipe.getName());
-        }
-        Log.d("KCAL", "Pantry -> " + hmap);
-
         return root;
     }
 }
