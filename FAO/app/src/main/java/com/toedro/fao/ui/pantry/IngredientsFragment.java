@@ -50,9 +50,9 @@ public class IngredientsFragment extends Fragment {
 
         //Dropdown code
         List<String> names = new ArrayList<String>();
-        // ingredients from database TODO fix it
+        // ingredients from database (fixed used keyword and regex to format them)
         for (String keys : App.getDBInstance().ingredientDAO().getKeywords()) { //getNames does not work
-            names.add(keys);
+            names.add(keys.replaceAll("[\\[\\]]", "").replace(",", "; "));
         }
         String defaultKeywordValue = names.get(0);
         // Fill the dropdown

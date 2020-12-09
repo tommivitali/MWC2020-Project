@@ -17,20 +17,20 @@ public abstract class RecipeDAO {
             "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
             "WHERE RI.idRecipe = :idRecipe")
     public abstract Integer getCalories(String idRecipe);
-    /*@Query("SELECT SUM(RI.quantity * I.calories) AS kcal, R.id, R.name, R.text, R.type, R.image " +
+    @Query("SELECT SUM(RI.quantity * I.calories / 100) AS kcal, R.id, R.name, R.text, R.type, R.image " +
             "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
             "JOIN Recipes R ON RI.idRecipe = R.id " +
             "GROUP BY R.id, R.name, R.text, R.type, R.image " +
             "HAVING kcal BETWEEN :min AND :max")
-    public abstract List<RecipeQueryResult> getRecipes(Double min, Double max);*/
-    @Query("SELECT SUM(RI.quantity * I.calories) AS kcal, R.id, R.name, R.text, R.type, R.image " +
+    public abstract List<RecipeQueryResult> getRecipes(Double min, Double max);
+    /*@Query("SELECT SUM(RI.quantity * I.calories) AS kcal, R.id, R.name, R.text, R.type, R.image " +
             "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
             "JOIN Recipes R ON RI.idRecipe = R.id " +
             "JOIN Pantry P ON (P.keywords = I.keywords OR P.name = I.name) " +
             "WHERE P.name NOT NULL AND P.quantity > 0 " +
             "GROUP BY R.id, R.name, R.text, R.type, R.image " +
             "HAVING kcal BETWEEN :min AND :max")
-    public abstract List<RecipeQueryResult> getRecipes(Double min, Double max);
+    public abstract List<RecipeQueryResult> getRecipes(Double min, Double max);*/
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addRecipes(List<Recipe> recipes);
 }
