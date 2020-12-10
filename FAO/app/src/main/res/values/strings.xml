@@ -103,4 +103,8 @@
     <string name="pantry_delete_dialog_message">Are you sure you want to delete this item?</string>
     <string name="pantry_delete_dialog_negative">Cancel</string>
     <string name="pantry_delete_dialog_positive">Delete</string>
+    <string name="pantry_edit_dialog_title">Edit an element</string>
+    <string name="pantry_edit_dialog_message">Choose the quantity:</string>
+    <string name="pantry_edit_dialog_negative">Cancel</string>
+    <string name="pantry_edit_dialog_positive">Modify</string>
 </resources>
