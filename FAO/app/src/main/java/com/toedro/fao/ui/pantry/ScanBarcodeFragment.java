@@ -3,13 +3,6 @@ package com.toedro.fao.ui.pantry;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.os.Bundle;
-
-import androidx.core.app.ActivityCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentManager;
-import androidx.fragment.app.FragmentTransaction;
-import androidx.navigation.Navigation;
-
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.util.SparseArray;
@@ -19,31 +12,29 @@ import android.view.SurfaceView;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
+import android.widget.Toast;
+
+import androidx.core.app.ActivityCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import androidx.navigation.Navigation;
 
 import com.google.android.gms.vision.CameraSource;
 import com.google.android.gms.vision.Detector;
 import com.google.android.gms.vision.barcode.Barcode;
 import com.google.android.gms.vision.barcode.BarcodeDetector;
 import com.google.android.material.button.MaterialButton;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Pantry;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
-import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
-import java.nio.charset.Charset;
-import java.util.List;
 
 public class ScanBarcodeFragment extends Fragment {
 
@@ -221,7 +212,16 @@ public class ScanBarcodeFragment extends Fragment {
     }
 
     private void reloadFragment(){
-        Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
+        Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
+        if(currentFragment != null) {
+            FragmentTransaction fragmentTransaction = getParentFragmentManager().beginTransaction();
+            fragmentTransaction.detach(currentFragment);
+            fragmentTransaction.attach(currentFragment);
+            fragmentTransaction.commit();
+        }else {
+            Toast.makeText(getContext(),"null", Toast.LENGTH_LONG).show();
+            Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
+        }
     }
 
 }
