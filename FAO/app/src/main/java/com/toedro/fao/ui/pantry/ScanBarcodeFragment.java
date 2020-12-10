@@ -6,6 +6,8 @@ import android.os.Bundle;
 
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentManager;
+import androidx.fragment.app.FragmentTransaction;
 import androidx.navigation.Navigation;
 
 import android.util.DisplayMetrics;
@@ -41,8 +43,10 @@ import java.io.Reader;
 import java.net.URL;
 import java.net.URLConnection;
 import java.nio.charset.Charset;
+import java.util.List;
 
 public class ScanBarcodeFragment extends Fragment {
+
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
     private CameraSource cameraSource;
@@ -67,12 +71,10 @@ public class ScanBarcodeFragment extends Fragment {
         nextButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
+                reloadFragment();
             }
         });
-
         barcodeText.setVisibility(View.INVISIBLE);
-
 
         return v;
     }
@@ -217,4 +219,10 @@ public class ScanBarcodeFragment extends Fragment {
         in.close();
         return(sb.toString());
     }
+
+    private void reloadFragment(){
+        Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
+    }
+
 }
+

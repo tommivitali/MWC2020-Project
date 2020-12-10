@@ -165,7 +165,6 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-
         notificationSetup(R.integer.saved_hour_1_default_key, R.integer.saved_minute_1_default_key,
                 R.string.saved_hour_1_saved_key, R.string.saved_minute_1_saved_key,
                 R.integer.saved_notification_1_default_key, R.string.saved_notification_1_saved_key,
@@ -185,7 +184,7 @@ public class SettingsFragment extends Fragment {
         notificationSetup(R.integer.saved_hour_5_default_key, R.integer.saved_minute_5_default_key,
                 R.string.saved_hour_5_saved_key, R.string.saved_minute_5_saved_key,
                 R.integer.saved_notification_5_default_key, R.string.saved_notification_5_saved_key,
-                root.findViewById(R.id.time5), root.findViewById(R.id.checkbox5), true);
+                root.findViewById(R.id.time5), root.findViewById(R.id.checkbox5), false);
 
         return root;
     }
