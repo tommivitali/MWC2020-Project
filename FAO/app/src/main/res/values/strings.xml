@@ -44,9 +44,9 @@
     <string name="settings_age_unit_measure">year</string>
     <string name="settings_hp_label_kcal">Calories (kcal)</string>
     <string name="settings_hp_label_steps">Steps</string>
-    <string name="notChange">Vuoi mantenere il tuo peso?</string>
-    <string name="ingrassare">Vuoi ingrassare?</string>
-    <string name="dimagrire">Vuoi Dimagrire?</string>
+    <string name="notChange">Does your weight satisfy you?</string>
+    <string name="ingrassare">Do you want to gain weight?</string>
+    <string name="dimagrire">Do you want to lose weight?</string>
     <!-- Settings SharedPreferences -->
     <string name="saved_language_default_key">English</string>
     <string name="saved_sex_default_key">Male</string>

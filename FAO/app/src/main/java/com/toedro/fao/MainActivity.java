@@ -123,11 +123,6 @@ public class MainActivity extends AppCompatActivity {
             countId++;
         }
     }
-    /*public void cancelAlarm(int pk, Intent notifyIntent) {
-        AlarmManager manager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, pk, notifyIntent, 0);
-        manager.cancel(pendingIntent);
-    }*/
 
     public static String getPrimaryChannelId() {
         return PRIMARY_CHANNEL_ID;
@@ -155,12 +150,12 @@ public class MainActivity extends AppCompatActivity {
             // Create the NotificationChannel with all the parameters.
             NotificationChannel notificationChannel = new NotificationChannel
                     (PRIMARY_CHANNEL_ID,
-                            "Stand up notification",
+                            "Recipes ready",
                             NotificationManager.IMPORTANCE_HIGH);
             notificationChannel.enableLights(true);
             notificationChannel.setLightColor(Color.RED);
             notificationChannel.enableVibration(true);
-            notificationChannel.setDescription("Notifies test");
+            notificationChannel.setDescription("Notifies recipes");
             mNotificationManager.createNotificationChannel(notificationChannel);
         }
     }
