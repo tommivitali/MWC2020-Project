@@ -11,4 +11,8 @@ import java.util.List;
 public abstract class RecipeIngredientsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addRecipeIngredients(List<RecipeIngredients> recipeIngredients);
+    @Query("SELECT I.keywords, Ri.quantity " +
+            "FROM RecipesIngredients RI JOIN Ingredients I ON RI.idIngredient = I.id " +
+            "WHERE RI.idRecipe = :recipeID")
+    public abstract List<RecipeIngredientsQueryResult> getIngredientsRecipe(String recipeID);
 }

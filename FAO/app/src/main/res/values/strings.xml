@@ -107,4 +107,9 @@
     <string name="pantry_edit_dialog_message">Choose the quantity:</string>
     <string name="pantry_edit_dialog_negative">Cancel</string>
     <string name="pantry_edit_dialog_positive">Modify</string>
+    <string name="wannaeat_button_eat">Eat It!</string>
+    <string name="wannaeat_dialog_title">Eat It!</string>
+    <string name="wannaeat_dialog_message">Are you sure you want to eat this?</string>
+    <string name="wannaeat_dialog_negative">No, let me starve</string>
+    <string name="wannaeat_dialog_positive">Yes!</string>
 </resources>

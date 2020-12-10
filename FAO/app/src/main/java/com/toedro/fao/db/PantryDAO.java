@@ -20,6 +20,8 @@ public abstract class PantryDAO {
     public abstract void removePantry(Integer id);
     @Query("UPDATE Pantry SET quantity = :quantity WHERE id = :id")
     public abstract void setQuantity(Integer id, Integer quantity);
+    @Query("UPDATE Pantry SET quantity = quantity - :quantity WHERE keywords = :keywords")
+    public abstract void subQuantity(String keywords, Integer quantity);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addPantry(Pantry pantries);
 }

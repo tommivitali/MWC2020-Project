@@ -77,7 +77,11 @@
         android:id="@+id/wannaEatFragment"
         android:name="com.toedro.fao.ui.wannaeat.WannaEatFragment"
         android:label="Wanna Eat?"
-        tools:layout="@layout/fragment_wanna_eat" />
+        tools:layout="@layout/fragment_wanna_eat" >
+        <action
+            android:id="@+id/action_wannaEatFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+    </fragment>
     <activity
         android:id="@+id/tutorialActivity"
         android:name="com.toedro.fao.TutorialActivity"
@@ -88,4 +92,14 @@
         android:name="com.toedro.fao.ui.pantry.IngredientsFragment"
         android:label="Add an ingredient"
         tools:layout="@layout/fragment_ingredients" />
+    <fragment
+        android:id="@+id/recipeDetailFragment"
+        android:name="com.toedro.fao.ui.wannaeat.RecipeDetailFragment"
+        android:label="Recipe Detail"
+        tools:layout="@layout/fragment_recipe_detail" >
+        <argument
+            android:name="recipeId"
+            app:argType="string"
+            android:defaultValue="" />
+    </fragment>
 </navigation>

@@ -1,10 +1,12 @@
 package com.toedro.fao.ui.wannaeat;
 
 import android.content.Context;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -17,6 +19,7 @@ import android.widget.TextView;
 
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
@@ -149,7 +152,7 @@ public class WannaEatFragment extends Fragment {
         }
     }
 
-    private MaterialButton createMaterialButton() {
+    private MaterialButton createMaterialButton(String recipeID) {
         MaterialButton newButton = new MyMaterialButton(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
                 ViewGroup.LayoutParams.WRAP_CONTENT,
@@ -162,7 +165,28 @@ public class WannaEatFragment extends Fragment {
         layoutParams.addRule(RelativeLayout.ALIGN_PARENT_RIGHT);
         newButton.setLayoutParams(layoutParams);
         newButton.setPadding(0, Utils.convertDpToPixel(16), 0, 0);
-        newButton.setText(R.string.recipes_button_view);
+        newButton.setText(R.string.wannaeat_button_eat);
+
+        newButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                new MaterialAlertDialogBuilder(getContext())
+                        .setTitle(R.string.wannaeat_dialog_title)
+                        .setMessage(R.string.wannaeat_dialog_message)
+                        .setNegativeButton(R.string.wannaeat_dialog_negative, null)
+                        .setPositiveButton(R.string.wannaeat_dialog_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Bundle bundle = new Bundle();
+                                        bundle.putString("recipeId", recipeID);
+                                        Navigation.findNavController(getView()).navigate(R.id.action_wannaEatFragment_to_recipeDetailFragment, bundle);
+                                    }
+                                })
+                        .show();
+            }
+        });
+
         return newButton;
     }
 
@@ -200,7 +224,7 @@ public class WannaEatFragment extends Fragment {
                 relativeLayout      = createRelativeLayout();
                 textView1           = createTextView1();
                 textView2           = createTextView2();
-                materialButton      = createMaterialButton();
+                materialButton      = createMaterialButton(recipe.getId());
 
                 Picasso.get().load(recipe.getImage()).into(imageView);
                 textView1.setText(recipe.getName());
