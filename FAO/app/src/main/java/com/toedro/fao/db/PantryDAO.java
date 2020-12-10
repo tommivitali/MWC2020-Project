@@ -1,6 +1,7 @@
 package com.toedro.fao.db;
 
 import androidx.room.Dao;
+import androidx.room.Delete;
 import androidx.room.Insert;
 import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
@@ -15,6 +16,10 @@ public abstract class PantryDAO {
     public abstract Pantry getPantry(String name, String barcode);
     @Query("SELECT * FROM Pantry")
     public abstract List<Pantry> getPantry();
+    @Query("DELETE FROM Pantry WHERE id = :id")
+    public abstract void removePantry(Integer id);
+    @Query("UPDATE Pantry SET quantity = :quantity WHERE id = :id")
+    public abstract void setQuantity(Integer id, Integer quantity);
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public abstract void addPantry(Pantry pantries);
 }

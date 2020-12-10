@@ -1,5 +1,6 @@
 package com.toedro.fao.ui.pantry;
 
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +11,9 @@ import android.widget.TextView;
 
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
+import com.toedro.fao.App;
 import com.toedro.fao.R;
 
 public class PantryViewHolder extends RecyclerView.ViewHolder {
@@ -36,13 +39,24 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Pantry", "delete");
+                new MaterialAlertDialogBuilder(buttonDelete.getContext())
+                        .setTitle(R.string.pantry_delete_dialog_title)
+                        .setMessage(R.string.pantry_delete_dialog_message)
+                        .setNegativeButton(R.string.pantry_delete_dialog_negative, null)
+                        .setPositiveButton(R.string.pantry_delete_dialog_positive,
+                                new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        App.getDBInstance().pantryDAO().removePantry(data.getId());
+                                    }
+                                })
+                        .show();
             }
         });
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d("Pantry", "edit");
+                
             }
         });
     }
