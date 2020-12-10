@@ -3,6 +3,7 @@ package com.toedro.fao.ui.pantry;
 import android.content.Context;
 import android.graphics.Color;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,6 +15,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.fragment.app.Fragment;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.card.MaterialCardView;
@@ -36,14 +38,18 @@ public class PantryFragment extends Fragment {
 
         List data = new ArrayList<PantryListData>();
         for(Pantry p : App.getDBInstance().pantryDAO().getPantry()) {
-            data.add(new PantryListData(p.getId(), p.getName(), p.getQuantity()));
+            data.add(new PantryListData(p.getId(), p.getName(), p.getQuantity(), p.getImage()));
         }
 
         RecyclerView listView = view.findViewById(R.id.list_pantry);
         adapter = new PantryListViewAdapter();
         listView.setAdapter(adapter);
+        listView.setLayoutManager(new LinearLayoutManager(getContext()));
         adapter.setData(data);
 
+        for(PantryListData p: adapter.getData()) {
+            Log.d("PANTRY", p.getName());
+        }
         /*
         List<Pantry> pantryList = App.getDBInstance().pantryDAO().getPantry();
 

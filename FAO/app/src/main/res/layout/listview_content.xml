@@ -6,7 +6,7 @@
     android:gravity="center"
     android:orientation="vertical"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="wrap_content"
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" >
 
@@ -25,6 +25,7 @@
     <Button
         android:id="@+id/pantry_button_edit"
         android:layout_width="56dp"
+        android:layout_marginRight="8dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_edit"
         android:text=""
@@ -36,6 +37,7 @@
         android:id="@+id/pantry_button_delete"
         android:layout_width="56dp"
         android:layout_height="match_parent"
+        android:layout_marginRight="8dp"
         app:icon="@drawable/ic_delete"
         android:text=""
         style="@style/Widget.MaterialComponents.Button.OutlinedButton.Icon"

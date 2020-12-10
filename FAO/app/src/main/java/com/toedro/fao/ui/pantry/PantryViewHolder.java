@@ -1,5 +1,6 @@
 package com.toedro.fao.ui.pantry;
 
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -28,13 +29,13 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d("Pantry", "delete");
             }
         });
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                Log.d("Pantry", "edit");
             }
         });
     }
