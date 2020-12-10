@@ -67,7 +67,7 @@
     <fragment
         android:id="@+id/scanBarcodeFragment"
         android:name="com.toedro.fao.ui.pantry.ScanBarcodeFragment"
-        android:label="fragment_scan_barcode"
+        android:label="Scan the barcode"
         tools:layout="@layout/fragment_scan_barcode" >
         <action
             android:id="@+id/action_scanBarcodeFragment_self"
@@ -76,7 +76,7 @@
     <fragment
         android:id="@+id/wannaEatFragment"
         android:name="com.toedro.fao.ui.wannaeat.WannaEatFragment"
-        android:label="fragment_wanna_eat"
+        android:label="Wanna Eat?"
         tools:layout="@layout/fragment_wanna_eat" />
     <activity
         android:id="@+id/tutorialActivity"
@@ -86,6 +86,6 @@
     <fragment
         android:id="@+id/ingredientsFragment"
         android:name="com.toedro.fao.ui.pantry.IngredientsFragment"
-        android:label="fragment_ingredients"
+        android:label="Add an ingredient"
         tools:layout="@layout/fragment_ingredients" />
 </navigation>
