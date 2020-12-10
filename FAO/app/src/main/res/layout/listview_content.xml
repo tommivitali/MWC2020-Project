@@ -10,6 +10,17 @@
     app:layout_constraintStart_toStartOf="parent"
     app:layout_constraintTop_toTopOf="parent" >
 
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_marginLeft="8dp"
+        android:maxHeight="56dp"
+        android:maxWidth="56dp"
+        android:id="@+id/pantry_image" />
+
     <TextView
         android:id="@+id/pantry_list_content"
         android:layout_width="wrap_content"
@@ -18,13 +29,13 @@
         android:layout_marginTop="8dp"
         android:layout_marginStart="8dp"
         android:text="@string/home_0"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/pantry_image"
         app:layout_constraintTop_toTopOf="parent"
         app:layout_constraintBottom_toBottomOf="parent" />
 
     <Button
         android:id="@+id/pantry_button_edit"
-        android:layout_width="56dp"
+        android:layout_width="48dp"
         android:layout_marginRight="8dp"
         android:layout_height="match_parent"
         app:icon="@drawable/ic_edit"
@@ -35,7 +46,7 @@
 
     <Button
         android:id="@+id/pantry_button_delete"
-        android:layout_width="56dp"
+        android:layout_width="48dp"
         android:layout_height="match_parent"
         android:layout_marginRight="8dp"
         app:icon="@drawable/ic_delete"
