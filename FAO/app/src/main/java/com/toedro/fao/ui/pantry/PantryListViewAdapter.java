@@ -19,6 +19,11 @@ public class PantryListViewAdapter extends RecyclerView.Adapter<PantryViewHolder
 
     private List<PantryListData> listData = new ArrayList<PantryListData>();
     private LayoutInflater layoutInflater;
+    private OnElementClickListener listener;
+
+    PantryListViewAdapter(OnElementClickListener listener) {
+        this.listener = listener;
+    }
 
     @NonNull
     @Override
@@ -32,7 +37,7 @@ public class PantryListViewAdapter extends RecyclerView.Adapter<PantryViewHolder
 
     @Override
     public void onBindViewHolder(@NonNull PantryViewHolder holder, int position) {
-        holder.bind(listData.get(position));
+        holder.bind(listData.get(position), listener);
     }
 
     @Override

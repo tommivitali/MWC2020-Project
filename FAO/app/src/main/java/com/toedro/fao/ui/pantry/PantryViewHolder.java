@@ -38,12 +38,14 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
         image.getLayoutParams().height = image.getLayoutParams().width = 80;
     }
 
-    public void bind(PantryListData data) {
+    public void bind(PantryListData data, OnElementClickListener listener) {
         textViewContent.setText(data.getName() + " - " + data.getQuantity() + "g");
         Picasso.get().load(data.getImage()).into(image);
         buttonDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listener.onElementDeleteClick(data);
+                /*
                 new MaterialAlertDialogBuilder(buttonDelete.getContext())
                         .setTitle(R.string.pantry_delete_dialog_title)
                         .setMessage(R.string.pantry_delete_dialog_message)
@@ -56,11 +58,14 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
                                     }
                                 })
                         .show();
+                */
             }
         });
         buttonEdit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                listener.onElementEditClick(data);
+                /*
                 final EditText input = new EditText(buttonEdit.getContext());
 
                 LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -91,6 +96,7 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
                                     }
                                 })
                         .show();
+                */
             }
         });
     }
