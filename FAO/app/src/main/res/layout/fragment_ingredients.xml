@@ -47,6 +47,8 @@
         android:layout_alignStart="@+id/editText2"
         android:layout_below="@+id/editText2"
         android:layout_marginTop="20dp"
+        android:singleLine="true"
+        android:inputType="number"
         android:ems="10"
         android:hint="Barcode" />
 
@@ -74,7 +76,7 @@
 
     <Button
         android:id="@+id/button"
-        style="@android:style/Widget.Button"
+        style="@style/ButtonHome"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentLeft="true"
@@ -85,5 +87,7 @@
         android:textSize="16sp"
         android:textStyle="normal|bold"
         android:backgroundTint="@color/colorPrimaryDark"
-        android:drawableTint="@android:color/white"/>
+        android:drawableTint="@android:color/white"
+        android:textColor="@android:color/white"
+        />
 </RelativeLayout>

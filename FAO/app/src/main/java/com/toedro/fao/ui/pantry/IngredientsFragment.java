@@ -40,6 +40,9 @@ public class IngredientsFragment extends Fragment {
         campo3 = (EditText) root.findViewById(R.id.editText5);
         add = (Button) root.findViewById(R.id.button);
 
+        campo2.setVisibility(View.INVISIBLE);
+        campo3.setVisibility(View.INVISIBLE);
+
         //Dropdown code
         List<String> names = new ArrayList<String>();
         // ingredients from database
@@ -69,7 +72,7 @@ public class IngredientsFragment extends Fragment {
                 if (product.getText().toString().isEmpty() || quantity.getText().toString().isEmpty()) {
                     Toast.makeText(getContext(), "Add the ingredient and its quantity!", Toast.LENGTH_SHORT).show();
                 } else {
-                    Toast.makeText(getContext(), quantity.getText().toString() + "grams of" + product.getText().toString() + "added to the pantry!"
+                    Toast.makeText(getContext(), quantity.getText().toString() + " grams of " + product.getText().toString() + " added to the pantry!"
                             , Toast.LENGTH_SHORT).show();
 
                     // add to local db

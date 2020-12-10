@@ -191,7 +191,7 @@ public class WannaEatFragment extends Fragment {
 
         } else {
             containerRecipes = (LinearLayout) root.findViewById(R.id.container_wannaeat);
-            for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(0.0, 1000.0)) {
+            for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(0.0, kcals)) {
                 Log.d("RECIPE", "1");
                 materialCardView    = createMaterialCardView();
                 imageView           = createImageView();

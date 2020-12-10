@@ -49,6 +49,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_homepage,
                 R.id.nav_charts,
                 R.id.nav_pantry,
+                R.id.nav_recipes,
                 R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
