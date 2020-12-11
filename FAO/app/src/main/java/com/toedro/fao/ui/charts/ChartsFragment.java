@@ -14,6 +14,7 @@ import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import com.github.mikephil.charting.charts.BarChart;
+import com.github.mikephil.charting.components.LimitLine;
 import com.github.mikephil.charting.components.XAxis;
 import com.github.mikephil.charting.components.YAxis;
 import com.github.mikephil.charting.data.BarData;
@@ -183,6 +184,9 @@ public class ChartsFragment extends Fragment {
         chart.getAxisLeft().setMaxWidth(2f);
         chart.getAxisLeft().setAxisMinimum(0f);
         chart.getAxisRight().setAxisMinimum(0f);
+        chart.setExtraRightOffset(26f);
+        chart.setExtraLeftOffset(26f);
+        chart.getAxisRight().setTextColor(Color.BLACK);
         chart.getAxisRight().setLabelCount(chart.getAxisLeft().getLabelCount(), true);
         chart.getAxisLeft().setLabelCount(chart.getAxisRight().getLabelCount(), true);
 

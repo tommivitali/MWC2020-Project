@@ -30,9 +30,10 @@ public class AlarmReceiver extends BroadcastReceiver {
     }
 
     private void deliverNotification(Context context) {
-        String action = "TOWANNAEAT";
+        String action = "TOWANNAEAT", action2 = "TODETAIL";
         Intent contentIntent = new Intent(context, MainActivity.class);
-        contentIntent.setAction(action);
+        contentIntent.setAction(action).setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP |
+                Intent.FLAG_ACTIVITY_SINGLE_TOP ).putExtra(action2, "TODETAIL");
         PendingIntent contentPendingIntent = PendingIntent.getActivity
                 (context, MainActivity.getNotificationId(), contentIntent, PendingIntent.FLAG_UPDATE_CURRENT);
         NotificationCompat.Builder builder = getNotificationBuilder(context, contentPendingIntent);

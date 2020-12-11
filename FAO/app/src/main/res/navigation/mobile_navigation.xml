@@ -61,6 +61,9 @@
             android:id="@+id/action_splashFragment_to_tutorialActivity"
             app:destination="@id/tutorialActivity" />
         <action
+            android:id="@+id/action_splashFragment_to_recipeDetailFragment"
+            app:destination="@id/recipeDetailFragment" />
+        <action
             android:id="@+id/action_splashFragment_to_wannaEatFragment"
             app:destination="@id/wannaEatFragment" />
     </fragment>
@@ -72,6 +75,9 @@
         <action
             android:id="@+id/action_scanBarcodeFragment_self"
             app:destination="@id/scanBarcodeFragment" />
+        <action
+            android:id="@+id/action_scanBarcodeFragment_to_nav_homepage"
+            app:destination="@id/nav_homepage" />
     </fragment>
     <fragment
         android:id="@+id/wannaEatFragment"

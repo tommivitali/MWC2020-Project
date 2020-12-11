@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_charts,
                 R.id.nav_pantry,
                 R.id.nav_recipes,
+                R.id.scanBarcodeFragment,
                 R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
@@ -70,10 +71,18 @@ public class MainActivity extends AppCompatActivity {
         Intent intent = getIntent();
         try{
             String action = intent.getAction().toUpperCase();
+            String message = intent.getStringExtra("TODETAIL");
             if(action != null){
-                if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action))){
+                if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action)) ||
+                        message.equalsIgnoreCase(getResources().getString(R.string.notification_action))){
                     Log.d("notifiIntent", "Intent was " + intent.toString());
                     Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_splashFragment_to_wannaEatFragment);
+                }else{
+                    if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action2)) ||
+                            message.equalsIgnoreCase(getResources().getString(R.string.notification_action2))){
+                        Log.d("notifiIntent", "Intent was " + intent.toString());
+                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_splashFragment_to_recipeDetailFragment);
+                    }
                 }
             }else{
                 Log.d("notifiIntent", "Intent was null");

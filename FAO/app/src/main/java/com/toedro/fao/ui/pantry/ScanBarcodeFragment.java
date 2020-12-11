@@ -13,7 +13,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 import android.widget.Toast;
+import android.widget.Toolbar;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.core.app.ActivityCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentTransaction;
@@ -36,7 +38,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 
-public class ScanBarcodeFragment extends Fragment {
+public class ScanBarcodeFragment extends Fragment  {
 
     private SurfaceView surfaceView;
     private BarcodeDetector barcodeDetector;
@@ -66,9 +68,18 @@ public class ScanBarcodeFragment extends Fragment {
             }
         });
         barcodeText.setVisibility(View.INVISIBLE);
+// This callback will only be called when fragment is at least Started.
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_scanBarcodeFragment_to_nav_homepage);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return v;
     }
+
 
     private void initialiseDetectorsAndSources() {
         barcodeDetector = new BarcodeDetector.Builder(getContext())

@@ -113,4 +113,5 @@
     <string name="wannaeat_dialog_negative">No, let me starve</string>
     <string name="wannaeat_dialog_positive">Yes!</string>
     <string name="wannaeat_noeat">You could get a little action before you eat!</string>
+    <string name="notification_action2">TODETAIL</string>
 </resources>
