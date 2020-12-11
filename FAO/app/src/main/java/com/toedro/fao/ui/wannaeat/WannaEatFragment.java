@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.card.MaterialCardView;
 import com.google.android.material.dialog.MaterialAlertDialogBuilder;
+import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
 import com.toedro.fao.R;
@@ -212,7 +213,7 @@ public class WannaEatFragment extends Fragment {
         Log.d("KCAL", String.valueOf(kcals));
 
         if (kcals <= 0) {
-
+            Snackbar.make(root, R.string.wannaeat_noeat, Snackbar.LENGTH_LONG).show();
         } else {
             containerRecipes = (LinearLayout) root.findViewById(R.id.container_wannaeat);
             for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(0.0, kcals)) {
