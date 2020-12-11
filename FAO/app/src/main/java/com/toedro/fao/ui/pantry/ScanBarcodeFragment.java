@@ -230,7 +230,6 @@ public class ScanBarcodeFragment extends Fragment  {
             fragmentTransaction.attach(currentFragment);
             fragmentTransaction.commit();
         }else {
-            Toast.makeText(getContext(),"null", Toast.LENGTH_LONG).show();
             Navigation.findNavController(getView()).navigate(R.id.action_scanBarcodeFragment_self);
         }
     }

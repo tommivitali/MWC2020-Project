@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity {
         try{
             String action = intent.getAction().toUpperCase();
             String message = intent.getStringExtra("TODETAIL");
-            if(action != null){
+            if(action != null && message != null){
                 if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action)) ||
                         message.equalsIgnoreCase(getResources().getString(R.string.notification_action))){
                     Log.d("notifiIntent", "Intent was " + intent.toString());

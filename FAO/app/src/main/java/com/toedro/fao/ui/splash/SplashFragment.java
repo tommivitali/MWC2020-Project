@@ -87,8 +87,8 @@ public class SplashFragment extends Fragment {
                         if (prefs.getBoolean("firstrun", true)) {
                             Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_tutorialActivity);
                         }
+                        //TODO problem here
                         Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_nav_homepage);
-
                     }
                 });
 
