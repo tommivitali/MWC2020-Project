@@ -20,7 +20,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
 
-public class SStepCounterListener implements SensorEventListener {
+public class StepCounterListener implements SensorEventListener {
     private static StepCounterListener instance;
 
     private int stepsCompleted;
@@ -44,7 +44,7 @@ public class SStepCounterListener implements SensorEventListener {
     private boolean active = false;
 
     // Constructor, get steps completed, TextView and ProgressTypeHome as args
-    StepCounterListener(int steps, HomeViewPagerAdapter adapter, Context c, Activity a)  throws StepCounterListenerException {
+    private StepCounterListener(int steps, HomeViewPagerAdapter adapter, Context c, Activity a)  throws StepCounterListenerException {
         if (instance != null) {
             throw new StepCounterListenerException();
         }
