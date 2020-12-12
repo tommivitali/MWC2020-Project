@@ -2,7 +2,9 @@ package com.toedro.fao.ui.wannaeat;
 
 import android.os.Bundle;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.fragment.app.Fragment;
+import androidx.navigation.Navigation;
 
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -57,6 +59,13 @@ public class RecipeDetailFragment extends Fragment {
         ((TextView) v.findViewById(R.id.detail_title)).setText(recipe.getName());
         ((TextView) v.findViewById(R.id.detail_content)).setText(recipe.getText());
         Picasso.get().load(recipe.getImage()).into((ImageView) v.findViewById(R.id.detail_image));
+        OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
+            @Override
+            public void handleOnBackPressed() {
+                Navigation.findNavController(getActivity(), R.id.nav_host_fragment).navigate(R.id.action_recipeDetailFragment_to_nav_homepage);
+            }
+        };
+        requireActivity().getOnBackPressedDispatcher().addCallback(getActivity(), callback);
 
         return v;
     }

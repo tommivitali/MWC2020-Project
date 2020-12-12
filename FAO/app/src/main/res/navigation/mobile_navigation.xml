@@ -84,6 +84,9 @@
         <action
             android:id="@+id/action_wannaEatFragment_to_recipeDetailFragment"
             app:destination="@id/recipeDetailFragment" />
+        <action
+            android:id="@+id/action_wannaEatFragment_to_nav_homepage"
+            app:destination="@id/nav_homepage" />
     </fragment>
     <activity
         android:id="@+id/tutorialActivity"
@@ -104,5 +107,8 @@
             android:name="recipeId"
             app:argType="string"
             android:defaultValue="" />
+        <action
+            android:id="@+id/action_recipeDetailFragment_to_nav_homepage"
+            app:destination="@id/nav_homepage" />
     </fragment>
 </navigation>
