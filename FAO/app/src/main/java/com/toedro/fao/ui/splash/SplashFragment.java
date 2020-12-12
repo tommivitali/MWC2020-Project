@@ -1,5 +1,6 @@
 package com.toedro.fao.ui.splash;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 
@@ -50,6 +51,8 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
+        String intentString = getActivity().getIntent().getStringExtra(getString(R.string.notification_action2));
+
         // Reading from Firebase Cloud Firestore
         db = FirebaseFirestore.getInstance();
 
@@ -87,8 +90,12 @@ public class SplashFragment extends Fragment {
                         if (prefs.getBoolean("firstrun", true)) {
                             Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_tutorialActivity);
                         }
-                        //TODO problem here
-                        Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_nav_homepage);
+
+                        if (intentString != null && intentString.equals(getString(R.string.notification_action2))) {
+                            Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_wannaEatFragment);
+                        } else {
+                            Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_nav_homepage);
+                        }
                     }
                 });
 

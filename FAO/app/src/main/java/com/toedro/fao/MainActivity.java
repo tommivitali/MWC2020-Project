@@ -68,6 +68,7 @@ public class MainActivity extends AppCompatActivity {
         setNotifications(this, alarms, NOTIFICATION_ID);
 
         //get notifications intent to go to wannaEat
+        /*
         Intent intent = getIntent();
         try{
             String action = intent.getAction().toUpperCase();
@@ -90,6 +91,7 @@ public class MainActivity extends AppCompatActivity {
         }catch(Exception e){
             Log.e("notifiIntent", "Problem consuming action from intent", e);
         }
+        */
     }
 
     public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){
