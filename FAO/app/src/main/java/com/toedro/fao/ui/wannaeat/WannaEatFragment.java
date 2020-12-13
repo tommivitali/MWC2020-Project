@@ -24,10 +24,12 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.google.android.material.snackbar.Snackbar;
 import com.squareup.picasso.Picasso;
 import com.toedro.fao.App;
+import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.db.Pantry;
 import com.toedro.fao.db.RecipeQueryResult;
 import com.toedro.fao.ui.Utils;
+import com.toedro.fao.ui.settings.SettingsFragment;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -46,6 +48,7 @@ public class WannaEatFragment extends Fragment {
     TextView textView1, textView2;
     RelativeLayout relativeLayout;
     MaterialButton materialButton;
+    double min, max;
 
     private MaterialCardView createMaterialCardView() {
         MaterialCardView newCard = new MaterialCardView(getContext());
@@ -135,14 +138,6 @@ public class WannaEatFragment extends Fragment {
         layoutParams.setMargins(0, Utils.convertDpToPixel(8), 0, 0);
         newText.setLayoutParams(layoutParams);
 
-        /*
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        theme.resolveAttribute(R.attr.colorOnSecondary, typedValue, true);
-        @ColorInt int color = typedValue.data;
-        newText.setTextColor(color);
-        */
-
         newText.setTextColor(Color.GRAY);
 
         return newText;
@@ -212,12 +207,29 @@ public class WannaEatFragment extends Fragment {
         Log.d("KCAL", "STEPS -> " + String.valueOf(stepsCals));
         Log.d("KCAL", "MEALS -> " + String.valueOf(mealsCals));
         Log.d("KCAL", String.valueOf(kcals));
+        //switch value range kcals (to ask a dietician)
+        min = 0.0;
+        max = kcals;
+        switch(Preferences.getCalChoice(getActivity(), getContext())) {
+            case "DIMAGRIRE":
+                min = 0.0;
+                max = kcals;
+                break;
+            case "INGRASSARE":
+                min = 0.0;
+                max = kcals;
+                break;
+            default: //MANTENERE
+                min = 0.0;
+                max = kcals;
+        }
+
 
         if (kcals <= 0) {
             Snackbar.make(root, R.string.wannaeat_noeat, Snackbar.LENGTH_LONG).show();
         } else {
             containerRecipes = (LinearLayout) root.findViewById(R.id.container_wannaeat);
-            for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(0.0, kcals)) {
+            for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(min, max)) {
                 Log.d("RECIPE", "1");
                 materialCardView    = createMaterialCardView();
                 imageView           = createImageView();

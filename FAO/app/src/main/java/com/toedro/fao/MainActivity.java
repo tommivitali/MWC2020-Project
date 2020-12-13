@@ -50,6 +50,7 @@ public class MainActivity extends AppCompatActivity {
                 R.id.nav_charts,
                 R.id.nav_pantry,
                 R.id.nav_recipes,
+                R.id.scanBarcodeFragment,
                 R.id.wannaEatFragment,
                 R.id.recipeDetailFragment,
                 R.id.nav_settings)
@@ -67,32 +68,6 @@ public class MainActivity extends AppCompatActivity {
         List<Pair<Integer, Integer>> alarms = Preferences.getNotificationsHours(this, this);
         //long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         setNotifications(this, alarms, NOTIFICATION_ID);
-
-        //get notifications intent to go to wannaEat
-        /*
-        Intent intent = getIntent();
-        try{
-            String action = intent.getAction().toUpperCase();
-            String message = intent.getStringExtra("TODETAIL");
-            if(action != null && message != null){
-                if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action)) ||
-                        message.equalsIgnoreCase(getResources().getString(R.string.notification_action))){
-                    Log.d("notifiIntent", "Intent was " + intent.toString());
-                    Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_splashFragment_to_wannaEatFragment);
-                }else{
-                    if(action.equalsIgnoreCase(getResources().getString(R.string.notification_action2)) ||
-                            message.equalsIgnoreCase(getResources().getString(R.string.notification_action2))){
-                        Log.d("notifiIntent", "Intent was " + intent.toString());
-                        Navigation.findNavController(this, R.id.nav_host_fragment).navigate(R.id.action_splashFragment_to_recipeDetailFragment);
-                    }
-                }
-            }else{
-                Log.d("notifiIntent", "Intent was null");
-            }
-        }catch(Exception e){
-            Log.e("notifiIntent", "Problem consuming action from intent", e);
-        }
-        */
     }
 
     public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){

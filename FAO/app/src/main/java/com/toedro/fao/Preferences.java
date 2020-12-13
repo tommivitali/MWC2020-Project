@@ -44,6 +44,12 @@ public class Preferences {
         Integer ageShared = sharedPref.getInt(context.getString(R.string.saved_age_saved_key), defaultAgeValue);
         return ageShared;
     }
+    public static String getCalChoice(Activity activity, Context context) {
+        SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
+        String defaultChoiceProgressTypeValue = context.getString(R.string.saved_choice_progress_type_default_key);
+        String choiceProgressType = sharedPref.getString(String.valueOf(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);
+        return choiceProgressType;
+    }
 
     private static Integer getValueNotification(int defaultId, int savedKeyId, Context context, Activity activity) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
