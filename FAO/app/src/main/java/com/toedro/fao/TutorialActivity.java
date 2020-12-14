@@ -49,13 +49,12 @@ public class TutorialActivity extends AppIntro {
         ));
         addSlide(AppIntroFragment.newInstance(
                 "Settings: Physical data",
-                "Where you can modify your personal data, important to your user experience without worrying about privacy, since stored locally./n" +
-                        "Select your favourite language and re-read this tutorial if need be!",
+                "Where you can modify your personal data, important to your user experience without worrying about privacy, since stored locally.",
                 R.drawable.settings
         ));
         addSlide(AppIntroFragment.newInstance(
                 "Settings: Notifications",
-                "FAO can remember you when to eat, and then suggests you what to eat based on your activity./n" +
+                "FAO can remember you when to eat, and then suggests you what to eat based on your activity.\n" +
                         "here you can schedule notifications. Go to set now the correct notifications to not lose even one!",
                 R.drawable.settings2
         ));
