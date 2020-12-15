@@ -7,7 +7,9 @@ import android.util.Pair;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The Preferences class is where the local data get stored to and retrieved from
+ */
 public class Preferences {
 
     public static String getLanguage(Activity activity, Context context) {
@@ -44,6 +46,7 @@ public class Preferences {
         Integer ageShared = sharedPref.getInt(context.getString(R.string.saved_age_saved_key), defaultAgeValue);
         return ageShared;
     }
+    //TODO
     public static String getCalChoice(Activity activity, Context context) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         String defaultChoiceProgressTypeValue = context.getString(R.string.saved_choice_progress_type_default_key);

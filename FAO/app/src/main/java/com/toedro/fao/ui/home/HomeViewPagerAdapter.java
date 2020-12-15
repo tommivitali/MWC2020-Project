@@ -11,7 +11,9 @@ import com.toedro.fao.R;
 
 import java.util.ArrayList;
 import java.util.List;
-
+/**
+ * The HomeViewPagerAdapter class ...
+ */
 public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 
     private List<HomePagerData> listData = new ArrayList<HomePagerData>();

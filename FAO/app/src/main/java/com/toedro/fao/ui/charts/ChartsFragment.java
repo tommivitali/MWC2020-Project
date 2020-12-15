@@ -41,6 +41,12 @@ import java.util.Locale;
 
 import static android.content.ContentValues.TAG;
 
+/**
+ * The ChartsFragment class is the class that creates and handles the graphs taking steps from local DB and
+ * input from the Fragment's materialButtonToggleGroup and DatePickers (default values: just calories of the last 5 days).
+ * The function generateChart generate the chart related to those inputs calling the loadBarData() for the data handle and then refining
+ * and showing graph.
+ */
 public class ChartsFragment extends Fragment {
 
     BarChart barChartViewStep;
@@ -165,6 +171,12 @@ public class ChartsFragment extends Fragment {
         barChartViewStep.invalidate();
     }
 
+    /**
+     *
+     * @param chart: the chart to actually draw and put data from stepDAO to
+     * @param checked: list of data to insert (steps &/|| cals or none)
+     *
+     */
     private void loadBarData(BarChart chart, List<Integer> checked){
         DateTimeFormatter dateFormatter = DateTimeFormatter.ofPattern(getString(R.string.date_layout_UI));
         ArrayList<String> xVals = new ArrayList<String>();

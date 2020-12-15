@@ -26,7 +26,9 @@ import org.w3c.dom.Text;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
-
+/**
+ * The RecipeDetailFragment class is the class that handles the chosen recipe from the WannaEatFragment
+ */
 public class RecipeDetailFragment extends Fragment {
 
     String recipeID;

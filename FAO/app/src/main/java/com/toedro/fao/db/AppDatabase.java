@@ -2,7 +2,9 @@ package com.toedro.fao.db;
 
 import androidx.room.Database;
 import androidx.room.RoomDatabase;
-
+/**
+ * The AppDatabase class create the database handled in the app, calling DAOs (classes where data is accessed)
+ */
 @Database(entities = {Recipe.class, Step.class, Ingredient.class, Pantry.class, RecipeIngredients.class, Calories.class}, version = 4)
 public abstract class AppDatabase extends RoomDatabase {
     public abstract RecipeDAO recipeDAO();

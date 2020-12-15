@@ -26,7 +26,9 @@ import com.toedro.fao.ui.Utils;
 import com.squareup.picasso.Picasso;
 
 import java.util.List;
-
+/**
+ * The RecipesFragment class is the fragment allowing to watch a list of all recipes in the remote DB autogenerating CardViews of them.
+ */
 public class RecipesFragment extends Fragment {
 
     LinearLayout containerRecipes;
@@ -52,6 +54,10 @@ public class RecipesFragment extends Fragment {
         return newCard;
     }
 
+    /**
+     *
+     * @return
+     */
     private ImageView createImageView() {
         ImageView newImage = new ImageView(getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -62,6 +68,10 @@ public class RecipesFragment extends Fragment {
         return newImage;
     }
 
+    /**
+     *
+     * @return
+     */
     private LinearLayout createLinearLayout1() {
         LinearLayout newLayout = new LinearLayout(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -72,6 +82,10 @@ public class RecipesFragment extends Fragment {
         return newLayout;
     }
 
+    /**
+     *
+     * @return
+     */
     private LinearLayout createLinearLayout2() {
         LinearLayout newLayout = new LinearLayout(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -87,6 +101,10 @@ public class RecipesFragment extends Fragment {
         return newLayout;
     }
 
+    /**
+     *
+     * @return
+     */
     private RelativeLayout createRelativeLayout() {
         RelativeLayout newLayout = new RelativeLayout(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -97,12 +115,19 @@ public class RecipesFragment extends Fragment {
         return newLayout;
     }
 
+    /**
+     *
+     */
     private class MyTitle extends androidx.appcompat.widget.AppCompatTextView {
         public MyTitle(Context context) {
             super(context, null, R.attr.textAppearanceHeadline6);
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private TextView createTextView1() {
         TextView newText = new MyTitle(getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -112,12 +137,19 @@ public class RecipesFragment extends Fragment {
         return newText;
     }
 
+    /**
+     *
+     */
     private class MyDescription extends androidx.appcompat.widget.AppCompatTextView {
         public MyDescription(Context context) {
             super(context, null, R.attr.textAppearanceBody2);
         }
     }
 
+    /**
+     *
+     * @return
+     */
     private TextView createTextView2() {
         TextView newText = new MyDescription(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -138,7 +170,9 @@ public class RecipesFragment extends Fragment {
 
         return newText;
     }
-
+    /**
+     * The MyMaterialButton class ...
+     */
     private class MyMaterialButton extends MaterialButton {
         public MyMaterialButton(Context context) {
             super(context, null, R.attr.borderlessButtonStyle);

@@ -8,6 +8,9 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * The PantryDAO class create queries for the Pantry class
+ */
 @Dao
 public abstract class PantryDAO {
     @Query("SELECT * FROM Pantry WHERE id = :id")

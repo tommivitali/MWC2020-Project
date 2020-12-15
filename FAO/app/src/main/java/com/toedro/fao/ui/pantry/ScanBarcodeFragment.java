@@ -37,7 +37,9 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
-
+/**
+ * The ScanBarcodeFragment class is the fragment handling the ScanBarcode page: uses .... to detect the barcode...
+ */
 public class ScanBarcodeFragment extends Fragment  {
 
     private SurfaceView surfaceView;
@@ -80,7 +82,9 @@ public class ScanBarcodeFragment extends Fragment  {
         return v;
     }
 
-
+    /**
+     * function that ...
+     */
     private void initialiseDetectorsAndSources() {
         barcodeDetector = new BarcodeDetector.Builder(getContext())
                 .setBarcodeFormats(Barcode.ALL_FORMATS)
@@ -222,6 +226,10 @@ public class ScanBarcodeFragment extends Fragment  {
         return(sb.toString());
     }
 
+    /**
+     * When button for add another ingredient is pressed, the page is reloaded. To avoid problems on navigation, handleOnBackPressed is
+     * overridden and a navigation bar is added.
+     */
     private void reloadFragment(){
         Fragment currentFragment = getActivity().getSupportFragmentManager().findFragmentById(R.id.container);
         if(currentFragment != null) {

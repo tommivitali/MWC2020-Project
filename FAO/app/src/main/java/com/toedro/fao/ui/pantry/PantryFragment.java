@@ -23,6 +23,9 @@ import com.toedro.fao.db.Pantry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The IngredientsFragment class is the fragment handling the Pantry, showing it and allowing deletions and quantity modification.
+ */
 public class PantryFragment extends Fragment implements OnElementClickListener {
 
     private PantryListViewAdapter adapter;
@@ -46,29 +49,13 @@ public class PantryFragment extends Fragment implements OnElementClickListener {
         for(PantryListData p: adapter.getData()) {
             Log.d("PANTRY", p.getName());
         }
-        /*
-        List<Pantry> pantryList = App.getDBInstance().pantryDAO().getPantry();
 
-        String[] Items = {};
-        String string;
-        for(Pantry pantry : pantryList) {
-            string = "Ingredient:" + String.valueOf(pantry.getName()) + "in quantity:" + String.valueOf(pantry.getQuantity());
-            Items = {Items, string};
-        }
-
-        ListView listView = view.findViewById(R.id.list_ingredients);
-
-        ArrayAdapter<String> listViewAdapter = new ArrayAdapter<String>(
-                getActivity(),
-                android.R.layout.simple_list_item_1,
-                Items
-        );
-
-        listView.setAdapter(listViewAdapter);
-        */
         return view;
     }
 
+    /**
+     * Update the Pantry list of ingredients; called when DialogInterface is clicked
+     */
     public void updateData() {
         dataList.clear();
         for(Pantry p : App.getDBInstance().pantryDAO().getPantry()) {

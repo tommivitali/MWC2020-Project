@@ -19,7 +19,10 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.TimeZone;
-
+/**
+ * The StepCounterListener class is a little modification of the homonymous class view in the course tutorial.
+ * it is used to get and store data on the steps taken by the user using accelerometers and stepcounters if available
+ */
 public class StepCounterListener implements SensorEventListener {
     private static StepCounterListener instance;
 
@@ -43,7 +46,7 @@ public class StepCounterListener implements SensorEventListener {
 
     private boolean active = false;
 
-    // Constructor, get steps completed, TextView and ProgressTypeHome as args
+    /** StepCounterListener: Constructor, get steps completed, TextView and ProgressTypeHome as args */
     private StepCounterListener(int steps, HomeViewPagerAdapter adapter, Context c, Activity a)  throws StepCounterListenerException {
         if (instance != null) {
             throw new StepCounterListenerException();
@@ -53,7 +56,7 @@ public class StepCounterListener implements SensorEventListener {
         context = c;
         activity = a;
     }
-
+    /** getInstance: get singleton  StepCounterListener*/
     public static StepCounterListener getInstance(int steps, HomeViewPagerAdapter ad, Context c, Activity a) {
         if (instance == null) {
             try {
@@ -167,7 +170,8 @@ public class StepCounterListener implements SensorEventListener {
         }
     }
 
-    // Calculate the number of steps from the step detector
+    /** args: step float
+     * countStepsCalculate the number of steps from the step detector*/
     private void countSteps(float step) {
         // Update the number of steps
         stepsCompleted += (int) step;
@@ -179,8 +183,7 @@ public class StepCounterListener implements SensorEventListener {
             App.getDBInstance().stepDAO().addStep(new Step(day, hour, timestamp));
         }
     }
-
-    // Update the TextViews
+    /** updateTextView updates the Step/Cal view in the Homepage*/
     private void updateTextView() {
         List<HomePagerData> newData = new ArrayList<HomePagerData>();
         newData.add(new HomePagerData(R.drawable.ic_calories,

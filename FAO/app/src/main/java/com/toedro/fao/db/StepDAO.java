@@ -7,6 +7,9 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * The StepDAO class create queries for the Step class
+ */
 @Dao
 public abstract class StepDAO {
     @Query("SELECT day, COUNT(id) FROM Steps WHERE day IN (:dateInterval) GROUP BY day")

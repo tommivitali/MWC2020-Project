@@ -19,6 +19,10 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
+/**
+ * The AlarmReceiver class handles the notifications created in MainActivity, delivering them when the time arrives either if the app
+ * is open or not
+ */
 public class AlarmReceiver extends BroadcastReceiver {
 
     private NotificationManager mNotificationManager;
@@ -50,7 +54,8 @@ public class AlarmReceiver extends BroadcastReceiver {
                 .setAutoCancel(true)
                 .setDefaults(NotificationCompat.DEFAULT_ALL);
     }
-    ////experimental stuff for let it stay after reboot/////////////
+    /** stuff for let Notifications stay after reboot
+        without app opens*/
     public static void scheduleAlarms(Context context) {
         Calendar calendar = Calendar.getInstance();
         if (hasRunnedToday(context)) { // if the alarm has run this day
@@ -80,7 +85,6 @@ public class AlarmReceiver extends BroadcastReceiver {
         if(alarmLastRun == -1) {
             return false;
         }
-
         //check by comparing day, month and year
         Date now = new Date();
         Date lastRun = new Date(alarmLastRun);

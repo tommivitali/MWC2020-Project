@@ -30,7 +30,10 @@ import com.toedro.fao.ui.Utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
-
+/**
+ * The SettingsFragment class handles the setting view and save in SharedPreferences the local User's attributes and choices:
+ * height, weight, age, sex, App's language, kcal range, notifications (up to 5) and a button to re-watch the tutorial.
+ */
 public class SettingsFragment extends Fragment {
 
     public SharedPreferences sharedPref; //added static to change stuff from home
@@ -189,6 +192,11 @@ public class SettingsFragment extends Fragment {
         return root;
     }
 
+    /**
+     * @param h: hours
+     * @param m: minutes
+     * @return Calendar setted at time in input
+     */
     private String timeIntToString(int h, int m) {
         Calendar myCalender = Calendar.getInstance();
         myCalender.set(Calendar.HOUR_OF_DAY, h);
@@ -196,6 +204,18 @@ public class SettingsFragment extends Fragment {
         return (new SimpleDateFormat("HH:mm")).format(myCalender.getTime());
     }
 
+    /**
+     * @param defaultHour: default hours of said notification
+     * @param defaultMinute: default minutes of said notification
+     * @param savedKeyHour: setted hours of said notification
+     * @param savedKeyMinute: setted minutes of said notification
+     * @param defaultNotification: default notification time
+     * @param savedKeyNotification: setted notification time
+     * @param editTextTime: edit text
+     * @param checkBox: checkbox
+     * @param last: to set permanently a default time when datepicker is opened
+     * get changed data and reload notifications
+     */
     private void notificationSetup(int defaultHour, int defaultMinute,
                                    int savedKeyHour, int savedKeyMinute,
                                    int defaultNotification, int savedKeyNotification,

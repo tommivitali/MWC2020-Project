@@ -7,6 +7,9 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * The RecipeIngredientsDAO class create queries for the RecipeIngredients class
+ */
 @Dao
 public abstract class RecipeIngredientsDAO {
     @Insert(onConflict = OnConflictStrategy.REPLACE)

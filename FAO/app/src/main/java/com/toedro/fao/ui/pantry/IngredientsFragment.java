@@ -22,6 +22,11 @@ import com.toedro.fao.db.Pantry;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The IngredientsFragment class is the fragment handling the manual insertion of ingredients in the local Pantry.
+ * it has mandatory name and quantity of product (from list of available ingredients), the option to add barcode and 2 blanks
+ * EditTexts to create space in the view, plus the button to submit onClick
+ */
 public class IngredientsFragment extends Fragment {
 
     Button add;

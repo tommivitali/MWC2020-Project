@@ -6,6 +6,9 @@ import androidx.room.PrimaryKey;
 
 import com.google.firebase.database.annotations.NotNull;
 
+/**
+ * The Recipe class indicate the Table for the local SQLlite DB of the Recipes taken from the remote DB
+ */
 @Entity(tableName = "Recipes")
 public class Recipe {
     @PrimaryKey

@@ -37,7 +37,11 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
+/**
+ * The WannaEatFragment class is the class called from HomeFragment or from notifications that handles the view that show all recipes
+ * that satisfy the following requirements: all required recipes are in the Pantry, the calories of the recipe is in the range setted by the user
+ * based of how much you have burned
+ */
 public class WannaEatFragment extends Fragment {
 
     LinearLayout containerRecipes;
@@ -50,6 +54,10 @@ public class WannaEatFragment extends Fragment {
     MaterialButton materialButton;
     double min, max;
 
+    /**
+     *
+     * @return
+     */
     private MaterialCardView createMaterialCardView() {
         MaterialCardView newCard = new MaterialCardView(getContext());
         MaterialCardView.LayoutParams layoutParams = new MaterialCardView.LayoutParams(
@@ -63,7 +71,10 @@ public class WannaEatFragment extends Fragment {
         newCard.setLayoutParams(layoutParams);
         return newCard;
     }
-
+    /**
+     *
+     * @return
+     */
     private ImageView createImageView() {
         ImageView newImage = new ImageView(getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -73,7 +84,10 @@ public class WannaEatFragment extends Fragment {
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return newImage;
     }
-
+    /**
+     *
+     * @return
+     */
     private LinearLayout createLinearLayout1() {
         LinearLayout newLayout = new LinearLayout(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -83,7 +97,10 @@ public class WannaEatFragment extends Fragment {
         newLayout.setOrientation(LinearLayout.VERTICAL);
         return newLayout;
     }
-
+    /**
+     *
+     * @return
+     */
     private LinearLayout createLinearLayout2() {
         LinearLayout newLayout = new LinearLayout(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -108,7 +125,9 @@ public class WannaEatFragment extends Fragment {
         newLayout.setLayoutParams(layoutParams);
         return newLayout;
     }
-
+    /**
+     * The MyTitle class
+     */
     private class MyTitle extends androidx.appcompat.widget.AppCompatTextView {
         public MyTitle(Context context) {
             super(context, null, R.attr.textAppearanceHeadline6);
@@ -210,18 +229,22 @@ public class WannaEatFragment extends Fragment {
         //switch value range kcals (to ask a dietician)
         min = 0.0;
         max = kcals;
+        //TODO
         switch(Preferences.getCalChoice(getActivity(), getContext())) {
             case "DIMAGRIRE":
                 min = 0.0;
                 max = kcals;
+                Log.d("choice", "DIMAGRIRE. ");
                 break;
             case "INGRASSARE":
                 min = 0.0;
                 max = kcals;
+                Log.d("choice", "INGRASSARE. ");
                 break;
             default: //MANTENERE
                 min = 0.0;
                 max = kcals;
+                Log.d("choice", "MANTENERE. ");
         }
 
 

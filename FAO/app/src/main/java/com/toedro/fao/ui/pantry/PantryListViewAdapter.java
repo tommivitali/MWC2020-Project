@@ -15,6 +15,9 @@ import com.toedro.fao.ui.home.HomePagerData;
 import java.util.ArrayList;
 import java.util.List;
 
+/**
+ * The PantryListViewAdapter ...
+ */
 public class PantryListViewAdapter extends RecyclerView.Adapter<PantryViewHolder> {
 
     private List<PantryListData> listData = new ArrayList<PantryListData>();

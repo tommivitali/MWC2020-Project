@@ -26,13 +26,16 @@ import com.toedro.fao.receiver.AlarmReceiver;
 import java.util.Calendar;
 import java.util.List;
 
+/**
+ * The MainActivity class is the "Main" of the App, called when the FAO application is accessed.
+ * it handles the navigation Bar and creates notifications
+ */
 public class MainActivity extends AppCompatActivity {
 
     private static final String PRIMARY_CHANNEL_ID = "primary_notification_channel";
     private static final int NOTIFICATION_ID = 0;
     private NotificationManager mNotificationManager;
     private static AlarmManager alarmManager;
-
     private AppBarConfiguration mAppBarConfiguration;
 
     @Override
@@ -61,21 +64,19 @@ public class MainActivity extends AppCompatActivity {
         NavigationUI.setupWithNavController(navigationView, navController);
 
         // Notifications
-        cancelAllAlarms(this); //delete all pending intents here?
-        createNotificationChannel();
+        cancelAllAlarms(this); //delete all pending intents
+        createNotificationChannel();    //recreate notifications from here
         alarmManager = (AlarmManager) this.getSystemService(Context.ALARM_SERVICE);
         Intent notifyIntent = new Intent(this, AlarmReceiver.class);
         List<Pair<Integer, Integer>> alarms = Preferences.getNotificationsHours(this, this);
-        //long repeatInterval = AlarmManager.INTERVAL_DAY;//15000;//AlarmManager.INTERVAL_FIFTEEN_MINUTES;
         setNotifications(this, alarms, NOTIFICATION_ID);
     }
 
     public static void setNotifications(Context context, List<Pair<Integer, Integer>> alarms, int id){
-        long repeatInterval = AlarmManager.INTERVAL_DAY;
+        long repeatInterval = AlarmManager.INTERVAL_DAY; //notifications are to be repeated daily
         int i = 0;
 
         while(i < alarms.size()){
-            //check if 5 intents are needed
             Intent notifyIntent = new Intent(context, AlarmReceiver.class);
             setAlarm(setNotifyAlarm(alarms.get(i).first, alarms.get(i).second),
                     repeatInterval, id + i, notifyIntent, context);
@@ -105,7 +106,7 @@ public class MainActivity extends AppCompatActivity {
             try {
                 alarmManager.cancel(pendingUpdateIntent);
             } catch (Exception e) {
-                Log.e("Restart notifications", "AlarmManager update was not canceled. " + countId); //+ e.toString()
+                Log.e("Restart notifications", "AlarmManager update was not canceled. " + countId);
                 return;
             }
             countId++;

@@ -8,6 +8,9 @@ import androidx.fragment.app.Fragment;
 import com.github.appintro.AppIntro;
 import com.github.appintro.AppIntroFragment;
 
+/**
+ * The TutorialActivity class is where the Tutorial pages are created using AppIntro library from Github
+ */
 public class TutorialActivity extends AppIntro {
     SharedPreferences prefs;
 

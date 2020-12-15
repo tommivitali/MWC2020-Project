@@ -35,7 +35,9 @@ import java.util.Map;
 
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
-
+/**
+ * The SplashFragment class is the class that handles the download of data from remote DB ...
+ */
 public class SplashFragment extends Fragment {
     FirebaseFirestore db;
     SharedPreferences prefs;

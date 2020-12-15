@@ -7,6 +7,9 @@ import androidx.room.Query;
 
 import java.util.List;
 
+/**
+ * The RecipeDAO class create queries for the Recipe class
+ */
 @Dao
 public abstract class RecipeDAO {
     @Query("SELECT * FROM Recipes WHERE id = :id")
