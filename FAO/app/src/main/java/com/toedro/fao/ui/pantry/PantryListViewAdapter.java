@@ -16,7 +16,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The PantryListViewAdapter ...
+ * The PantryListViewAdapter class provides the methods to change the view
+ * and enable the possibility of adding images to the standard RecyclerView
  */
 public class PantryListViewAdapter extends RecyclerView.Adapter<PantryViewHolder> {
 

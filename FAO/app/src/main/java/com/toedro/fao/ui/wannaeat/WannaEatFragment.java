@@ -229,14 +229,13 @@ public class WannaEatFragment extends Fragment {
         //switch value range kcals (to ask a dietician)
         min = 0.0;
         max = kcals;
-        //TODO
         switch(Preferences.getCalChoice(getActivity(), getContext())) {
-            case "DIMAGRIRE":
+            case DIMAGRIRE:
                 min = 0.0;
                 max = kcals;
                 Log.d("choice", "DIMAGRIRE. ");
                 break;
-            case "INGRASSARE":
+            case INGRASSARE:
                 min = 0.0;
                 max = kcals;
                 Log.d("choice", "INGRASSARE. ");

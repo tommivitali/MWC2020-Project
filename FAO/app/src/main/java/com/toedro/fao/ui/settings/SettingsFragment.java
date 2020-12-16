@@ -7,6 +7,7 @@ import android.os.Bundle;
 import android.text.Editable;
 import android.text.InputType;
 import android.text.TextWatcher;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -25,6 +26,7 @@ import com.google.android.material.button.MaterialButton;
 import com.google.android.material.checkbox.MaterialCheckBox;
 import com.google.android.material.textfield.TextInputEditText;
 import com.toedro.fao.MainActivity;
+import com.toedro.fao.Preferences;
 import com.toedro.fao.R;
 import com.toedro.fao.ui.Utils;
 
@@ -100,19 +102,15 @@ public class SettingsFragment extends Fragment {
         Integer defaultHeightValue = getResources().getInteger(R.integer.saved_height_default_key);
         Integer defaultWeightValue = getResources().getInteger(R.integer.saved_weight_default_key);
         Integer defaultAgeValue = getResources().getInteger(R.integer.saved_age_default_key);
-        double defaultCalValue = 0.0;
         Integer heightShared = sharedPref.getInt(getString(R.string.saved_height_saved_key), defaultHeightValue);
         Integer weightShared = sharedPref.getInt(getString(R.string.saved_weight_saved_key), defaultWeightValue);
         Integer ageShared = sharedPref.getInt(getString(R.string.saved_age_saved_key), defaultAgeValue);
-        Integer minCalShared = sharedPref.getInt(getString(R.string.saved_min_cal_saved_key), (int) defaultCalValue);
-        Integer maxCalShared = sharedPref.getInt(getString(R.string.saved_max_cal_saved_key), (int) defaultCalValue);
         TextInputEditText editTextHeight = root.findViewById(R.id.editHeight);
         TextInputEditText editTextWeight = root.findViewById(R.id.editWeight);
         TextInputEditText editTextAge = root.findViewById(R.id.editAge);
         editTextHeight.setText(heightShared.toString());
         editTextWeight.setText(weightShared.toString());
         editTextAge.setText(ageShared.toString());
-
 
         editTextHeight.addTextChangedListener(new TextWatcher() {
             @Override
@@ -154,7 +152,7 @@ public class SettingsFragment extends Fragment {
             }
         });
 
-        // Get the choice type and, if exists, select it in the RadioGroup
+        // Get the choice Cal range and, if exists, select it in the RadioGroup
         String defaultChoiceProgressTypeValue = getString(R.string.saved_choice_progress_type_default_key);
         String choiceProgressTypeShared = sharedPref.getString(getString(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);
         RadioGroup cGroup = root.findViewById(R.id.choiceGroup);

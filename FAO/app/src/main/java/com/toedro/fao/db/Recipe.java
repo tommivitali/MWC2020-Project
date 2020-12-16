@@ -7,10 +7,13 @@ import androidx.room.PrimaryKey;
 import com.google.firebase.database.annotations.NotNull;
 
 /**
- * The Recipe class indicate the Table for the local SQLlite DB of the Recipes taken from the remote DB
+ * definition of recipe db structure
+ * Recipes are uploaded from an online db
+ * in the following class are defined variables of the db
+ * and the method that can be applied to this class
  */
 @Entity(tableName = "Recipes")
-public class Recipe {
+public class Recipe { // initialization of the variable of the db
     @PrimaryKey
     @NonNull
     String id;
@@ -26,7 +29,7 @@ public class Recipe {
         this.type = type;
         this.image = image;
     }
-
+    // definition of methods of the class: each method allow to return the value of an instance
     public String getId() {
         return id;
     }

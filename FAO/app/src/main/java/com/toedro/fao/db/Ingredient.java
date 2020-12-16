@@ -7,9 +7,13 @@ import androidx.room.PrimaryKey;
 import com.google.gson.Gson;
 
 import java.util.List;
-
+/**
+ * definition of Ingredients db structure
+ * in the following class are defined variables of the db
+ * and the method that can be applied to this class
+ */
 @Entity(tableName = "Ingredients")
-public class Ingredient {
+public class Ingredient { // initialization of the variable of the db
     @PrimaryKey
     @NonNull
     String id;
@@ -33,7 +37,7 @@ public class Ingredient {
         this.name = name;
         this.quantity = quantity;
     }
-
+    // definition of methods of the class: each method allow to return the value of an instance
     public String getId() { return id; }
     public Integer getCalories() { return calories; }
     public List<String> getKeywords() { return (new Gson()).fromJson(keywords, List.class); }

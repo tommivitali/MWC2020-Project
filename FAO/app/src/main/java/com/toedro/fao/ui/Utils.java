@@ -128,6 +128,27 @@ public class Utils {
         }
         return r;
     }
+
+    /**
+     *
+     * @param type
+     * @return converted ChoiceTypeSettings to id
+     */
+    public static int progressTypeHomeToId(ChoiceTypeSettings type) {
+        int r = R.id.choice_unchanged;
+        switch (type) {
+            case DIMAGRIRE:
+                r = R.id.choice_dimagrire;
+                break;
+            case INGRASSARE:
+                r = R.id.choice_ingrassare;
+                break;
+            case MANTENERE:
+                r = R.id.choice_unchanged;
+                break;
+        }
+        return r;
+    }
     /**
      * @param startDate
      * @param endDate

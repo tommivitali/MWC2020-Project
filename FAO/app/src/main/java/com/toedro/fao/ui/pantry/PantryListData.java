@@ -1,5 +1,8 @@
 package com.toedro.fao.ui.pantry;
 
+/**
+ * class that provides data for modifying Pantry
+ */
 public class PantryListData {
     Integer id;
     String name;

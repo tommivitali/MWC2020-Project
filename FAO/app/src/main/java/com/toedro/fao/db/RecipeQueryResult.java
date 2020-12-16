@@ -1,5 +1,8 @@
 package com.toedro.fao.db;
-
+/**
+ * this class provides methods
+ * in order to return the value of the variables associated to each product in the db
+ */
 public class RecipeQueryResult {
     Double kcal;
     String id;

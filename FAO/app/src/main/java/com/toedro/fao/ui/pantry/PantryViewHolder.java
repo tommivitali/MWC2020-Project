@@ -1,27 +1,20 @@
 package com.toedro.fao.ui.pantry;
 
-import android.content.DialogInterface;
-import android.text.InputType;
-import android.util.Log;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.LinearLayout;
-import android.widget.ListView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.google.android.material.dialog.MaterialAlertDialogBuilder;
 import com.squareup.picasso.Picasso;
-import com.toedro.fao.App;
 import com.toedro.fao.R;
-import com.toedro.fao.ui.Utils;
-
+/**
+ * provide the structure of the list that refers to each element in the pantry
+ * and to its values
+ *
+ * the class moreover provides the methods to call to return the value of each variable of an ingredient
+ */
 public class PantryViewHolder extends RecyclerView.ViewHolder {
 
     TextView textViewContent;
@@ -45,20 +38,6 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 listener.onElementDeleteClick(data);
-                /*
-                new MaterialAlertDialogBuilder(buttonDelete.getContext())
-                        .setTitle(R.string.pantry_delete_dialog_title)
-                        .setMessage(R.string.pantry_delete_dialog_message)
-                        .setNegativeButton(R.string.pantry_delete_dialog_negative, null)
-                        .setPositiveButton(R.string.pantry_delete_dialog_positive,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        App.getDBInstance().pantryDAO().removePantry(data.getId());
-                                    }
-                                })
-                        .show();
-                */
             }
         });
         buttonEdit.setOnClickListener(new View.OnClickListener() {

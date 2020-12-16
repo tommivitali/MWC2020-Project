@@ -1,10 +1,13 @@
 package com.toedro.fao.db;
 
-import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
-import com.google.firebase.database.annotations.NotNull;
-
+/**
+ * definition of Pantry db structure
+ * Ingredients both uploaded manually and scanning the barcode are added in the db
+ * in the following class are defined variables of the db
+ * and the method that can be applied to this class
+ */
 @Entity(tableName = "Pantry")
 public class Pantry {
     @PrimaryKey(autoGenerate = true)

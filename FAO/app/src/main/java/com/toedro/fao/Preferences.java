@@ -3,7 +3,10 @@ package com.toedro.fao;
 import android.app.Activity;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.util.Log;
 import android.util.Pair;
+
+import com.toedro.fao.ui.settings.ChoiceTypeSettings;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -46,12 +49,12 @@ public class Preferences {
         Integer ageShared = sharedPref.getInt(context.getString(R.string.saved_age_saved_key), defaultAgeValue);
         return ageShared;
     }
-    //TODO
-    public static String getCalChoice(Activity activity, Context context) {
+
+    public static ChoiceTypeSettings getCalChoice(Activity activity, Context context) {
         SharedPreferences sharedPref = activity.getPreferences(Context.MODE_PRIVATE);
         String defaultChoiceProgressTypeValue = context.getString(R.string.saved_choice_progress_type_default_key);
-        String choiceProgressType = sharedPref.getString(String.valueOf(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);
-        return choiceProgressType;
+        String choiceProgressTypeShared = sharedPref.getString(context.getString(R.string.saved_choice_progress_type_saved_key), defaultChoiceProgressTypeValue);
+        return ChoiceTypeSettings.valueOf(choiceProgressTypeShared);
     }
 
     private static Integer getValueNotification(int defaultId, int savedKeyId, Context context, Activity activity) {

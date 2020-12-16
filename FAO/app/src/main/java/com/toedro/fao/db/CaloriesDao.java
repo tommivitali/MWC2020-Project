@@ -6,7 +6,9 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
-
+/**
+ * this class provides a serie of sql query that can be applied to to the db
+ */
 @Dao
 public abstract class CaloriesDao {
     @Query("SELECT * FROM Calories")

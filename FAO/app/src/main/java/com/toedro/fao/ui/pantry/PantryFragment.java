@@ -24,7 +24,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The IngredientsFragment class is the fragment handling the Pantry, showing it and allowing deletions and quantity modification.
+ * The PantryFragment class provides the functioning of the pantry fragment
+ * allows to visualize the list of ingredients uploaded
+ * but also to edit and delete the ingredients
  */
 public class PantryFragment extends Fragment implements OnElementClickListener {
 

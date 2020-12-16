@@ -38,7 +38,9 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 /**
- * The ScanBarcodeFragment class is the fragment handling the ScanBarcode page: uses .... to detect the barcode...
+ * The ScanBarcodeFragment class provides the method to capture the image from the camera
+ * and extract the barcode from it
+ * the value of the barcode is then uploaded in the db with all the specifics of the scanned product
  */
 public class ScanBarcodeFragment extends Fragment  {
 
@@ -59,7 +61,7 @@ public class ScanBarcodeFragment extends Fragment  {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.fragment_scan_barcode, container, false);
-
+    // initialization of the structures of the interface
         surfaceView = v.findViewById(R.id.surface_view);
         barcodeText = v.findViewById(R.id.barcode_text);
         nextButton = v.findViewById(R.id.buttonAdd);
@@ -70,7 +72,7 @@ public class ScanBarcodeFragment extends Fragment  {
             }
         });
         barcodeText.setVisibility(View.INVISIBLE);
-// This callback will only be called when fragment is at least Started.
+    // This callback will only be called when fragment is at least Started.
         OnBackPressedCallback callback = new OnBackPressedCallback(true /* enabled by default */) {
             @Override
             public void handleOnBackPressed() {
@@ -151,13 +153,17 @@ public class ScanBarcodeFragment extends Fragment  {
                                 barcodeText.setText(barcodeData);
 
                                 Thread thread = new Thread(new Runnable() {
+                                    // the barcode detected is now used to extract information from the online API
+                                    // https://world.openfoodfacts.org/api
                                     @Override
                                     public void run() {
                                         try  {
-
+                                            // the API has a product structured in json
+                                            // initialization of the URL to recall the API
                                             URL url = new URL("https://world.openfoodfacts.org/api/v0/product/"+barcodeData+".json");
                                             String content = ReadURL("https://world.openfoodfacts.org/api/v0/product/"+barcodeData+".json");
-
+                                            // parse of the json
+                                            // from the json are extracted the necessary informations of the product
                                             Log.d("prova_content", content);
                                             JSONObject root = new JSONObject(content);
                                             String barcode = root.getString("code");

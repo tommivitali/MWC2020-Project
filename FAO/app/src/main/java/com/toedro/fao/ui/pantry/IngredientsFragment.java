@@ -81,9 +81,8 @@ public class IngredientsFragment extends Fragment {
                             , Toast.LENGTH_SHORT).show();
 
                     // add to local db
-
                     // name --> ad as none
-                    String name = String.valueOf(keywordsDropdown.getText());//"Gocciole";
+                    String name = String.valueOf(keywordsDropdown.getText());
                     String quant1 = quantity.getText().toString();
                     Integer quantities = 0;
                     try {
@@ -92,7 +91,7 @@ public class IngredientsFragment extends Fragment {
                         Toast.makeText(getContext(), "quantity must be a number!", Toast.LENGTH_SHORT).show();
                     }
 
-                    Integer energy_100g = App.getDBInstance().ingredientDAO().getCals_100g(name);//10;
+                    Integer energy_100g = App.getDBInstance().ingredientDAO().getCals_100g(name);
                     String bar;
                     if (barcode.getText().toString().isEmpty()) {
                         bar = "";//"123456789";
