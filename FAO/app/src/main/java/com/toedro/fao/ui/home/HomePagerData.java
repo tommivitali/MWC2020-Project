@@ -1,5 +1,10 @@
 package com.toedro.fao.ui.home;
 
+/**
+ * This is the simple class that stores data in a suitable way to retrieve informations and show
+ * them in the homepage's view pager. It contains a constructor, three fields and relative get and
+ * set methods.
+ */
 public class HomePagerData {
     Integer image;
     String content;

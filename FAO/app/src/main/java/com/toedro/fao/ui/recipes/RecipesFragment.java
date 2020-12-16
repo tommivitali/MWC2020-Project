@@ -27,7 +27,10 @@ import com.squareup.picasso.Picasso;
 
 import java.util.List;
 /**
- * The RecipesFragment class is the fragment allowing to watch a list of all recipes in the remote DB autogenerating CardViews of them.
+ * The RecipesFragment class is the class that creates the relative fragment allowing to watch a
+ * list of cards with all the recipes. Since we don't have a fixed number of recipes we have to also
+ * generate the layout dynamically, getting the LinearLayout container and inflating all the
+ * elements inside.
  */
 public class RecipesFragment extends Fragment {
 
@@ -40,6 +43,10 @@ public class RecipesFragment extends Fragment {
     RelativeLayout relativeLayout;
     MaterialButton materialButton;
 
+    /**
+     * Create a MaterialCardView with an 8dp margin.
+     * @return a MaterialCardView
+     */
     private MaterialCardView createMaterialCardView() {
         MaterialCardView newCard = new MaterialCardView(getContext());
         MaterialCardView.LayoutParams layoutParams = new MaterialCardView.LayoutParams(
@@ -55,8 +62,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create an ImageView with a 150dp fixed height and that crops the image source at the center.
+     * @return an ImageView
      */
     private ImageView createImageView() {
         ImageView newImage = new ImageView(getContext());
@@ -69,8 +76,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create a simple LinearLayout.
+     * @return an empty LinearLayout
      */
     private LinearLayout createLinearLayout1() {
         LinearLayout newLayout = new LinearLayout(getContext());
@@ -83,8 +90,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create a simple LinearLayout with 16dp paddings.
+     * @return an empty LinearLayout
      */
     private LinearLayout createLinearLayout2() {
         LinearLayout newLayout = new LinearLayout(getContext());
@@ -102,8 +109,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create an empty RelativeLayout.
+     * @return an empty RelativeLayout
      */
     private RelativeLayout createRelativeLayout() {
         RelativeLayout newLayout = new RelativeLayout(getContext());
@@ -116,7 +123,7 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
+     * Class MyTitle that simply extends an AppCompatTextView but with the textAppearanceHeadline6.
      */
     private class MyTitle extends androidx.appcompat.widget.AppCompatTextView {
         public MyTitle(Context context) {
@@ -125,8 +132,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create an empty MyTitle text view, suitable to show the recipe name.
+     * @return an empty MyTitle text view
      */
     private TextView createTextView1() {
         TextView newText = new MyTitle(getContext());
@@ -138,7 +145,7 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
+     * Class MyDescription that simply extends an AppCompatTextView but with the textAppearanceBody2.
      */
     private class MyDescription extends androidx.appcompat.widget.AppCompatTextView {
         public MyDescription(Context context) {
@@ -147,8 +154,8 @@ public class RecipesFragment extends Fragment {
     }
 
     /**
-     *
-     * @return
+     * Create an empty MyDescription text view, suitable to show the recipe category.
+     * @return an empty MyDescription text view
      */
     private TextView createTextView2() {
         TextView newText = new MyDescription(getContext());
@@ -157,21 +164,12 @@ public class RecipesFragment extends Fragment {
                 ViewGroup.LayoutParams.WRAP_CONTENT );
         layoutParams.setMargins(0, Utils.convertDpToPixel(8), 0, 0);
         newText.setLayoutParams(layoutParams);
-
-        /*
-        TypedValue typedValue = new TypedValue();
-        Resources.Theme theme = getContext().getTheme();
-        theme.resolveAttribute(R.attr.colorOnSecondary, typedValue, true);
-        @ColorInt int color = typedValue.data;
-        newText.setTextColor(color);
-        */
-
         newText.setTextColor(Color.GRAY);
-
         return newText;
     }
+
     /**
-     * The MyMaterialButton class ...
+     * Class MyMaterialButton that simply extends a MaterialButton without borders.
      */
     private class MyMaterialButton extends MaterialButton {
         public MyMaterialButton(Context context) {
@@ -179,6 +177,13 @@ public class RecipesFragment extends Fragment {
         }
     }
 
+    /**
+     * Create the button to show/hide the recipe content.
+     * @param textViewContent textview in which the function puts the recipe content
+     * @param content a string with the recipe content
+     * @return a MaterialButton that initially shows "View", and when clicked put the content
+     * parameter string into the textViewContent parameter textview
+     */
     private MaterialButton createMaterialButton(TextView textViewContent, String content) {
         MaterialButton newButton = new MyMaterialButton(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -208,6 +213,10 @@ public class RecipesFragment extends Fragment {
         return newButton;
     }
 
+    /**
+     * Create an empty text view with an 8dp margin on all the sides but the upper one, with 88dp.
+     * @return an empty TextView
+     */
     private TextView createTextViewContent() {
         TextView textView = new TextView(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -228,11 +237,11 @@ public class RecipesFragment extends Fragment {
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_recipes, container, false);
-
+        // Get the main container
         containerRecipes = (LinearLayout) root.findViewById(R.id.container_recipes);
-
+        // Get the recipes from the DB
         List<Recipe> recipeList = App.getDBInstance().recipeDAO().getRecipes();
-
+        // For each recipe create the layout components, arrange and fill them up
         for(Recipe recipe : recipeList) {
             materialCardView    = createMaterialCardView();
             imageView           = createImageView();
@@ -244,6 +253,7 @@ public class RecipesFragment extends Fragment {
             textViewContent     = createTextViewContent();
             materialButton      = createMaterialButton(textViewContent, recipe.getText());
 
+            // Picasso library to show an image in an ImageView from the URL
             Picasso.get().load(recipe.getImage()).into(imageView);
             textView1.setText(recipe.getName());
             textView2.setText(recipe.getType());

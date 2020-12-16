@@ -36,7 +36,8 @@ import java.util.Map;
 import static android.content.ContentValues.TAG;
 import static android.content.Context.MODE_PRIVATE;
 /**
- * The SplashFragment class is the class that handles the download of data from remote DB ...
+ * Class of the SplashFragment, that shows initially the app logo until all the updates from the
+ * FireStore Cloud DB have been downloaded and inserted into the local DB.
  */
 public class SplashFragment extends Fragment {
     FirebaseFirestore db;
@@ -57,7 +58,8 @@ public class SplashFragment extends Fragment {
 
         // Reading from Firebase Cloud Firestore
         db = FirebaseFirestore.getInstance();
-
+        // Get the "recipes" collection and, if there are no errors (i.e. no internet connection)
+        // put all into the local DB through Room
         db.collection("recipes")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -89,10 +91,15 @@ public class SplashFragment extends Fragment {
                             Snackbar.make(view, R.string.splash_error, Snackbar.LENGTH_LONG).show();
                         }
 
+                        // If it is the first time the user opens the app then we don't have a
+                        // "firstrun" value in the Shared Preferences, so we show the tutorial
                         if (prefs.getBoolean("firstrun", true)) {
                             Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_tutorialActivity);
                         }
 
+                        // If the app opens from the click of a notification we have a "TODETAIL"
+                        // string into the intent, and we go directly to the wannaEat fragment;
+                        // otherwise we normally go to the app homepage
                         if (intentString != null && intentString.equals(getString(R.string.notification_action2))) {
                             Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_wannaEatFragment);
                         } else {
@@ -101,6 +108,7 @@ public class SplashFragment extends Fragment {
                     }
                 });
 
+        // Get the "ingredients" collection and put all into the local DB through Room
         db.collection("ingredients")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -126,12 +134,19 @@ public class SplashFragment extends Fragment {
                 });
     }
 
+    /**
+     * This method is overridden to hide the toolbar in this fragment
+     */
     @Override
     public void onResume() {
         super.onResume();
         ((AppCompatActivity)getActivity()).getSupportActionBar().hide();
     }
 
+    /**
+     * This method is overridden because the toolbar in this fragment is hidden and I want to show
+     * it again when the user go to another page
+     */
     @Override
     public void onStop() {
         super.onStop();

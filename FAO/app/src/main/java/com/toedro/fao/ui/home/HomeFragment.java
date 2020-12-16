@@ -30,9 +30,9 @@ import java.util.Date;
 import java.util.List;
 
 /**
- * The HomeFragment class is the fragment of the HomePage of the App.
- * It holds buttons to navigate to all others Fragments and initialize stepcounters sensors.
- * It also has a sliders holding steps done the current day and the corresponding calories of them.
+ * The HomeFragment class is the class of the homepage fragment. It holds buttons to navigate to all
+ * others Fragments and initialize the stepcounter listener. It also has a viewpager holding steps
+ * done the current day and corresponding calories.
  */
 public class HomeFragment extends Fragment {
 
@@ -40,20 +40,21 @@ public class HomeFragment extends Fragment {
 
     MaterialButtonToggleGroup materialButtonToggleGroup;
 
-    // ACC sensors
+    // Accelerometer sensor
     private Sensor mSensorACC;
     // Step Detector sensor
     private Sensor mSensorStepDetector;
     // Listener and SensorManager
     private SensorManager mSensorManager;
     private StepCounterListener listener;
-
+    // Adapter for the view pager
     private HomeViewPagerAdapter adapter;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
         View root = inflater.inflate(R.layout.fragment_home, container, false);
-        //button to add ingredients
+
+        // Button to add an ingredient manually: on click it brings to the ingredients fragment
         MaterialButton buttonAddIngredient = (MaterialButton) root.findViewById(R.id.buttonAddIngredient);
         buttonAddIngredient.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,7 +62,8 @@ public class HomeFragment extends Fragment {
                 Navigation.findNavController(getView()).navigate(R.id.action_nav_homepage_to_ingredientsFragment);
             }
         });
-        // Button to go scanning barcode
+
+        // Button to scan a barcode: on click it brings to the scanBarcode fragment
         MaterialButton buttonScanBarcode = (MaterialButton) root.findViewById(R.id.buttonScanBarcode);
         buttonScanBarcode.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -70,10 +72,20 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        // Initial data of the view pager
+        // Button to get a recipe: on click it brings to the wannaEat fragment
+        MaterialButton buttonWannaEat = (MaterialButton) root.findViewById(R.id.buttonWannaEat);
+        buttonWannaEat.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Navigation.findNavController(v).navigate(R.id.action_nav_homepage_to_wannaEatFragment);
+            }
+        });
+
+        // Get the steps completed till now from the DB
         int stepsCompleted = App.getDBInstance().stepDAO().getDaySteps(
                 new SimpleDateFormat(getString(R.string.date_layout_DB))
                         .format(new Date()));
+        // Initial data of the view pager in a list of HomePagerData elements
         List data = new ArrayList<HomePagerData>();
         data.add(new HomePagerData(R.drawable.ic_calories,
                 String.valueOf(Utils.convertStepsToCal(stepsCompleted, getActivity(), getContext())),
@@ -87,7 +99,7 @@ public class HomeFragment extends Fragment {
         viewPager.setAdapter(adapter);
         viewPager.setOrientation(ViewPager2.ORIENTATION_HORIZONTAL);
         adapter.setData(data);
-
+        // This is used to show an indicator of the view pager "page" shown at the moment
         TabLayout progressPager = root.findViewById(R.id.progressViewPager);
         new TabLayoutMediator(progressPager, viewPager, new TabLayoutMediator.TabConfigurationStrategy() {
             @Override
@@ -96,25 +108,14 @@ public class HomeFragment extends Fragment {
             }
         }).attach();
 
-        // Button to get a recipe
-        MaterialButton buttonWannaEat = (MaterialButton) root.findViewById(R.id.buttonWannaEat);
-        buttonWannaEat.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Navigation.findNavController(v).navigate(R.id.action_nav_homepage_to_wannaEatFragment);
-
-            }
-        });
-
-        buttonStartStop     = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
+        // Get the start/stop button from the fragment view
+        buttonStartStop = (MaterialButton) root.findViewById(R.id.buttonStartStopStepcounter);
         //  Get an instance of the sensor manager
         mSensorManager = (SensorManager) this.getActivity().getSystemService(Context.SENSOR_SERVICE);
-        // Get an instance of Accelerometer
+        // Get an instance of Accelerometer sensor
         mSensorACC = mSensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION);
-        // Get an instance of Step Detector
+        // Get an instance of Step Detector sensor
         mSensorStepDetector = mSensorManager.getDefaultSensor(Sensor.TYPE_STEP_DETECTOR);
-
         // Get listener instance, and check if it is already activated
         listener = StepCounterListener.getInstance(stepsCompleted, adapter, getContext(), getActivity());
         if(listener.isActive()) {
@@ -122,18 +123,18 @@ public class HomeFragment extends Fragment {
             buttonStartStop.setText(R.string.home_stop_stepcounter);
             buttonStartStop.setIcon(ContextCompat.getDrawable(getContext(), R.drawable.ic_stop));
         }
-
+        // Set what to do when the start/stop button is clicked
         buttonStartStop.addOnCheckedChangeListener(new MaterialButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(MaterialButton button, boolean isChecked) {
                 if (isChecked) {
-                    // Check if the Step detector sensor exists
+                    // Check if the step detector sensor exists, if not use the accelerometer
                     if (mSensorStepDetector != null) {
                         // Register the Step Detector listener
                         listener.activate();
                         mSensorManager.registerListener(listener, mSensorStepDetector, SensorManager.SENSOR_DELAY_NORMAL);
                     } else if (mSensorACC != null) {
-                        // Register the ACC listener
+                        // Register the Accelerometer listener
                         listener.activate();
                         mSensorManager.registerListener(listener, mSensorACC, SensorManager.SENSOR_DELAY_NORMAL);
                     } else {

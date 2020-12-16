@@ -9,7 +9,8 @@ import com.github.appintro.AppIntro;
 import com.github.appintro.AppIntroFragment;
 
 /**
- * The TutorialActivity class is where the Tutorial pages are created using AppIntro library from Github
+ * The TutorialActivity class is where the Tutorial pages are created using the AppIntro library.
+ * The documentation is at the following link: https://github.com/AppIntro/AppIntro
  */
 public class TutorialActivity extends AppIntro {
     SharedPreferences prefs;
@@ -63,6 +64,11 @@ public class TutorialActivity extends AppIntro {
         ));
     }
 
+    /**
+     * This method is overridden to put a 'firstrun' boolean in Shared Preferences and remember the
+     * user already watched the tutorial.
+     * @param currentFragment
+     */
     @Override
     protected void onSkipPressed(Fragment currentFragment) {
         super.onSkipPressed(currentFragment);
@@ -71,6 +77,11 @@ public class TutorialActivity extends AppIntro {
         finish();
     }
 
+    /**
+     * This method is overridden to put a 'firstrun' boolean in Shared Preferences and remember the
+     * user already watched the tutorial.
+     * @param currentFragment
+     */
     @Override
     protected void onDonePressed(Fragment currentFragment) {
         super.onDonePressed(currentFragment);
@@ -79,12 +90,19 @@ public class TutorialActivity extends AppIntro {
         finish();
     }
 
+    /**
+     * This method is overridden to hide the toolbar in this fragment
+     */
     @Override
     public void onResume() {
         super.onResume();
         getSupportActionBar().hide();
     }
 
+    /**
+     * This method is overridden because the toolbar in this fragment is hidden and I want to show
+     * it again when the user go to another page
+     */
     @Override
     public void onStop() {
         super.onStop();

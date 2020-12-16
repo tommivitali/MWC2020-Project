@@ -12,7 +12,9 @@ import com.toedro.fao.R;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * The HomeViewPagerAdapter class ...
+ * The HomeViewPagerAdapter class is the adapter of the HomeViewHolder class, and do all the
+ * operations to make the homepage's view pager working.
+ * Documentation at the following link: https://developer.android.com/guide/topics/ui/layout/recyclerview
  */
 public class HomeViewPagerAdapter extends RecyclerView.Adapter<HomeViewHolder> {
 

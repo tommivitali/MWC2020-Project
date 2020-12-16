@@ -11,7 +11,8 @@ import com.toedro.fao.ui.settings.ChoiceTypeSettings;
 import java.util.ArrayList;
 import java.util.List;
 /**
- * The Preferences class is where the local data get stored to and retrieved from
+ * This class is an utility class that provides some static method to get data from the Shared
+ * Preferences with a single function call.
  */
 public class Preferences {
 
