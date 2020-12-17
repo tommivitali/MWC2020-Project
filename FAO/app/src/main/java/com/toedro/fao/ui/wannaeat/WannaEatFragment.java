@@ -260,11 +260,11 @@ public class WannaEatFragment extends Fragment {
         switch(Preferences.getCalChoice(getActivity(), getContext())) {
             case DIMAGRIRE:
                 min = 0.0;
-                max = kcals;
+                max = kcals - 150;
                 break;
             case INGRASSARE:
                 min = 0.0;
-                max = kcals;
+                max = kcals + 200;
                 break;
             default: //MANTENERE
                 min = 0.0;
