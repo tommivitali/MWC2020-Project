@@ -5,7 +5,7 @@ import androidx.room.Entity;
 /**
  * Definition of Ingredients class for the related table structure in the DB; here are defined the
  * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
- * and some getter methods. This table is a copy of what holds the firestore cloud DB, and it is
+ * and some getter methods. This table is a copy of what holds the Firestore cloud DB, and it is
  * used to "connect" the recipes table with the ingredients table.
  */
 @Entity(tableName = "RecipesIngredients", primaryKeys = {"idRecipe","idIngredient"})

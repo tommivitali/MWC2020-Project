@@ -38,7 +38,7 @@ import java.io.InputStreamReader;
 import java.net.URL;
 import java.net.URLConnection;
 /**
- * The ScanBarcodeFragment class provides the method to capture the image from the camera
+ * The ScanBarcodeFragment class provides the method to capture an image from the camera
  * and extract the barcode from it
  * the value of the barcode is then uploaded in the db with all the specifics of the scanned product
  */
@@ -85,7 +85,7 @@ public class ScanBarcodeFragment extends Fragment  {
     }
 
     /**
-     * function that ...
+     * function that initialize the camera and detector
      */
     private void initialiseDetectorsAndSources() {
         barcodeDetector = new BarcodeDetector.Builder(getContext())
@@ -97,7 +97,7 @@ public class ScanBarcodeFragment extends Fragment  {
         int width = displayMetrics.widthPixels;
         int height = displayMetrics.heightPixels;
         cameraSource = new CameraSource.Builder(getContext(), barcodeDetector)
-                .setRequestedPreviewSize(width, height)//.setRequestedPreviewSize(1920, 1080)
+                .setRequestedPreviewSize(width, height)
                 .setAutoFocusEnabled(true) //you should add this feature
                 .build();
 
@@ -184,10 +184,8 @@ public class ScanBarcodeFragment extends Fragment  {
                                             //String keywords = jsonObject.get("isbn"); creare tabella
                                             String image = product.getString("image_front_url");
                                             Log.d("image", image);
-                                            //TODO associate name to keywords
+                                            //MAYBETODO associate name to keywords
                                             Pantry pantries = new Pantry(name, quantity, energy_100g, name, barcode, image);
-                                            //Pantry pantry = App.getDBInstance().pantryDAO().getPantry(name, barcode);
-                                            //if(pantry == null) {
                                             App.getDBInstance().pantryDAO().addPantry(pantries);
                                         } catch (Exception e) {
                                             Log.d("prova", "errore");

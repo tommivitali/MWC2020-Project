@@ -6,7 +6,6 @@ import androidx.room.OnConflictStrategy;
 import androidx.room.Query;
 
 import java.util.List;
-
 /**
  * This class provides a series of SQL queries that can be applied to the DB; these are specifically
  * for the RecipeIngredients table and what it concerns.

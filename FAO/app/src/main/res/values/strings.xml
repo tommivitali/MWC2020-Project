@@ -32,6 +32,7 @@
     <string name="charts_toggle_cal">Calories</string>
     <string name="charts_toggle_steps">Steps</string>
     <string name="charts_error">The interval you selected does not contain any data</string>
+    <string name="charts_label_plot">steps</string>
     <!-- Settings -->
     <string name="settings_label_height">Height</string>
     <string name="settings_label_weight">Weight</string>
@@ -76,29 +77,32 @@
     <string name="saved_notification_3_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification3</string>
     <string name="saved_notification_4_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification4</string>
     <string name="saved_notification_5_saved_key">com.toedro.fao.PREFERENCE_FILE_KEY.notification5</string>
+    <string name="settingsButton">Button</string>
+    <string name="notifications">Notifications</string>
+    <string name="channel_name">FAO</string>
+    <string name="channel_description">FAO Description</string>
+    <string name="settings_show_tutorial">See the tutorial again</string>
     <!-- Date Layout -->
     <string name="date_layout_DB">yyyy-MM-dd</string>
     <string name="date_layout_UI">dd/MM/yyyy</string>
-
-
-    <!-- TODO -->
-    <string name="settingsButton">Button</string>
-    <string name="notifications">Notifications</string>
+    <!-- Recipe -->
     <string name="content_description_media">image for the recipe</string>
     <string name="title">Title</string>
     <string name="secondary_text">Secondary text</string>
     <string name="recipes_button_view">View</string>
-    <string name="charts_label_plot">steps</string>
-    <string name="channel_name">FAO</string>
-    <string name="channel_description">FAO Description</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="caloriesRange">Calories Range</string>
     <string name="settings_max_cal_measure">Maximum number of Cal you want the recipe to be MORE than what you burned</string>
     <string name="settings_min_cal_measure">Maximum number of Cal you want the recipe to be LESS than what you burned</string>
     <string name="recipes_button_hide">Hide</string>
-    <string name="settings_show_tutorial">See the tutorial again</string>
     <string name="notification_action">TOWANNAEAT</string>
+    <string name="wannaeat_button_eat">Eat It!</string>
+    <string name="wannaeat_dialog_title">Eat It!</string>
+    <string name="wannaeat_dialog_message">Are you sure you want to eat this?</string>
+    <string name="wannaeat_dialog_negative">No, let me starve</string>
+    <string name="wannaeat_dialog_positive">Yes!</string>
+    <string name="wannaeat_noeat">You could get a little action before you eat!</string>
+    <string name="notification_action2">TODETAIL</string>
+    <!-- Pantry -->
     <string name="pantry_delete_dialog_title">Delete an item</string>
     <string name="pantry_delete_dialog_message">Are you sure you want to delete this item?</string>
     <string name="pantry_delete_dialog_negative">Cancel</string>
@@ -107,11 +111,5 @@
     <string name="pantry_edit_dialog_message">Choose the quantity:</string>
     <string name="pantry_edit_dialog_negative">Cancel</string>
     <string name="pantry_edit_dialog_positive">Modify</string>
-    <string name="wannaeat_button_eat">Eat It!</string>
-    <string name="wannaeat_dialog_title">Eat It!</string>
-    <string name="wannaeat_dialog_message">Are you sure you want to eat this?</string>
-    <string name="wannaeat_dialog_negative">No, let me starve</string>
-    <string name="wannaeat_dialog_positive">Yes!</string>
-    <string name="wannaeat_noeat">You could get a little action before you eat!</string>
-    <string name="notification_action2">TODETAIL</string>
+
 </resources>

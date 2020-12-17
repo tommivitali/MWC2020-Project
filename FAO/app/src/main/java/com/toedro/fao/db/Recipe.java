@@ -9,7 +9,7 @@ import com.google.firebase.database.annotations.NotNull;
 /**
  * Definition of Recipe class for the related table structure in the DB; here are defined the
  * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
- * and some getter methods. This table is a copy of the "recipes" collection in firestore cloud,
+ * and some getter methods. This table is a copy of the "recipes" collection in Firestore cloud,
  * updated every time the app starts through the splash fragment.
  */
 @Entity(tableName = "Recipes")

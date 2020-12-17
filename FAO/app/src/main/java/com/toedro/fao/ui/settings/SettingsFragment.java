@@ -34,7 +34,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 /**
  * The SettingsFragment class handles the setting view and save in SharedPreferences the local User's attributes and choices:
- * height, weight, age, sex, App's language, kcal range, notifications (up to 5) and a button to re-watch the tutorial.
+ * height, weight, age, sex, App's language, Cal range, notifications (up to 5) and a button to re-watch the tutorial.
  */
 public class SettingsFragment extends Fragment {
 

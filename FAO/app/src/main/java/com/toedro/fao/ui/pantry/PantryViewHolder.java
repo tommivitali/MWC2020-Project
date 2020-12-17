@@ -12,7 +12,6 @@ import com.toedro.fao.R;
 /**
  * provide the structure of the list that refers to each element in the pantry
  * and to its values
- *
  * the class moreover provides the methods to call to return the value of each variable of an ingredient
  */
 public class PantryViewHolder extends RecyclerView.ViewHolder {
@@ -44,38 +43,7 @@ public class PantryViewHolder extends RecyclerView.ViewHolder {
             @Override
             public void onClick(View v) {
                 listener.onElementEditClick(data);
-                /*
-                final EditText input = new EditText(buttonEdit.getContext());
 
-                LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
-                        LinearLayout.LayoutParams.MATCH_PARENT,
-                        LinearLayout.LayoutParams.WRAP_CONTENT );
-                lp.setMargins(50,0,50,0);
-                input.setLayoutParams(lp);
-                RelativeLayout container = new RelativeLayout(buttonEdit.getContext());
-                RelativeLayout.LayoutParams rlParams = new RelativeLayout.LayoutParams(
-                        RelativeLayout.LayoutParams.MATCH_PARENT,
-                        RelativeLayout.LayoutParams.WRAP_CONTENT );
-                container.setLayoutParams(rlParams);
-                container.addView(input);
-
-                input.setInputType(InputType.TYPE_CLASS_NUMBER);
-                input.setText(String.valueOf(data.getQuantity()));
-                new MaterialAlertDialogBuilder(buttonEdit.getContext())
-                        .setTitle(R.string.pantry_edit_dialog_title)
-                        .setMessage(R.string.pantry_edit_dialog_message)
-                        .setView(container)
-                        .setNegativeButton(R.string.pantry_edit_dialog_negative, null)
-                        .setPositiveButton(R.string.pantry_edit_dialog_positive,
-                                new DialogInterface.OnClickListener() {
-                                    @Override
-                                    public void onClick(DialogInterface dialog, int which) {
-                                        App.getDBInstance().pantryDAO().setQuantity(data.getId(),
-                                                Integer.parseInt(input.getText().toString()));
-                                    }
-                                })
-                        .show();
-                */
             }
         });
     }

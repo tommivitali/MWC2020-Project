@@ -18,7 +18,7 @@ import java.util.stream.Collectors;
 import java.util.stream.IntStream;
 
 /**
- * The Utils class is a class storing methods from other classes to use
+ * The Utils class is used to store methods from other classes to use
  */
 public class Utils {
     /**
@@ -63,13 +63,12 @@ public class Utils {
     public static double calculateBMR(Activity activity, Context context){
         int age =  Preferences.getAge(activity, context);
         boolean male = (Preferences.getSex(activity, context).equals("Male"));
-        int sex = male ? 5 : -161;   //costante basata sul sesso dell'individuo
+        int sex = male ? 5 : -161;   //constant based on user's sex (metabolism change also on that)
         int height = Preferences.getHeight(activity, context);
         int weight = Preferences.getWeight(activity, context);
         return (10 * weight) + (6.25 * height) - (5 * age) + sex;
     }
     /**
-     *
      * @param activity
      * @param context
      * @return calories consumed just by user's BMR today (from 00:00 to now of the same day)
@@ -89,7 +88,6 @@ public class Utils {
         return bmr / (24 * 60 * 60) * seconds;
     }
     /**
-     *
      * @param type
      * @return converted ChoiceTypeSettings to respective id
      */

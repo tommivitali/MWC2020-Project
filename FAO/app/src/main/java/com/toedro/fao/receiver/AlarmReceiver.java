@@ -20,8 +20,8 @@ import java.util.Date;
 import java.util.concurrent.TimeUnit;
 
 /**
- * The AlarmReceiver class handles the notifications created in MainActivity, delivering them when the time arrives either if the app
- * is open or not
+ * The AlarmReceiver class handles the notifications created in MainActivity, delivering them when the time arrives if the app
+ * is either open or not
  */
 public class AlarmReceiver extends BroadcastReceiver {
 
