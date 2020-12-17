@@ -37,10 +37,15 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
 /**
- * The WannaEatFragment class is the class called from HomeFragment or from notifications that handles the view that show all recipes
- * that satisfy the following requirements: all required recipes are in the Pantry, the calories of the recipe is in the range setted by the user
- * based of how much you have burned
+ * The RecipesFragment class is the class that creates the related fragment allowing to watch a
+ * list of cards with all the recipes that satisfy the following requirements: all required recipes
+ * are in the Pantry, and the calories are based on how much the user burnt till now. Since we don't
+ * have a fixed number of recipes we have to also generate the layout dynamically, getting the
+ * LinearLayout container and inflating all the elements inside. Since it has to generate a layout
+ * programmatically very similar to the recipes fragment, this class is pretty close to the recipes
+ * one.
  */
 public class WannaEatFragment extends Fragment {
 
@@ -55,8 +60,8 @@ public class WannaEatFragment extends Fragment {
     double min, max;
 
     /**
-     *
-     * @return
+     * Create a MaterialCardView with an 8dp margin.
+     * @return a MaterialCardView
      */
     private MaterialCardView createMaterialCardView() {
         MaterialCardView newCard = new MaterialCardView(getContext());
@@ -71,9 +76,10 @@ public class WannaEatFragment extends Fragment {
         newCard.setLayoutParams(layoutParams);
         return newCard;
     }
+
     /**
-     *
-     * @return
+     * Create an ImageView with a 150dp fixed height and that crops the image source at the center.
+     * @return an ImageView
      */
     private ImageView createImageView() {
         ImageView newImage = new ImageView(getContext());
@@ -84,9 +90,10 @@ public class WannaEatFragment extends Fragment {
         newImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
         return newImage;
     }
+
     /**
-     *
-     * @return
+     * Create a simple LinearLayout.
+     * @return an empty LinearLayout
      */
     private LinearLayout createLinearLayout1() {
         LinearLayout newLayout = new LinearLayout(getContext());
@@ -97,9 +104,10 @@ public class WannaEatFragment extends Fragment {
         newLayout.setOrientation(LinearLayout.VERTICAL);
         return newLayout;
     }
+
     /**
-     *
-     * @return
+     * Create a simple LinearLayout with 16dp paddings.
+     * @return an empty LinearLayout
      */
     private LinearLayout createLinearLayout2() {
         LinearLayout newLayout = new LinearLayout(getContext());
@@ -116,6 +124,10 @@ public class WannaEatFragment extends Fragment {
         return newLayout;
     }
 
+    /**
+     * Create an empty RelativeLayout.
+     * @return an empty RelativeLayout
+     */
     private RelativeLayout createRelativeLayout() {
         RelativeLayout newLayout = new RelativeLayout(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -125,8 +137,9 @@ public class WannaEatFragment extends Fragment {
         newLayout.setLayoutParams(layoutParams);
         return newLayout;
     }
+
     /**
-     * The MyTitle class
+     * Class MyTitle that simply extends an AppCompatTextView but with the textAppearanceHeadline6.
      */
     private class MyTitle extends androidx.appcompat.widget.AppCompatTextView {
         public MyTitle(Context context) {
@@ -134,6 +147,10 @@ public class WannaEatFragment extends Fragment {
         }
     }
 
+    /**
+     * Create an empty MyTitle text view, suitable to show the recipe name.
+     * @return an empty MyTitle text view
+     */
     private TextView createTextView1() {
         TextView newText = new MyTitle(getContext());
         ViewGroup.LayoutParams layoutParams = new ViewGroup.LayoutParams(
@@ -143,12 +160,19 @@ public class WannaEatFragment extends Fragment {
         return newText;
     }
 
+    /**
+     * Class MyDescription that simply extends an AppCompatTextView but with the textAppearanceBody2.
+     */
     private class MyDescription extends androidx.appcompat.widget.AppCompatTextView {
         public MyDescription(Context context) {
             super(context, null, R.attr.textAppearanceBody2);
         }
     }
 
+    /**
+     * Create an empty MyDescription text view, suitable to show the recipe category.
+     * @return an empty MyDescription text view
+     */
     private TextView createTextView2() {
         TextView newText = new MyDescription(getContext());
         LinearLayout.LayoutParams layoutParams = new LinearLayout.LayoutParams(
@@ -162,12 +186,22 @@ public class WannaEatFragment extends Fragment {
         return newText;
     }
 
+    /**
+     * Class MyMaterialButton that simply extends a MaterialButton without borders.
+     */
     private class MyMaterialButton extends MaterialButton {
         public MyMaterialButton(Context context) {
             super(context, null, R.attr.borderlessButtonStyle);
         }
     }
 
+    /**
+     * Create the button to show the fragment with the recipe content.
+     * @param recipeID the id of the recipe, since we have to show a specific recipe at the click of
+     *                 the button
+     * @return a MaterialButton that initially shows "Eat It!", then a dialog and if the user
+     * answers positively we navigate to the recipeDetail fragment
+     */
     private MaterialButton createMaterialButton(String recipeID) {
         MaterialButton newButton = new MyMaterialButton(getContext());
         RelativeLayout.LayoutParams layoutParams = new RelativeLayout.LayoutParams(
@@ -222,37 +256,30 @@ public class WannaEatFragment extends Fragment {
 
         Double kcals = bmr + stepsCals - mealsCals;
 
-        Log.d("KCAL", "BMR -> " + String.valueOf(bmr));
-        Log.d("KCAL", "STEPS -> " + String.valueOf(stepsCals));
-        Log.d("KCAL", "MEALS -> " + String.valueOf(mealsCals));
-        Log.d("KCAL", String.valueOf(kcals));
         //switch value range kcals (to ask a dietician)
-        min = 0.0;
-        max = kcals;
         switch(Preferences.getCalChoice(getActivity(), getContext())) {
             case DIMAGRIRE:
                 min = 0.0;
                 max = kcals;
-                Log.d("choice", "DIMAGRIRE. ");
                 break;
             case INGRASSARE:
                 min = 0.0;
                 max = kcals;
-                Log.d("choice", "INGRASSARE. ");
                 break;
             default: //MANTENERE
                 min = 0.0;
                 max = kcals;
-                Log.d("choice", "MANTENERE. ");
         }
 
 
         if (kcals <= 0) {
             Snackbar.make(root, R.string.wannaeat_noeat, Snackbar.LENGTH_LONG).show();
         } else {
+            // Get the main container
             containerRecipes = (LinearLayout) root.findViewById(R.id.container_wannaeat);
+            // Get the recipes from the DB and for each recipe create the layout components,
+            // arrange and fill them up
             for (RecipeQueryResult recipe : App.getDBInstance().recipeDAO().getRecipes(min, max)) {
-                Log.d("RECIPE", "1");
                 materialCardView    = createMaterialCardView();
                 imageView           = createImageView();
                 linearLayout1       = createLinearLayout1();
@@ -262,6 +289,7 @@ public class WannaEatFragment extends Fragment {
                 textView2           = createTextView2();
                 materialButton      = createMaterialButton(recipe.getId());
 
+                // Picasso library to show an image in an ImageView from the URL
                 Picasso.get().load(recipe.getImage()).into(imageView);
                 textView1.setText(recipe.getName());
                 textView2.setText("Kcal: " + String.valueOf(recipe.getKcal()));

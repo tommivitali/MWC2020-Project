@@ -3,10 +3,10 @@ package com.toedro.fao.db;
 import androidx.annotation.NonNull;
 import androidx.room.Entity;
 /**
- * definition of the db structure
- * in order to manage Ids of different recipes, ingredient and quantity
- * in the following class are defined variables of the db
- * and the method that can be applied to this class
+ * Definition of Ingredients class for the related table structure in the DB; here are defined the
+ * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
+ * and some getter methods. This table is a copy of what holds the firestore cloud DB, and it is
+ * used to "connect" the recipes table with the ingredients table.
  */
 @Entity(tableName = "RecipesIngredients", primaryKeys = {"idRecipe","idIngredient"})
 public class RecipeIngredients { // initialization of the variable of the db

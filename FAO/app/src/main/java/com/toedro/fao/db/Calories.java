@@ -6,9 +6,9 @@ import androidx.room.PrimaryKey;
 
 import java.util.Calendar;
 /**
- * definition of Calories db structure
- * in the following class are defined variables of the db
- * and the method that can be applied to this class
+ * Definition of Calories class for the related table structure in the DB; here are defined the
+ * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
+ * and some getter methods.
  */
 @Entity(tableName = "Calories")
 public class Calories { // initialization of the variable of the db

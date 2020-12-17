@@ -9,7 +9,8 @@ import androidx.room.Query;
 import java.util.List;
 
 /**
- * The PantryDAO class create queries for the Pantry class
+ * This class provides a series of SQL queries that can be applied to the DB; these are specifically
+ * for the Pantry table and what it concerns.
  */
 @Dao
 public abstract class PantryDAO {

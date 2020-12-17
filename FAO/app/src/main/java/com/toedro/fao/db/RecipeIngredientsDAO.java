@@ -8,7 +8,8 @@ import androidx.room.Query;
 import java.util.List;
 
 /**
- * The RecipeIngredientsDAO class create queries for the RecipeIngredients class
+ * This class provides a series of SQL queries that can be applied to the DB; these are specifically
+ * for the RecipeIngredients table and what it concerns.
  */
 @Dao
 public abstract class RecipeIngredientsDAO {

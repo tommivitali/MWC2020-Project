@@ -1,7 +1,9 @@
 package com.toedro.fao.db;
+
 /**
- * this class provides methods
- * in order to return the value of the variables associated to each product in the db
+ * This class provides some fields and the correspondent getter methods to get the results for a
+ * query that selects some recipes and the correspondent calculated kcals.
+ * See the RecipeDAO for usage.
  */
 public class RecipeQueryResult {
     Double kcal;

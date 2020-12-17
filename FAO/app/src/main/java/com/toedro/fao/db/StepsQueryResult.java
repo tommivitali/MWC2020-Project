@@ -2,8 +2,9 @@ package com.toedro.fao.db;
 
 import androidx.room.ColumnInfo;
 /**
- * this class provides methods
- * in order to return the number of the steps referred to a specific day
+ * This class provides some fields and the correspondent getter methods to get the results for a
+ * query that selects the number of steps referred to a specific day.
+ * See the StepDAO for multiple usage.
  */
 public class StepsQueryResult {
     String day;

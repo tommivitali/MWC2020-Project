@@ -7,7 +7,8 @@ import androidx.room.Query;
 
 import java.util.List;
 /**
- * this class provides a serie of sql query that can be applied to to the db
+ * This class provides a series of SQL queries that can be applied to the DB, these are specifically
+ * for the Calories table and what it concerns.
  */
 @Dao
 public abstract class CaloriesDao {

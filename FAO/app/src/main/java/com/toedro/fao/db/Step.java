@@ -4,14 +4,14 @@ import androidx.annotation.NonNull;
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
 /**
- * definition of steps db structure
- * steps are counted by the step-counter/step-detector
- * and uploaded with the specifics of the time in which the step is taken
- * in the following class are defined variables of the db
- * and the method that can be applied to this class in order to visualize steps along time
+ * Definition of Step class for the related table structure in the DB; here are defined the
+ * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
+ * and some getter methods. In this table are added all the steps done by a people, detected by
+ * the step detector or the accelerometer; rows are added by the listener. For each step we have the
+ * relative day, the hour and the timestamp.
  */
 @Entity(tableName = "Steps")
-public class Step { // initialization of the variable of the db
+public class Step {
     @PrimaryKey(autoGenerate = true)
     @NonNull
     Integer id;
@@ -24,7 +24,7 @@ public class Step { // initialization of the variable of the db
         this.hour = hour;
         this.timestamp = timestamp;
     }
-    // definition of methods of the class: each method allow to return the value of an instance
+
     public Integer getId() {
         return id;
     }

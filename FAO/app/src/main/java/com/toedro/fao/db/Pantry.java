@@ -2,11 +2,12 @@ package com.toedro.fao.db;
 
 import androidx.room.Entity;
 import androidx.room.PrimaryKey;
+
 /**
- * definition of Pantry db structure
- * Ingredients both uploaded manually and scanning the barcode are added in the db
- * in the following class are defined variables of the db
- * and the method that can be applied to this class
+ * Definition of Pantry class for the related table structure in the DB; here are defined the
+ * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
+ * and some getter methods. In this table are added both the manually typed and the ingredients
+ * going from the barcode scanner.
  */
 @Entity(tableName = "Pantry")
 public class Pantry {

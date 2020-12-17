@@ -8,9 +8,10 @@ import com.google.gson.Gson;
 
 import java.util.List;
 /**
- * definition of Ingredients db structure
- * in the following class are defined variables of the db
- * and the method that can be applied to this class
+ * Definition of Ingredients class for the related table structure in the DB; here are defined the
+ * columns of the table to use it as ORM with Room. In the class we have some fields, a constructor
+ * and some getter methods. This table is a copy of the "ingredients" collection in firestore cloud,
+ * updated every time the app starts through the splash fragment.
  */
 @Entity(tableName = "Ingredients")
 public class Ingredient { // initialization of the variable of the db

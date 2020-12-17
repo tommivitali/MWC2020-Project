@@ -54,12 +54,10 @@ public class SplashFragment extends Fragment {
     public void onViewCreated(@NonNull final View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-        String intentString = getActivity().getIntent().getStringExtra(getString(R.string.notification_action2));
-
         // Reading from Firebase Cloud Firestore
         db = FirebaseFirestore.getInstance();
         // Get the "recipes" collection and, if there are no errors (i.e. no internet connection)
-        // put all into the local DB through Room
+        // put all into the local DB through Room. In case of an error it shows a snackbar.
         db.collection("recipes")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override
@@ -100,6 +98,7 @@ public class SplashFragment extends Fragment {
                         // If the app opens from the click of a notification we have a "TODETAIL"
                         // string into the intent, and we go directly to the wannaEat fragment;
                         // otherwise we normally go to the app homepage
+                        String intentString = getActivity().getIntent().getStringExtra(getString(R.string.notification_action2));
                         if (intentString != null && intentString.equals(getString(R.string.notification_action2))) {
                             Navigation.findNavController(view).navigate(R.id.action_splashFragment_to_wannaEatFragment);
                         } else {
@@ -108,7 +107,8 @@ public class SplashFragment extends Fragment {
                     }
                 });
 
-        // Get the "ingredients" collection and put all into the local DB through Room
+        // Get the "ingredients" collection and put all into the local DB through Room. In case of
+        // an error it shows a snackbar.
         db.collection("ingredients")
                 .addSnapshotListener(new EventListener<QuerySnapshot>() {
                     @Override

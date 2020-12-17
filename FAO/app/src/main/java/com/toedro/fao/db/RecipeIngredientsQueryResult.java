@@ -1,8 +1,7 @@
 package com.toedro.fao.db;
 /**
- * this class provides methods
- * in order to return the value of keywords (the identify the kind of product)
- * and quantity of the product itself
+ * This class provides two fields and the correspondent getter methods to get the results for a
+ * query that selects all the ingredients for a recipe. See the RecipeIngredientsDAO for usage.
  */
 public class RecipeIngredientsQueryResult {
     String keywords;

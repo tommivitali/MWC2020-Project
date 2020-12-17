@@ -8,7 +8,8 @@ import androidx.room.Query;
 import java.util.List;
 
 /**
- * The StepDAO class create queries for the Step class
+ * This class provides a series of SQL queries that can be applied to the DB; these are specifically
+ * for the Step table and what it concerns.
  */
 @Dao
 public abstract class StepDAO {

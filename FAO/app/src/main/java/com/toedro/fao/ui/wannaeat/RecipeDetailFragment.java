@@ -27,7 +27,8 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 /**
- * The RecipeDetailFragment class is the class that handles the chosen recipe from the WannaEatFragment
+ * This class receive the id of a recipe from an intent, and then display the details after adding
+ * the calories in the DB and removing quantities for each ingredients in pantry.
  */
 public class RecipeDetailFragment extends Fragment {
 
@@ -52,11 +53,13 @@ public class RecipeDetailFragment extends Fragment {
                 new SimpleDateFormat(getString(R.string.date_layout_DB)).format(new Date()),
                 String.valueOf(Calendar.getInstance().getTimeInMillis())
         ));
+
         // Remove quantities for each ingredients in Pantry
         for(RecipeIngredientsQueryResult i: App.getDBInstance().recipeIngredientsDAO().getIngredientsRecipe(recipeID)) {
             App.getDBInstance().pantryDAO().subQuantity(i.getKeywords(), i.getQuantity());
         }
 
+        // Shows the recipe details
         Recipe recipe = App.getDBInstance().recipeDAO().getRecipe(recipeID);
         ((TextView) v.findViewById(R.id.detail_title)).setText(recipe.getName());
         ((TextView) v.findViewById(R.id.detail_content)).setText(recipe.getText());

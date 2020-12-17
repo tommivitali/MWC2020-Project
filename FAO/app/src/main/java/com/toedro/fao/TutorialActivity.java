@@ -18,7 +18,9 @@ public class TutorialActivity extends AppIntro {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        // Get the Shared Preferences to write on later
         prefs = getSharedPreferences("com.toedro.fao", MODE_PRIVATE);
+        // All the "pages" we want to show for the tutorial, with the correspondent image
         addSlide(AppIntroFragment.newInstance(
                 "Welcome to FAO!",
                 "FAO is the best app that lets you eat healthy. Follow us for a brief tutorial",
